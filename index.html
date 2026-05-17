@@ -1,0 +1,1486 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MACCA - Puskesmas Jongaya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #FDF6EE;
+      --sage: #7DA87B;
+      --sage-dark: #4E7A4C;
+      --blush: #F2A7A0;
+      --warm-white: #FFFFFF;
+      --text-dark: #2D2D2D;
+      --text-muted: #6B6B6B;
+      --border: #E8DDD4;
+      --warm: #E7C6A8;
+
+      --fs-xs: 13px;
+      --fs-sm: 15px;
+      --fs-base: 16px;
+      --fs-md: 18px;
+      --fs-lg: 22px;
+      --fs-xl: 28px;
+      --fs-2xl: 34px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Nunito", sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      line-height: 1.6;
+      font-size: var(--fs-base);
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 56px 0;
+    }
+
+    .section-head {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .section-head .label {
+      font-size: var(--fs-xs);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .section-head h2 {
+      font-size: var(--fs-lg);
+      margin: 8px 0;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .section-sage {
+      background: var(--sage);
+      color: #fff;
+    }
+
+    .section-sage .section-head .label,
+    .section-sage .section-head p {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .muted {
+      color: var(--text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 2px solid transparent;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--sage);
+      color: #fff;
+    }
+
+    .btn-dark {
+      background: var(--sage-dark);
+      color: #fff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-dark);
+      border-color: var(--border);
+    }
+
+    .btn-light {
+      background: #fff;
+      color: var(--sage-dark);
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .navbar {
+      position: sticky;
+      top: 0;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      z-index: 50;
+      height: 56px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .nav-brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .hamburger {
+      background: transparent;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      width: 44px;
+      height: 44px;
+      font-size: 22px;
+      color: var(--text-dark);
+    }
+
+    .nav-links {
+      display: none;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .nav-cta {
+      min-height: 44px;
+      padding: 0 16px;
+    }
+
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 55;
+    }
+
+    .bottom-sheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-radius: 20px 20px 0 0;
+      padding: 16px 20px 24px;
+      transform: translateY(100%);
+      transition: transform 0.2s ease;
+      z-index: 60;
+    }
+
+    .bottom-sheet.open {
+      transform: translateY(0);
+    }
+
+    .sheet-handle {
+      width: 42px;
+      height: 4px;
+      background: #ddd;
+      border-radius: 999px;
+      margin: 6px auto 10px;
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .sheet-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: var(--fs-base);
+    }
+
+    .sheet-link {
+      display: block;
+      padding: 12px 0;
+      font-size: var(--fs-md);
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (min-width: 768px) {
+      .hamburger {
+        display: none;
+      }
+
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100dvh;
+      display: flex;
+      align-items: flex-end;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      background-image: url("https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=800&q=75&fit=crop");
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(45, 45, 45, 0.85) 0%, rgba(45, 45, 45, 0) 60%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 0 56px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--fs-sm);
+      background: rgba(0, 0, 0, 0.35);
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .hero h1 {
+      font-size: var(--fs-2xl);
+      font-weight: 800;
+      margin: 12px 0;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0 0 18px;
+    }
+
+    .hero-actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.6);
+    }
+
+    @media (min-width: 768px) {
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        min-height: 80vh;
+        color: var(--text-dark);
+      }
+
+      .hero-media {
+        position: relative;
+        min-height: 80vh;
+        grid-column: 2;
+      }
+
+      .hero-media::after {
+        background: none;
+      }
+
+      .hero-content {
+        padding: 64px 48px;
+        grid-column: 1;
+        align-self: center;
+      }
+
+      .hero-actions {
+        grid-template-columns: auto auto;
+        width: fit-content;
+      }
+
+      .btn-outline {
+        color: var(--sage-dark);
+        border-color: var(--sage-dark);
+        background: #fff;
+      }
+
+      .hero-badge {
+        background: rgba(125, 168, 123, 0.15);
+        color: var(--sage-dark);
+      }
+    }
+
+    .cards {
+      display: grid;
+      gap: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+    }
+
+    .card img {
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .card h3 {
+      font-size: var(--fs-md);
+      margin: 8px 0 12px;
+      font-weight: 700;
+    }
+
+    .card-points {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .card-points li {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .card-note {
+      margin-top: 10px;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .icon {
+      width: 22px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 999px;
+    }
+
+    .badge-sage {
+      background: var(--sage);
+      color: #fff;
+    }
+
+    .badge-blush {
+      background: var(--blush);
+      color: #fff;
+    }
+
+    .badge-dark {
+      background: var(--sage-dark);
+      color: #fff;
+    }
+
+    .badge-warm {
+      background: var(--warm);
+      color: var(--text-dark);
+    }
+
+    @media (min-width: 768px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .form-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+      color: var(--text-dark);
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    input,
+    select,
+    textarea {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 16px;
+      width: 100%;
+      background: #FAFAFA;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--sage);
+      outline: none;
+      background: #fff;
+    }
+
+    .form-note {
+      display: block;
+      margin-top: 6px;
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn-submit {
+      background: var(--sage-dark);
+      color: #fff;
+      width: 100%;
+      height: 56px;
+      border-radius: 999px;
+      font-size: 17px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .form-error {
+      color: #B3261E;
+      background: #FCE8E6;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin: 10px 0;
+    }
+
+    .success-card {
+      margin-top: 16px;
+      background: #EAF5EA;
+      color: var(--sage-dark);
+      padding: 16px;
+      border-radius: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .location-wrap {
+      display: grid;
+      gap: 16px;
+    }
+
+    .info-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer {
+      background: #2D2D2D;
+      color: #F2F2F2;
+      padding: 32px 0;
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .footer-title {
+      font-weight: 700;
+    }
+
+    .footer-macca {
+      background: none;
+      border: none;
+      color: #fff;
+      font-weight: 800;
+      font-size: 18px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 70;
+    }
+
+    .modal-card {
+      background: #fff;
+      width: min(420px, 90%);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .modal-actions {
+      display: grid;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .shake {
+      animation: shake 0.3s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    @media (min-width: 768px) {
+      .location-wrap {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+      }
+    }
+
+    @media (min-width: 480px) {
+      .modal-actions {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .admin {
+      background: var(--cream);
+      min-height: 100vh;
+    }
+
+    .admin-header {
+      background: var(--sage-dark);
+      color: #fff;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .admin-body {
+      padding: 20px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(160px, 1fr);
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .stat-label {
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+    }
+
+    .stat-value {
+      font-size: var(--fs-lg);
+      font-weight: 800;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-sm);
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-table tbody tr:nth-child(even) {
+      background: #F9F2EA;
+    }
+
+    .delete-btn {
+      background: none;
+      border: none;
+      color: #B3261E;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .pagination {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+    }
+
+    @media (min-width: 768px) {
+      .toolbar {
+        grid-template-columns: 1fr 200px auto;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-row">
+      <a class="nav-brand" href="#beranda" aria-label="MACCA">
+        <span class="brand-emoji">&#129328;</span>
+        <span class="brand-text">MACCA</span>
+      </a>
+      <button class="hamburger" id="menuBtn" type="button" aria-controls="bottomSheet" aria-expanded="false">
+        <span class="hamburger-icon">&#8801;</span>
+      </button>
+      <nav class="nav-links" aria-label="Navigasi utama">
+        <a href="#beranda">Beranda</a>
+        <a href="#edukasi">Edukasi ANC</a>
+        <a href="#daftar">Daftar Periksa</a>
+        <a href="#lokasi">Lokasi</a>
+        <a class="btn btn-primary nav-cta" href="#daftar">Daftar Sekarang</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section id="beranda" class="hero fade-up">
+      <div class="hero-media" role="img" aria-label="Ibu hamil di klinik"></div>
+      <div class="container hero-content">
+        <div class="hero-badge">&#127973; Puskesmas Jongaya &#183; Makassar</div>
+        <h1>Periksa Kehamilan Jadi Lebih Mudah</h1>
+        <p>Media informasi dan pendaftaran ANC online untuk ibu hamil di Makassar</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#daftar">&#128467; Daftar Periksa</a>
+          <a class="btn btn-outline" href="#edukasi">&#128214; Info ANC</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="edukasi" class="section fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div class="label">INFO PENTING</div>
+          <h2>Yang Perlu Ibu Tahu Soal ANC</h2>
+          <p>Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=75" alt="Pemeriksaan kehamilan" loading="lazy" />
+            <div class="card-body">
+              <span class="badge badge-sage">TRIMESTER 1-2-3</span>
+              <h3>Periksa Minimal 8 Kali Selama Hamil</h3>
+              <ul class="card-points">
+                <li><span class="icon">&#128269;</span><span>1x Trimester 1 - USG skrining awal</span></li>
+                <li><span class="icon">&#128147;</span><span>2x Trimester 2 - Pantau detak jantung bayi</span></li>
+                <li><span class="icon">&#129329;</span><span>5x Trimester 3 - Persiapan menjelang lahiran</span></li>
+              </ul>
+              <p class="card-note"><em>Tabe' Ibu, ini aturan baru Kemenkes ya!</em></p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=600&q=75" alt="Tablet tambah darah" loading="lazy" />
+            <div class="card-body">
+              <span class="badge badge-blush">NUTRISI</span>
+              <h3>Jangan Stop Minum Tablet Tambah Darah!</h3>
+              <ul class="card-points">
+                <li><span class="icon">&#128138;</span><span>90 butir wajib habis selama hamil</span></li>
+                <li><span class="icon">&#129656;</span><span>Cegah anemia saat persalinan</span></li>
+                <li><span class="icon">&#129504;</span><span>Lindungi bayi dari stunting</span></li>
+              </ul>
+              <p class="card-note"><em>Minum rutin, jangan bolong-bolong nah!</em></p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=75" alt="Pemeriksaan trimester 3" loading="lazy" />
+            <div class="card-body">
+              <span class="badge badge-dark">TRIMESTER 3</span>
+              <h3>Trimester 3: Masa Paling Kritis!</h3>
+              <ul class="card-points">
+                <li><span class="icon">&#128118;</span><span>Posisi bayi - sungsang atau sudah masuk panggul?</span></li>
+                <li><span class="icon">&#128167;</span><span>Air ketuban - masih jernih atau keruh?</span></li>
+                <li><span class="icon">&#10084;&#65039;</span><span>Tekanan darah - waspada preeklampsia!</span></li>
+              </ul>
+              <p class="card-note"><em>Jangan malas periksa ya, ini masa yang paling penting!</em></p>
+            </div>
+          </article>
+
+          <article class="card">
+            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75" alt="Dukungan suami" loading="lazy" />
+            <div class="card-body">
+              <span class="badge badge-warm">UNTUK SUAMI</span>
+              <h3>Suami Siap ANTAR JAGA</h3>
+              <ul class="card-points">
+                <li><span class="icon">&#128663;</span><span>Antar - temani istri setiap kontrol dan USG</span></li>
+                <li><span class="icon">&#128737;</span><span>Jaga - jaga kondisi mental, jangan buat stres</span></li>
+                <li><span class="icon">&#128197;</span><span>Siap - hafal tanggal HPL istri</span></li>
+              </ul>
+              <p class="card-note"><em>Janganki' biarkan istri berjuang sendiri, kodong!</em></p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="daftar" class="section section-sage fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div class="label">DAFTAR ONLINE</div>
+          <h2>Pesan Jadwal Periksa Sekarang</h2>
+          <p>Gratis, mudah, dan tim kami akan hubungi Ibu untuk konfirmasi jadwal</p>
+        </div>
+
+        <div class="form-card">
+          <form id="formPendaftaran" novalidate>
+            <div class="field">
+              <label for="nama">Nama Lengkap Ibu</label>
+              <input id="nama" name="nama" type="text" placeholder="Contoh: Siti Rahmawati" required />
+            </div>
+
+            <div class="field">
+              <label for="wa">Nomor WhatsApp</label>
+              <input id="wa" name="wa" type="tel" placeholder="08xxxxxxxxxx" required />
+              <small class="form-note">Kami akan konfirmasi via WhatsApp</small>
+            </div>
+
+            <div class="field">
+              <label for="usia">Usia Kehamilan (Minggu)</label>
+              <input id="usia" name="usia" type="number" min="1" max="42" placeholder="Contoh: 24" required />
+              <div class="field-row">
+                <small class="form-note">Trimester akan terdeteksi otomatis</small>
+                <span id="trimesterBadge" class="badge badge-sage hidden"></span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="trimester">Pilih Trimester</label>
+              <select id="trimester" name="trimester" required>
+                <option value="">Pilih trimester</option>
+                <option value="Trimester 1">Trimester 1 (0-13 minggu)</option>
+                <option value="Trimester 2">Trimester 2 (14-27 minggu)</option>
+                <option value="Trimester 3">Trimester 3 (28-42 minggu)</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="tanggal">Tanggal Kunjungan yang Diinginkan</label>
+              <input id="tanggal" name="tanggal" type="date" required />
+            </div>
+
+            <div class="field">
+              <label for="keluhan">Keluhan atau Pertanyaan (opsional)</label>
+              <textarea id="keluhan" name="keluhan" rows="3" placeholder="Ceritakan keluhan Ibu di sini (boleh dikosongkan)"></textarea>
+            </div>
+
+            <div id="formError" class="form-error hidden"></div>
+
+            <button id="submitBtn" class="btn-submit" type="submit">
+              <span id="submitSpinner" class="spinner hidden" aria-hidden="true"></span>
+              <span class="btn-text">Kirim Pendaftaran</span>
+            </button>
+          </form>
+
+          <div id="formSuccess" class="success-card hidden">
+            <span class="success-icon">&#9989;</span>
+            <div>
+              <strong>Pendaftaran Berhasil!</strong>
+              <p>Tim kami akan menghubungi Ibu via WhatsApp segera.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="lokasi" class="section fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div class="label">LOKASI</div>
+          <h2>Puskesmas Jongaya</h2>
+          <p>Datang sesuai jadwal agar pelayanan lebih cepat</p>
+        </div>
+
+        <div class="location-wrap">
+          <div class="map-embed">
+            <iframe
+              src="https://maps.google.com/maps?q=-5.172023,119.42496&z=17&output=embed"
+              width="100%"
+              height="260"
+              style="border:0; border-radius:16px;"
+              loading="lazy"
+              title="Peta Puskesmas Jongaya"
+            ></iframe>
+          </div>
+          <div class="info-card">
+            <div><strong>&#128205; Jl. Andi Tonro No.49, Pa'baeng-Baeng</strong><br />Kec. Tamalate, Kota Makassar 90223</div>
+            <div>&#128336; Senin - Jumat: 08.00 - 14.00 WITA</div>
+            <div>&#127973; Layanan ANC tersedia setiap hari kerja</div>
+            <a class="btn btn-primary" href="https://maps.google.com/?q=-5.172023,119.42496" target="_blank" rel="noopener">&#128506; Buka di Google Maps</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-grid">
+      <div class="footer-title">
+        <button id="footerMacca" class="footer-macca" type="button">MACCA</button> - Media ANC Cerdas, Cepat dan Akurat
+      </div>
+      <div>Puskesmas Jongaya &#183; Makassar</div>
+      <div class="muted">Mini Project MPPD FK UMI</div>
+      <div class="muted">Stase Puskesmas Jongaya | 22 Des 2025 - 31 Jan 2026</div>
+      <div class="muted">Tim: Andi Musyawwirah Dinar AS &#183; Sultan M Al Fatih W &#183; Athiyyah Sarah Sarwati &#183; Wahyu Julianto Abas &#183; Awalia Rezeki S Yusuf</div>
+      <div class="muted">Pembimbing: dr. Sophia Qadarsih, M.Biomed &#183; dr. Andi Nurul Fadilah Iskandar</div>
+      <div class="muted">&copy; 2025 Puskesmas Jongaya</div>
+    </div>
+  </footer>
+
+  <div id="sheetBackdrop" class="sheet-backdrop hidden" aria-hidden="true"></div>
+  <div id="bottomSheet" class="bottom-sheet hidden" aria-hidden="true">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <strong>Menu</strong>
+      <button class="sheet-close" id="sheetClose" type="button">Tutup</button>
+    </div>
+    <nav class="sheet-links" aria-label="Menu mobile">
+      <a class="sheet-link" href="#beranda">Beranda</a>
+      <a class="sheet-link" href="#edukasi">Edukasi ANC</a>
+      <a class="sheet-link" href="#daftar">Daftar Periksa</a>
+      <a class="sheet-link" href="#lokasi">Lokasi</a>
+    </nav>
+  </div>
+
+  <div id="adminModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
+    <div class="modal-card" id="adminCard">
+      <h3 id="adminTitle">Login Admin</h3>
+      <div id="adminError" class="form-error hidden">Username atau password salah.</div>
+      <div class="field">
+        <label for="adminUser">Username</label>
+        <input id="adminUser" type="text" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="adminPass">Password</label>
+        <input id="adminPass" type="password" autocomplete="current-password" />
+      </div>
+      <div class="modal-actions">
+        <button id="adminLogin" class="btn btn-primary" type="button">Login</button>
+        <button id="adminCancel" class="btn btn-ghost" type="button">Batal</button>
+      </div>
+    </div>
+  </div>
+
+  <section id="adminDashboard" class="admin hidden">
+    <header class="admin-header">
+      <div class="admin-title">&#127973; Admin MACCA - PKM Jongaya</div>
+      <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
+    </header>
+    <div class="admin-body">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Total Pendaftar</div>
+          <div id="statTotal" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Hari Ini</div>
+          <div id="statToday" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tri. 1</div>
+          <div id="statTri1" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tri. 2</div>
+          <div id="statTri2" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tri. 3</div>
+          <div id="statTri3" class="stat-value">0</div>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <input id="adminSearch" type="text" placeholder="Cari nama pasien..." />
+        <select id="adminFilter">
+          <option value="">Semua</option>
+          <option value="Trimester 1">Trimester 1</option>
+          <option value="Trimester 2">Trimester 2</option>
+          <option value="Trimester 3">Trimester 3</option>
+        </select>
+        <button id="exportBtn" class="btn btn-primary" type="button">&#11015; Export CSV</button>
+      </div>
+
+      <div id="adminMessage" class="form-error hidden"></div>
+
+      <div class="table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Nama</th>
+              <th>No WA</th>
+              <th>Usia (minggu)</th>
+              <th>Trimester</th>
+              <th>Tgl Kunjungan</th>
+              <th>Keluhan</th>
+              <th>Waktu Daftar</th>
+              <th>Hapus</th>
+            </tr>
+          </thead>
+          <tbody id="adminTbody"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="empty-state hidden">Belum ada pendaftaran masuk.</div>
+
+      <div class="pagination">
+        <button id="prevPage" class="btn btn-ghost" type="button">Prev</button>
+        <span id="pageInfo">1 / 1</span>
+        <button id="nextPage" class="btn btn-ghost" type="button">Next</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const SUPABASE_URL = "https://awedbawkfqwwabylffor.supabase.co";
+    const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3ZWRiYXdrZnF3d2FieWxmZm9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5ODU5NTcsImV4cCI6MjA5NDU2MTk1N30.JV514Vo1AS45PGb3A40RTDLB9AJ_LXKXFlLLf7VGgCc";
+
+    const headers = {
+      "Content-Type": "application/json",
+      apikey: SUPABASE_KEY,
+      Authorization: `Bearer ${SUPABASE_KEY}`
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const menuBtn = document.getElementById("menuBtn");
+      const bottomSheet = document.getElementById("bottomSheet");
+      const sheetBackdrop = document.getElementById("sheetBackdrop");
+      const sheetClose = document.getElementById("sheetClose");
+
+      function openSheet() {
+        sheetBackdrop.classList.remove("hidden");
+        bottomSheet.classList.remove("hidden");
+        requestAnimationFrame(() => bottomSheet.classList.add("open"));
+        menuBtn.setAttribute("aria-expanded", "true");
+      }
+
+      function closeSheet() {
+        bottomSheet.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", "false");
+        setTimeout(() => {
+          bottomSheet.classList.add("hidden");
+          sheetBackdrop.classList.add("hidden");
+        }, 200);
+      }
+
+      menuBtn.addEventListener("click", openSheet);
+      sheetClose.addEventListener("click", closeSheet);
+      sheetBackdrop.addEventListener("click", closeSheet);
+      bottomSheet.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeSheet);
+      });
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      document.querySelectorAll(".fade-up").forEach((el) => io.observe(el));
+
+      const form = document.getElementById("formPendaftaran");
+      const submitBtn = document.getElementById("submitBtn");
+      const submitSpinner = document.getElementById("submitSpinner");
+      const formError = document.getElementById("formError");
+      const formSuccess = document.getElementById("formSuccess");
+      const usiaInput = document.getElementById("usia");
+      const trimesterSelect = document.getElementById("trimester");
+      const trimesterBadge = document.getElementById("trimesterBadge");
+      const tanggalInput = document.getElementById("tanggal");
+
+      function detectTrimester(weeks) {
+        if (weeks >= 1 && weeks <= 13) return "Trimester 1";
+        if (weeks >= 14 && weeks <= 27) return "Trimester 2";
+        if (weeks >= 28 && weeks <= 42) return "Trimester 3";
+        return "";
+      }
+
+      function formatDateInput(date) {
+        return date.toISOString().split("T")[0];
+      }
+
+      function setDateRange() {
+        const today = new Date();
+        const maxDate = new Date();
+        maxDate.setDate(today.getDate() + 30);
+        tanggalInput.min = formatDateInput(today);
+        tanggalInput.max = formatDateInput(maxDate);
+      }
+
+      function updateTrimesterBadge(value) {
+        if (!value) {
+          trimesterBadge.classList.add("hidden");
+          trimesterBadge.textContent = "";
+          return;
+        }
+        trimesterBadge.textContent = value;
+        trimesterBadge.classList.remove("hidden");
+      }
+
+      function setLoading(isLoading) {
+        submitBtn.disabled = isLoading;
+        submitSpinner.classList.toggle("hidden", !isLoading);
+        submitBtn.querySelector(".btn-text").textContent = isLoading ? "Mengirim..." : "Kirim Pendaftaran";
+      }
+
+      async function submitPendaftaran(data) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/pendaftaran`, {
+          method: "POST",
+          headers: { ...headers, Prefer: "return=minimal" },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error("Gagal menyimpan data");
+      }
+
+      async function fetchData(trimesterFilter = "") {
+        let url = `${SUPABASE_URL}/rest/v1/pendaftaran?order=created_at.desc`;
+        if (trimesterFilter) {
+          url += `&trimester=eq.${encodeURIComponent(trimesterFilter)}`;
+        }
+        const res = await fetch(url, { headers });
+        if (!res.ok) throw new Error("Gagal mengambil data");
+        return await res.json();
+      }
+
+      async function hapusData(id) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/pendaftaran?id=eq.${id}`, {
+          method: "DELETE",
+          headers
+        });
+        if (!res.ok) throw new Error("Gagal menghapus data");
+      }
+
+      function exportCSV(data) {
+        const cols = ["nama_lengkap", "no_hp", "usia_kehamilan", "trimester", "keluhan", "tanggal_kunjungan", "created_at"];
+        const header = ["Nama", "No WA", "Usia (minggu)", "Trimester", "Keluhan", "Tgl Kunjungan", "Waktu Daftar"];
+        const rows = data.map((row) =>
+          cols.map((c) => `"${(row[c] || "").toString().replace(/"/g, '""')}"`).join(",")
+        );
+        const csv = [header.join(","), ...rows].join("\n");
+        const a = document.createElement("a");
+        a.href = "data:text/csv;charset=utf-8," + encodeURIComponent(csv);
+        a.download = `pendaftaran_macca_${new Date().toISOString().slice(0, 10)}.csv`;
+        a.click();
+      }
+
+      usiaInput.addEventListener("input", () => {
+        const value = parseInt(usiaInput.value, 10);
+        const tri = detectTrimester(value);
+        if (tri) {
+          trimesterSelect.value = tri;
+        }
+        updateTrimesterBadge(tri);
+      });
+
+      trimesterSelect.addEventListener("change", () => {
+        updateTrimesterBadge(trimesterSelect.value);
+      });
+
+      setDateRange();
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        formError.classList.add("hidden");
+
+        const data = {
+          nama_lengkap: form.nama.value.trim(),
+          no_hp: form.wa.value.trim(),
+          usia_kehamilan: parseInt(form.usia.value, 10),
+          trimester: form.trimester.value,
+          tanggal_kunjungan: form.tanggal.value,
+          keluhan: form.keluhan.value.trim()
+        };
+
+        if (!data.nama_lengkap || !data.no_hp || !data.usia_kehamilan || !data.trimester || !data.tanggal_kunjungan) {
+          formError.textContent = "Mohon lengkapi semua data wajib.";
+          formError.classList.remove("hidden");
+          return;
+        }
+
+        try {
+          setLoading(true);
+          await submitPendaftaran(data);
+          form.classList.add("hidden");
+          formSuccess.classList.remove("hidden");
+        } catch (err) {
+          formError.textContent = err.message;
+          formError.classList.remove("hidden");
+        } finally {
+          setLoading(false);
+        }
+      });
+
+      const footerMacca = document.getElementById("footerMacca");
+      const adminModal = document.getElementById("adminModal");
+      const adminCard = document.getElementById("adminCard");
+      const adminUser = document.getElementById("adminUser");
+      const adminPass = document.getElementById("adminPass");
+      const adminLogin = document.getElementById("adminLogin");
+      const adminCancel = document.getElementById("adminCancel");
+      const adminError = document.getElementById("adminError");
+      const adminDashboard = document.getElementById("adminDashboard");
+      const adminLogout = document.getElementById("adminLogout");
+      const adminSearch = document.getElementById("adminSearch");
+      const adminFilter = document.getElementById("adminFilter");
+      const exportBtn = document.getElementById("exportBtn");
+      const adminTbody = document.getElementById("adminTbody");
+      const adminMessage = document.getElementById("adminMessage");
+      const emptyState = document.getElementById("emptyState");
+      const prevPage = document.getElementById("prevPage");
+      const nextPage = document.getElementById("nextPage");
+      const pageInfo = document.getElementById("pageInfo");
+      const main = document.getElementById("main");
+      const footer = document.getElementById("footer");
+
+      const ADMIN_USER = "admin";
+      const ADMIN_PASS = "pkmjongaya2025";
+
+      const state = {
+        data: [],
+        filtered: [],
+        page: 1,
+        pageSize: 10
+      };
+
+      let footerClicks = 0;
+
+      function openAdminModal() {
+        adminModal.classList.remove("hidden");
+        adminModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeAdminModal() {
+        adminModal.classList.add("hidden");
+        adminModal.setAttribute("aria-hidden", "true");
+        adminError.classList.add("hidden");
+        adminUser.value = "";
+        adminPass.value = "";
+      }
+
+      function showAdmin() {
+        document.getElementById("navbar").classList.add("hidden");
+        main.classList.add("hidden");
+        footer.classList.add("hidden");
+        adminDashboard.classList.remove("hidden");
+        window.scrollTo(0, 0);
+      }
+
+      function hideAdmin() {
+        document.getElementById("navbar").classList.remove("hidden");
+        main.classList.remove("hidden");
+        footer.classList.remove("hidden");
+        adminDashboard.classList.add("hidden");
+      }
+
+      function renderStats() {
+        const total = state.data.length;
+        const today = new Date().toDateString();
+        const countToday = state.data.filter((row) => new Date(row.created_at).toDateString() === today).length;
+        const tri1 = state.data.filter((row) => row.trimester === "Trimester 1").length;
+        const tri2 = state.data.filter((row) => row.trimester === "Trimester 2").length;
+        const tri3 = state.data.filter((row) => row.trimester === "Trimester 3").length;
+
+        document.getElementById("statTotal").textContent = total;
+        document.getElementById("statToday").textContent = countToday;
+        document.getElementById("statTri1").textContent = tri1;
+        document.getElementById("statTri2").textContent = tri2;
+        document.getElementById("statTri3").textContent = tri3;
+      }
+
+      function applyFilters() {
+        const query = adminSearch.value.trim().toLowerCase();
+        const filter = adminFilter.value;
+
+        state.filtered = state.data.filter((row) => {
+          const matchName = row.nama_lengkap.toLowerCase().includes(query);
+          const matchTri = !filter || row.trimester === filter;
+          return matchName && matchTri;
+        });
+
+        state.page = 1;
+        renderTable();
+        renderPagination();
+      }
+
+      function renderTable() {
+        const start = (state.page - 1) * state.pageSize;
+        const end = start + state.pageSize;
+        const slice = state.filtered.slice(start, end);
+
+        adminTbody.innerHTML = slice
+          .map((row, index) => {
+            const created = new Date(row.created_at).toLocaleString("id-ID");
+            return `
+              <tr>
+                <td>${start + index + 1}</td>
+                <td>${row.nama_lengkap}</td>
+                <td>${row.no_hp}</td>
+                <td>${row.usia_kehamilan}</td>
+                <td>${row.trimester}</td>
+                <td>${row.tanggal_kunjungan}</td>
+                <td>${row.keluhan || "-"}</td>
+                <td>${created}</td>
+                <td><button class="delete-btn" data-id="${row.id}" title="Hapus">&#128465;</button></td>
+              </tr>
+            `;
+          })
+          .join("");
+
+        emptyState.classList.toggle("hidden", state.filtered.length !== 0);
+      }
+
+      function renderPagination() {
+        const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
+        pageInfo.textContent = `${state.page} / ${totalPages}`;
+        prevPage.disabled = state.page <= 1;
+        nextPage.disabled = state.page >= totalPages;
+      }
+
+      async function loadAdminData() {
+        adminMessage.classList.add("hidden");
+        try {
+          state.data = await fetchData();
+          state.filtered = [...state.data];
+          renderStats();
+          applyFilters();
+        } catch (err) {
+          adminMessage.textContent = err.message;
+          adminMessage.classList.remove("hidden");
+        }
+      }
+
+      footerMacca.addEventListener("click", () => {
+        footerClicks += 1;
+        if (footerClicks >= 5) {
+          footerClicks = 0;
+          openAdminModal();
+        }
+      });
+
+      adminCancel.addEventListener("click", closeAdminModal);
+      adminModal.addEventListener("click", (event) => {
+        if (event.target === adminModal) closeAdminModal();
+      });
+
+      adminLogin.addEventListener("click", () => {
+        if (adminUser.value === ADMIN_USER && adminPass.value === ADMIN_PASS) {
+          closeAdminModal();
+          showAdmin();
+          loadAdminData();
+        } else {
+          adminError.classList.remove("hidden");
+          adminCard.classList.add("shake");
+          setTimeout(() => adminCard.classList.remove("shake"), 300);
+        }
+      });
+
+      adminLogout.addEventListener("click", () => {
+        hideAdmin();
+      });
+
+      adminSearch.addEventListener("input", applyFilters);
+      adminFilter.addEventListener("change", applyFilters);
+
+      exportBtn.addEventListener("click", () => {
+        exportCSV(state.filtered.length ? state.filtered : state.data);
+      });
+
+      prevPage.addEventListener("click", () => {
+        if (state.page > 1) {
+          state.page -= 1;
+          renderTable();
+          renderPagination();
+        }
+      });
+
+      nextPage.addEventListener("click", () => {
+        const totalPages = Math.max(1, Math.ceil(state.filtered.length / state.pageSize));
+        if (state.page < totalPages) {
+          state.page += 1;
+          renderTable();
+          renderPagination();
+        }
+      });
+
+      adminTbody.addEventListener("click", async (event) => {
+        const btn = event.target.closest(".delete-btn");
+        if (!btn) return;
+        const id = btn.getAttribute("data-id");
+        const confirmDelete = confirm("Hapus data ini?");
+        if (!confirmDelete) return;
+
+        try {
+          await hapusData(id);
+          await loadAdminData();
+        } catch (err) {
+          adminMessage.textContent = err.message;
+          adminMessage.classList.remove("hidden");
+        }
+      });
+
+      // Additional JS will be appended in later tasks.
+    });
+  </script>
+</body>
+</html>
