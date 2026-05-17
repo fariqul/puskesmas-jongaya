@@ -1047,7 +1047,10 @@
           </form>
 
           <div id="formSuccess" class="success-card hidden">
-            <span class="success-icon">&#9989;</span>
+            <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M8.5 12.5l2.5 2.5 4.5-5"></path>
+            </svg>
             <div>
               <strong>Pendaftaran Berhasil!</strong>
               <p>Tim kami akan menghubungi Ibu via WhatsApp segera.</p>
@@ -1077,10 +1080,37 @@
             ></iframe>
           </div>
           <div class="info-card">
-            <div><strong>&#128205; Jl. Andi Tonro No.49, Pa'baeng-Baeng</strong><br />Kec. Tamalate, Kota Makassar 90223</div>
-            <div>&#128336; Senin - Jumat: 08.00 - 14.00 WITA</div>
-            <div>&#127973; Layanan ANC tersedia setiap hari kerja</div>
-            <a class="btn btn-primary" href="https://maps.google.com/?q=-5.172023,119.42496" target="_blank" rel="noopener">&#128506; Buka di Google Maps</a>
+            <div>
+              <strong>
+                <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M12 21s6-6.5 6-11a6 6 0 10-12 0c0 4.5 6 11 6 11z"></path>
+                  <circle cx="12" cy="10" r="2.5"></circle>
+                </svg>
+                <span>Jl. Andi Tonro No.49, Pa'baeng-Baeng</span>
+              </strong>
+              <br />Kec. Tamalate, Kota Makassar 90223
+            </div>
+            <div>
+              <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 7v5l3 2"></path>
+              </svg>
+              <span>Senin - Jumat: 08.00 - 14.00 WITA</span>
+            </div>
+            <div>
+              <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="M12 8v8M8 12h8"></path>
+              </svg>
+              <span>Layanan ANC tersedia setiap hari kerja</span>
+            </div>
+            <a class="btn btn-primary" href="https://maps.google.com/?q=-5.172023,119.42496" target="_blank" rel="noopener">
+              <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path d="M12 21s6-6.5 6-11a6 6 0 10-12 0c0 4.5 6 11 6 11z"></path>
+                <circle cx="12" cy="10" r="2.5"></circle>
+              </svg>
+              Buka di Google Maps
+            </a>
           </div>
         </div>
       </div>
@@ -1137,7 +1167,13 @@
 
   <section id="adminDashboard" class="admin hidden">
     <header class="admin-header">
-      <div class="admin-title">&#127973; Admin MACCA - PKM Jongaya</div>
+      <div class="admin-title">
+        <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="9"></circle>
+          <path d="M12 8v8M8 12h8"></path>
+        </svg>
+        <span>Admin MACCA - PKM Jongaya</span>
+      </div>
       <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
     </header>
     <div class="admin-body">
@@ -1172,7 +1208,12 @@
           <option value="Trimester 2">Trimester 2</option>
           <option value="Trimester 3">Trimester 3</option>
         </select>
-        <button id="exportBtn" class="btn btn-primary" type="button">&#11015; Export CSV</button>
+        <button id="exportBtn" class="btn btn-primary" type="button">
+          <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 4v10M8 10l4 4 4-4M5 20h14"></path>
+          </svg>
+          Export CSV
+        </button>
       </div>
 
       <div id="adminMessage" class="form-error hidden"></div>
@@ -1594,7 +1635,13 @@
                 <td>${row.tanggal_kunjungan}</td>
                 <td>${row.keluhan || "-"}</td>
                 <td>${created}</td>
-                <td><button class="delete-btn" data-id="${row.id}" title="Hapus">&#128465;</button></td>
+                <td>
+                  <button class="delete-btn" data-id="${row.id}" title="Hapus" aria-label="Hapus">
+                    <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                      <path d="M4 7h16M9 7V5h6v2M7 7l1 12h8l1-12M10 11v6M14 11v6"></path>
+                    </svg>
+                  </button>
+                </td>
               </tr>
             `;
           })
