@@ -1120,6 +1120,35 @@
       Authorization: `Bearer ${SUPABASE_KEY}`
     };
 
+    const RUN_TESTS = new URLSearchParams(window.location.search).has("test");
+
+    function assert(condition, message) {
+      if (!condition) {
+        throw new Error(message);
+      }
+    }
+
+    function runCarouselTests() {
+      try {
+        assert(getNextIndex(0, 5) === 1, "getNextIndex increments");
+        assert(getNextIndex(4, 5) === 0, "getNextIndex wraps to 0");
+        assert(shouldReduceMotion({ matches: true }) === true, "shouldReduceMotion true");
+        assert(shouldReduceMotion({ matches: false }) === false, "shouldReduceMotion false");
+
+        const el = document.createElement("div");
+        setSlideBackground(el, "https://example.com/test.jpg");
+        assert(el.style.backgroundImage.includes("test.jpg"), "setSlideBackground sets URL");
+
+        console.log("TEST PASS");
+      } catch (err) {
+        console.error("TEST FAIL:", err.message);
+      }
+    }
+
+    if (RUN_TESTS) {
+      runCarouselTests();
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const menuBtn = document.getElementById("menuBtn");
       const bottomSheet = document.getElementById("bottomSheet");
