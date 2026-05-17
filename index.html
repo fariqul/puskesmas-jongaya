@@ -378,18 +378,17 @@
       .hero {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        min-height: 80vh;
-        color: var(--text-dark);
+        min-height: 100dvh;
+        color: #fff;
       }
 
       .hero-media {
-        position: relative;
-        min-height: 80vh;
-        grid-column: 2;
+        position: absolute;
+        inset: 0;
       }
 
       .hero-overlay {
-        background: none;
+        background: linear-gradient(to top, rgba(45, 45, 45, 0.85) 0%, rgba(45, 45, 45, 0) 60%);
       }
 
       .hero-content {
@@ -1258,10 +1257,24 @@
     };
 
     const RUN_TESTS = new URLSearchParams(window.location.search).has("test");
+    const TEST_STATE = { status: "pending", message: "" };
 
     function assert(condition, message) {
       if (!condition) {
         throw new Error(message);
+      }
+    }
+
+    function assertHeroLayout() {
+      const hero = document.querySelector(".hero");
+      const media = document.querySelector(".hero-media");
+      assert(hero && media, "hero elements exist");
+
+      if (window.innerWidth >= 768) {
+        const heroRect = hero.getBoundingClientRect();
+        const mediaRect = media.getBoundingClientRect();
+        assert(Math.abs(mediaRect.width - heroRect.width) <= 2, "hero media full width on desktop");
+        assert(mediaRect.height >= window.innerHeight * 0.95, "hero media full height on desktop");
       }
     }
 
@@ -1276,14 +1289,25 @@
         setSlideBackground(el, "https://example.com/test.jpg");
         assert(el.style.backgroundImage.includes("test.jpg"), "setSlideBackground sets URL");
 
+        assertHeroLayout();
+        TEST_STATE.status = "pass";
         console.log("TEST PASS");
       } catch (err) {
+        TEST_STATE.status = "fail";
+        TEST_STATE.message = err.message;
         console.error("TEST FAIL:", err.message);
+      }
+
+      if (document.body) {
+        document.body.dataset.test = TEST_STATE.status;
+        if (TEST_STATE.message) {
+          document.body.dataset.testMessage = TEST_STATE.message;
+        }
       }
     }
 
     if (RUN_TESTS) {
-      runCarouselTests();
+      window.addEventListener("load", runCarouselTests);
     }
 
     function getNextIndex(current, total) {
