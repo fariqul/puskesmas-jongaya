@@ -214,6 +214,28 @@
       font-size: 18px;
     }
 
+    .brand-logos {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-logos img {
+      height: 30px;
+      width: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .brand-logo--puskesmas {
+      height: 26px;
+    }
+
+    .brand-title {
+      font-weight: 800;
+      font-size: 16px;
+    }
+
     .hamburger {
       background: transparent;
       border: 2px solid var(--border);
@@ -348,15 +370,23 @@
       border-radius: 999px;
     }
 
-    .hero h1 {
+    .hero-title {
       font-size: var(--fs-2xl);
       font-weight: 800;
       margin: 12px 0;
       line-height: 1.2;
     }
 
-    .hero p {
+    .hero-subtitle {
       margin: 0 0 18px;
+    }
+
+    .hero-highlight {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(125, 168, 123, 0.25);
+      color: #fff;
     }
 
     .hero-actions {
@@ -411,6 +441,24 @@
       .hero-badge {
         background: rgba(125, 168, 123, 0.15);
         color: var(--sage-dark);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-logos {
+        gap: 6px;
+      }
+
+      .brand-logos img {
+        height: 24px;
+      }
+
+      .brand-logo--puskesmas {
+        height: 20px;
+      }
+
+      .brand-title {
+        font-size: 14px;
       }
     }
 
@@ -663,6 +711,73 @@
       margin-top: 16px;
     }
 
+    .modal-hint {
+      margin: 6px 0 0;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .toast-wrap {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      display: grid;
+      gap: 10px;
+      z-index: 90;
+      pointer-events: none;
+    }
+
+    .toast {
+      background: #fff;
+      color: var(--text-dark);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      pointer-events: auto;
+    }
+
+    .toast--success {
+      border-left: 4px solid var(--sage);
+    }
+
+    .toast--danger {
+      border-left: 4px solid #B3261E;
+    }
+
+    .toast--info {
+      border-left: 4px solid var(--blush);
+    }
+
+    .toast-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--sage);
+      flex: 0 0 auto;
+    }
+
+    .toast--danger .toast-dot {
+      background: #B3261E;
+    }
+
+    .toast--info .toast-dot {
+      background: var(--blush);
+    }
+
+    .toast-text {
+      font-size: var(--fs-sm);
+    }
+
+    .toast--hide {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
     .shake {
       animation: shake 0.3s;
     }
@@ -685,6 +800,13 @@
     @media (min-width: 480px) {
       .modal-actions {
         grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .toast-wrap {
+        left: 16px;
+        right: 16px;
       }
     }
 
@@ -802,12 +924,13 @@
   <!-- NAVBAR -->
   <header class="navbar" id="navbar">
     <div class="container nav-row">
-      <a class="nav-brand" href="#beranda" aria-label="MACCA">
-        <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="12" cy="12" r="9"></circle>
-          <path d="M12 8v8M8 12h8"></path>
-        </svg>
-        <span class="brand-text">MACCA</span>
+      <a class="nav-brand" href="#beranda" aria-label="Puskesmas Jongaya">
+        <span class="brand-logos">
+          <img src="UMI_Makassar_png.png" alt="Logo UMI Makassar" />
+          <img class="brand-logo--puskesmas" src="puskesmas-logo-png_seeklogo-359624.png" alt="Logo Puskesmas" />
+          <img src="Coat_of_Arms_of_City_Makassar.png" alt="Logo Kota Makassar" />
+        </span>
+        <span class="brand-title">Puskesmas Jongaya</span>
       </a>
       <button class="hamburger" id="menuBtn" type="button" aria-controls="bottomSheet" aria-expanded="false">
         <span class="hamburger-icon">&#8801;</span>
@@ -837,8 +960,8 @@
           </svg>
           <span>Puskesmas Jongaya &#183; Makassar</span>
         </div>
-        <h1>Periksa Kehamilan Jadi Lebih Mudah</h1>
-        <p>Media informasi dan pendaftaran ANC online untuk ibu hamil di Makassar</p>
+        <h1 class="hero-title"><span class="hero-highlight">MACCA</span></h1>
+        <p class="hero-subtitle">Media ANC Cerdas, Cepat dan Akurat</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#daftar">
             <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -1148,10 +1271,11 @@
   <div id="adminModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="adminTitle">
     <div class="modal-card" id="adminCard">
       <h3 id="adminTitle">Login Admin</h3>
-      <div id="adminError" class="form-error hidden">Username atau password salah.</div>
+      <p id="adminHint" class="modal-hint"></p>
+      <div id="adminError" class="form-error hidden">Email atau password salah.</div>
       <div class="field">
-        <label for="adminUser">Username</label>
-        <input id="adminUser" type="text" autocomplete="username" />
+        <label for="adminUser">Email Admin</label>
+        <input id="adminUser" type="email" autocomplete="email" placeholder="admin@contoh.id" />
       </div>
       <div class="field">
         <label for="adminPass">Password</label>
@@ -1163,6 +1287,19 @@
       </div>
     </div>
   </div>
+
+  <div id="confirmModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <div class="modal-card">
+      <h3 id="confirmTitle">Hapus data?</h3>
+      <p id="confirmMessage" class="modal-hint">Data akan dihapus permanen.</p>
+      <div class="modal-actions">
+        <button id="confirmCancel" class="btn btn-ghost" type="button">Batal</button>
+        <button id="confirmDelete" class="btn btn-dark" type="button">Hapus</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
   <section id="adminDashboard" class="admin hidden">
     <header class="admin-header">
@@ -1249,10 +1386,15 @@
   <script>
     const SUPABASE_URL = "https://awedbawkfqwwabylffor.supabase.co";
     const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF3ZWRiYXdrZnF3d2FieWxmZm9yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg5ODU5NTcsImV4cCI6MjA5NDU2MTk1N30.JV514Vo1AS45PGb3A40RTDLB9AJ_LXKXFlLLf7VGgCc";
+    const SUPABASE_AUTH_URL = `${SUPABASE_URL}/auth/v1`;
 
-    const headers = {
+    const baseHeaders = {
       "Content-Type": "application/json",
-      apikey: SUPABASE_KEY,
+      apikey: SUPABASE_KEY
+    };
+
+    const publicHeaders = {
+      ...baseHeaders,
       Authorization: `Bearer ${SUPABASE_KEY}`
     };
 
@@ -1465,27 +1607,37 @@
       async function submitPendaftaran(data) {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/pendaftaran`, {
           method: "POST",
-          headers: { ...headers, Prefer: "return=minimal" },
+          headers: { ...publicHeaders, Prefer: "return=minimal" },
           body: JSON.stringify(data)
         });
         if (!res.ok) throw new Error("Gagal menyimpan data");
       }
 
       async function fetchData(trimesterFilter = "") {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
         let url = `${SUPABASE_URL}/rest/v1/pendaftaran?order=created_at.desc`;
         if (trimesterFilter) {
           url += `&trimester=eq.${encodeURIComponent(trimesterFilter)}`;
         }
-        const res = await fetch(url, { headers });
+        const res = await fetch(url, { headers: adminHeaders });
+        if (res.status === 401 || res.status === 403) {
+          throw new Error("Akses admin ditolak.");
+        }
         if (!res.ok) throw new Error("Gagal mengambil data");
         return await res.json();
       }
 
       async function hapusData(id) {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
         const res = await fetch(`${SUPABASE_URL}/rest/v1/pendaftaran?id=eq.${id}`, {
           method: "DELETE",
-          headers
+          headers: adminHeaders
         });
+        if (res.status === 401 || res.status === 403) {
+          throw new Error("Akses admin ditolak.");
+        }
         if (!res.ok) throw new Error("Gagal menghapus data");
       }
 
@@ -1552,11 +1704,13 @@
       const footerMacca = document.getElementById("footerMacca");
       const adminModal = document.getElementById("adminModal");
       const adminCard = document.getElementById("adminCard");
+      const adminTitle = document.getElementById("adminTitle");
       const adminUser = document.getElementById("adminUser");
       const adminPass = document.getElementById("adminPass");
       const adminLogin = document.getElementById("adminLogin");
       const adminCancel = document.getElementById("adminCancel");
       const adminError = document.getElementById("adminError");
+      const adminHint = document.getElementById("adminHint");
       const adminDashboard = document.getElementById("adminDashboard");
       const adminLogout = document.getElementById("adminLogout");
       const adminSearch = document.getElementById("adminSearch");
@@ -1570,9 +1724,14 @@
       const pageInfo = document.getElementById("pageInfo");
       const main = document.getElementById("main");
       const footer = document.getElementById("footer");
-
-      const ADMIN_USER = "admin";
-      const ADMIN_PASS = "pkmjongaya2025";
+      const confirmModal = document.getElementById("confirmModal");
+      const confirmMessage = document.getElementById("confirmMessage");
+      const confirmDelete = document.getElementById("confirmDelete");
+      const confirmCancel = document.getElementById("confirmCancel");
+      const toastWrap = document.getElementById("toastWrap");
+      const ADMIN_SESSION_KEY = "macca_admin_session_v1";
+      const ADMIN_REFRESH_BUFFER = 60000;
+      let confirmResolve = null;
 
       const state = {
         data: [],
@@ -1583,7 +1742,158 @@
 
       let footerClicks = 0;
 
+      function showToast(type, message) {
+        if (!toastWrap) return;
+        const safeType = ["success", "danger", "info"].includes(type) ? type : "info";
+        const toast = document.createElement("div");
+        toast.className = `toast toast--${safeType}`;
+        toast.innerHTML = `
+          <span class="toast-dot" aria-hidden="true"></span>
+          <span class="toast-text">${message}</span>
+        `;
+        toastWrap.appendChild(toast);
+        setTimeout(() => toast.classList.add("toast--hide"), 2600);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      function openConfirm(message) {
+        if (!confirmModal || !confirmMessage) return Promise.resolve(false);
+        confirmMessage.textContent = message;
+        confirmModal.classList.remove("hidden");
+        confirmModal.setAttribute("aria-hidden", "false");
+        return new Promise((resolve) => {
+          confirmResolve = resolve;
+        });
+      }
+
+      function closeConfirm(result) {
+        if (!confirmModal) return;
+        confirmModal.classList.add("hidden");
+        confirmModal.setAttribute("aria-hidden", "true");
+        if (confirmResolve) {
+          confirmResolve(result);
+          confirmResolve = null;
+        }
+      }
+
+      if (confirmCancel) {
+        confirmCancel.addEventListener("click", () => closeConfirm(false));
+      }
+
+      if (confirmDelete) {
+        confirmDelete.addEventListener("click", () => closeConfirm(true));
+      }
+
+      if (confirmModal) {
+        confirmModal.addEventListener("click", (event) => {
+          if (event.target === confirmModal) closeConfirm(false);
+        });
+      }
+
+      function getAdminSession() {
+        try {
+          const raw = localStorage.getItem(ADMIN_SESSION_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function saveAdminSession(data) {
+        const payload = {
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+          expires_at: Date.now() + data.expires_in * 1000
+        };
+        localStorage.setItem(ADMIN_SESSION_KEY, JSON.stringify(payload));
+        return payload;
+      }
+
+      function clearAdminSession() {
+        localStorage.removeItem(ADMIN_SESSION_KEY);
+      }
+
+      async function refreshAdminSession(session) {
+        if (!session || !session.refresh_token) return null;
+        try {
+          const res = await fetch(`${SUPABASE_AUTH_URL}/token?grant_type=refresh_token`, {
+            method: "POST",
+            headers: baseHeaders,
+            body: JSON.stringify({ refresh_token: session.refresh_token })
+          });
+          if (!res.ok) {
+            clearAdminSession();
+            return null;
+          }
+          const data = await res.json();
+          return saveAdminSession(data);
+        } catch (err) {
+          clearAdminSession();
+          return null;
+        }
+      }
+
+      async function getAdminToken() {
+        let session = getAdminSession();
+        if (!session) return null;
+        if (Date.now() >= session.expires_at - ADMIN_REFRESH_BUFFER) {
+          session = await refreshAdminSession(session);
+        }
+        return session ? session.access_token : null;
+      }
+
+      async function getAdminHeaders() {
+        const token = await getAdminToken();
+        if (!token) return null;
+        return {
+          ...baseHeaders,
+          Authorization: `Bearer ${token}`
+        };
+      }
+
+      async function signInAdmin(email, password) {
+        const res = await fetch(`${SUPABASE_AUTH_URL}/token?grant_type=password`, {
+          method: "POST",
+          headers: baseHeaders,
+          body: JSON.stringify({ email, password })
+        });
+        if (!res.ok) {
+          let errorMessage = "Login admin gagal.";
+          try {
+            const data = await res.json();
+            errorMessage = data.error_description || data.error || errorMessage;
+          } catch (err) {
+            // Keep fallback error message.
+          }
+          throw new Error(errorMessage);
+        }
+        const data = await res.json();
+        saveAdminSession(data);
+        return data;
+      }
+
+      async function signOutAdmin() {
+        const token = await getAdminToken();
+        clearAdminSession();
+        if (!token) return;
+        try {
+          await fetch(`${SUPABASE_AUTH_URL}/logout`, {
+            method: "POST",
+            headers: {
+              ...baseHeaders,
+              Authorization: `Bearer ${token}`
+            }
+          });
+        } catch (err) {
+          // Ignore network errors on logout.
+        }
+      }
+
       function openAdminModal() {
+        adminTitle.textContent = "Login Admin";
+        adminHint.textContent = "Gunakan email dan password admin yang terdaftar.";
+        adminLogin.textContent = "Login";
+        adminError.classList.add("hidden");
         adminModal.classList.remove("hidden");
         adminModal.setAttribute("aria-hidden", "false");
       }
@@ -1691,6 +2001,16 @@
         } catch (err) {
           adminMessage.textContent = err.message;
           adminMessage.classList.remove("hidden");
+          if (err.message && err.message.includes("Sesi admin")) {
+            showToast("danger", "Sesi admin habis. Silakan login ulang.");
+            hideAdmin();
+            openAdminModal();
+          }
+          if (err.message && err.message.includes("Akses admin")) {
+            showToast("danger", "Akses admin ditolak.");
+            hideAdmin();
+            openAdminModal();
+          }
         }
       }
 
@@ -1707,20 +2027,35 @@
         if (event.target === adminModal) closeAdminModal();
       });
 
-      adminLogin.addEventListener("click", () => {
-        if (adminUser.value === ADMIN_USER && adminPass.value === ADMIN_PASS) {
+      adminLogin.addEventListener("click", async () => {
+        const email = adminUser.value.trim();
+        const password = adminPass.value;
+        adminError.classList.add("hidden");
+
+        if (!email || !password) {
+          adminError.textContent = "Email dan password wajib diisi.";
+          adminError.classList.remove("hidden");
+          return;
+        }
+
+        try {
+          await signInAdmin(email, password);
           closeAdminModal();
           showAdmin();
-          loadAdminData();
-        } else {
+          await loadAdminData();
+          showToast("success", "Login admin berhasil.");
+        } catch (err) {
+          adminError.textContent = err.message || "Email atau password salah.";
           adminError.classList.remove("hidden");
           adminCard.classList.add("shake");
           setTimeout(() => adminCard.classList.remove("shake"), 300);
         }
       });
 
-      adminLogout.addEventListener("click", () => {
+      adminLogout.addEventListener("click", async () => {
+        await signOutAdmin();
         hideAdmin();
+        showToast("info", "Logout admin.");
       });
 
       adminSearch.addEventListener("input", applyFilters);
@@ -1751,15 +2086,22 @@
         const btn = event.target.closest(".delete-btn");
         if (!btn) return;
         const id = btn.getAttribute("data-id");
-        const confirmDelete = confirm("Hapus data ini?");
-        if (!confirmDelete) return;
+        const confirmed = await openConfirm("Hapus data ini?");
+        if (!confirmed) return;
 
         try {
           await hapusData(id);
           await loadAdminData();
+          showToast("success", "Data berhasil dihapus.");
         } catch (err) {
-          adminMessage.textContent = err.message;
+          const message = err.message || "Gagal menghapus data.";
+          adminMessage.textContent = message;
           adminMessage.classList.remove("hidden");
+          showToast("danger", message);
+          if (message.includes("Sesi admin") || message.includes("Akses admin")) {
+            hideAdmin();
+            openAdminModal();
+          }
         }
       });
 
