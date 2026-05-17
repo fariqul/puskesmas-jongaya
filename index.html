@@ -1149,7 +1149,72 @@
       runCarouselTests();
     }
 
+    function getNextIndex(current, total) {
+      if (total <= 0) return 0;
+      return (current + 1) % total;
+    }
+
+    function shouldReduceMotion(mql = window.matchMedia("(prefers-reduced-motion: reduce)")) {
+      return !!(mql && mql.matches);
+    }
+
+    function setSlideBackground(el, url) {
+      el.style.backgroundImage = `url("${url}")`;
+    }
+
+    function preloadImage(url) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => resolve(url);
+        img.onerror = () => reject(new Error("Image failed to load"));
+        img.src = url;
+      });
+    }
+
+    function initHeroCarousel() {
+      const media = document.querySelector(".hero-media");
+      if (!media) return;
+
+      const slideA = media.querySelector(".slide-a");
+      const slideB = media.querySelector(".slide-b");
+      if (!slideA || !slideB) return;
+
+      const images = [
+        "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1200&q=75&fit=crop",
+        "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=1200&q=75&fit=crop",
+        "https://images.unsplash.com/photo-1579154203451-0c1f5a8f0e5f?w=1200&q=75&fit=crop",
+        "https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=1200&q=75&fit=crop",
+        "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=1200&q=75&fit=crop"
+      ];
+
+      let activeIndex = 0;
+      let isAActive = true;
+
+      setSlideBackground(slideA, images[0]);
+      slideA.classList.add("is-active");
+
+      if (shouldReduceMotion()) return;
+
+      setInterval(async () => {
+        const nextIndex = getNextIndex(activeIndex, images.length);
+        const nextSlide = isAActive ? slideB : slideA;
+        const currentSlide = isAActive ? slideA : slideB;
+
+        try {
+          await preloadImage(images[nextIndex]);
+          setSlideBackground(nextSlide, images[nextIndex]);
+          nextSlide.classList.add("is-active");
+          currentSlide.classList.remove("is-active");
+          isAActive = !isAActive;
+          activeIndex = nextIndex;
+        } catch (err) {
+          // Skip swap on load error; keep current slide visible.
+        }
+      }, 6000);
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      initHeroCarousel();
       const menuBtn = document.getElementById("menuBtn");
       const bottomSheet = document.getElementById("bottomSheet");
       const sheetBackdrop = document.getElementById("sheetBackdrop");
