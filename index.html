@@ -1501,6 +1501,11 @@
                 <label for="formHeroImages">Gambar Carousel (1 URL per baris)</label>
                 <textarea id="formHeroImages" rows="4"></textarea>
               </div>
+              <div class="field">
+                <label for="formHeroFiles">Upload Gambar Lokal</label>
+                <input id="formHeroFiles" type="file" accept="image/*" multiple />
+                <small class="form-note">File lokal akan disimpan sebagai data URL di konten.</small>
+              </div>
             </div>
           </div>
 
@@ -1524,6 +1529,7 @@
               <h4>Kartu Edukasi 1</h4>
               <div class="content-grid">
                 <div class="field"><label for="formEduImage0">URL Gambar</label><input id="formEduImage0" type="text" /></div>
+                <div class="field"><label for="formEduFile0">Upload Gambar Lokal</label><input id="formEduFile0" type="file" accept="image/*" /></div>
                 <div class="field"><label for="formEduAlt0">Alt Gambar</label><input id="formEduAlt0" type="text" /></div>
                 <div class="field"><label for="formEduBadge0">Badge</label><input id="formEduBadge0" type="text" /></div>
                 <div class="field"><label for="formEduTitle0">Judul</label><input id="formEduTitle0" type="text" /></div>
@@ -1537,6 +1543,7 @@
               <h4>Kartu Edukasi 2</h4>
               <div class="content-grid">
                 <div class="field"><label for="formEduImage1">URL Gambar</label><input id="formEduImage1" type="text" /></div>
+                <div class="field"><label for="formEduFile1">Upload Gambar Lokal</label><input id="formEduFile1" type="file" accept="image/*" /></div>
                 <div class="field"><label for="formEduAlt1">Alt Gambar</label><input id="formEduAlt1" type="text" /></div>
                 <div class="field"><label for="formEduBadge1">Badge</label><input id="formEduBadge1" type="text" /></div>
                 <div class="field"><label for="formEduTitle1">Judul</label><input id="formEduTitle1" type="text" /></div>
@@ -1550,6 +1557,7 @@
               <h4>Kartu Edukasi 3</h4>
               <div class="content-grid">
                 <div class="field"><label for="formEduImage2">URL Gambar</label><input id="formEduImage2" type="text" /></div>
+                <div class="field"><label for="formEduFile2">Upload Gambar Lokal</label><input id="formEduFile2" type="file" accept="image/*" /></div>
                 <div class="field"><label for="formEduAlt2">Alt Gambar</label><input id="formEduAlt2" type="text" /></div>
                 <div class="field"><label for="formEduBadge2">Badge</label><input id="formEduBadge2" type="text" /></div>
                 <div class="field"><label for="formEduTitle2">Judul</label><input id="formEduTitle2" type="text" /></div>
@@ -1563,6 +1571,7 @@
               <h4>Kartu Edukasi 4</h4>
               <div class="content-grid">
                 <div class="field"><label for="formEduImage3">URL Gambar</label><input id="formEduImage3" type="text" /></div>
+                <div class="field"><label for="formEduFile3">Upload Gambar Lokal</label><input id="formEduFile3" type="file" accept="image/*" /></div>
                 <div class="field"><label for="formEduAlt3">Alt Gambar</label><input id="formEduAlt3" type="text" /></div>
                 <div class="field"><label for="formEduBadge3">Badge</label><input id="formEduBadge3" type="text" /></div>
                 <div class="field"><label for="formEduTitle3">Judul</label><input id="formEduTitle3" type="text" /></div>
@@ -2006,6 +2015,15 @@
         .split(/\r?\n/)
         .map((line) => line.trim())
         .filter(Boolean);
+    }
+
+    function readFileAsDataUrl(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error("Gagal membaca file."));
+        reader.readAsDataURL(file);
+      });
     }
 
     function buildEduCard(index) {
@@ -2459,6 +2477,10 @@
       const contentReset = document.getElementById("contentReset");
       const contentPreview = document.getElementById("contentPreview");
       const contentSave = document.getElementById("contentSave");
+      const heroFiles = document.getElementById("formHeroFiles");
+      const eduFileInputs = [0, 1, 2, 3].map((index) =>
+        document.getElementById(`formEduFile${index}`)
+      );
       const ADMIN_SESSION_KEY = "macca_admin_session_v1";
       const ADMIN_REFRESH_BUFFER = 60000;
       let confirmResolve = null;
@@ -2950,6 +2972,39 @@
           } catch (err) {
             showToast("danger", err.message || "Gagal menyimpan konten.");
           }
+        });
+      }
+
+      if (heroFiles) {
+        heroFiles.addEventListener("change", async (event) => {
+          const files = Array.from(event.target.files || []);
+          if (!files.length) return;
+          try {
+            const urls = await Promise.all(files.map(readFileAsDataUrl));
+            setFormValue("formHeroImages", urls.join("\n"));
+            syncContentEditor(buildContentFromForm());
+            showToast("info", "Gambar hero lokal dimuat.");
+          } catch (err) {
+            showToast("danger", err.message || "Gagal memuat gambar hero.");
+          }
+        });
+      }
+
+      if (eduFileInputs.length) {
+        eduFileInputs.forEach((input, index) => {
+          if (!input) return;
+          input.addEventListener("change", async (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            try {
+              const url = await readFileAsDataUrl(file);
+              setFormValue(`formEduImage${index}`, url);
+              syncContentEditor(buildContentFromForm());
+              showToast("info", `Gambar edukasi ${index + 1} dimuat.`);
+            } catch (err) {
+              showToast("danger", err.message || "Gagal memuat gambar edukasi.");
+            }
+          });
         });
       }
 
