@@ -2187,7 +2187,7 @@
     }
 
     async function saveSiteContent(content) {
-      const adminHeaders = await getAdminHeaders();
+      const adminHeaders = window.getAdminHeaders ? await window.getAdminHeaders() : null;
       if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
       const res = await fetch(`${SUPABASE_URL}/rest/v1/site_content?on_conflict=id`, {
         method: "POST",
@@ -2671,6 +2671,8 @@
           Authorization: `Bearer ${token}`
         };
       }
+
+      window.getAdminHeaders = getAdminHeaders;
 
       async function signInAdmin(email, password) {
         const res = await fetch(`${SUPABASE_AUTH_URL}/token?grant_type=password`, {
