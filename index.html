@@ -177,6 +177,22 @@
       gap: 8px;
     }
 
+    .admin-role {
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    .admin-role.is-super {
+      background: rgba(242, 167, 160, 0.25);
+      border-color: rgba(242, 167, 160, 0.6);
+    }
+
     .fade-up {
       opacity: 0;
       transform: translateY(20px);
@@ -1403,6 +1419,7 @@
           <path d="M12 8v8M8 12h8"></path>
         </svg>
         <span>Admin MACCA - PKM Jongaya</span>
+        <span id="adminRole" class="admin-role">Admin</span>
       </div>
       <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
     </header>
@@ -2416,6 +2433,7 @@
       const adminHint = document.getElementById("adminHint");
       const adminDashboard = document.getElementById("adminDashboard");
       const adminLogout = document.getElementById("adminLogout");
+      const adminRole = document.getElementById("adminRole");
       const adminSearch = document.getElementById("adminSearch");
       const adminFilter = document.getElementById("adminFilter");
       const exportBtn = document.getElementById("exportBtn");
@@ -2475,6 +2493,12 @@
         superAdminPanel.classList.toggle("hidden", !show);
       }
 
+      function updateAdminRoleBadge(isSuper) {
+        if (!adminRole) return;
+        adminRole.textContent = isSuper ? "Super Admin" : "Admin";
+        adminRole.classList.toggle("is-super", !!isSuper);
+      }
+
       function setEditorMode(mode) {
         editorMode = mode === "json" ? "json" : "form";
         if (contentForm) {
@@ -2496,11 +2520,31 @@
         contentEditor.value = JSON.stringify(content, null, 2);
       }
 
+      async function getAuthUser() {
+        const token = await getAdminToken();
+        if (!token) return null;
+        try {
+          const res = await fetch(`${SUPABASE_AUTH_URL}/user`, {
+            headers: {
+              ...baseHeaders,
+              Authorization: `Bearer ${token}`
+            }
+          });
+          if (!res.ok) return null;
+          const data = await res.json();
+          return data.user || data;
+        } catch (err) {
+          return null;
+        }
+      }
+
       async function checkSuperAdmin() {
         const adminHeaders = await getAdminHeaders();
         if (!adminHeaders) return false;
+        const user = await getAuthUser();
+        if (!user || !user.id) return false;
         try {
-          const res = await fetch(`${SUPABASE_URL}/rest/v1/super_admin_users?select=user_id&limit=1`, {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/super_admin_users?select=user_id&user_id=eq.${user.id}&limit=1`, {
             headers: adminHeaders
           });
           if (!res.ok) return false;
@@ -2800,6 +2844,7 @@
           await loadAdminData();
           state.isSuperAdmin = await checkSuperAdmin();
           toggleSuperAdminPanel(state.isSuperAdmin);
+          updateAdminRoleBadge(state.isSuperAdmin);
           if (state.isSuperAdmin) {
             setEditorMode("form");
             syncContentForm(siteContent);
@@ -2818,6 +2863,7 @@
         await signOutAdmin();
         state.isSuperAdmin = false;
         toggleSuperAdminPanel(false);
+        updateAdminRoleBadge(false);
         hideAdmin();
         showToast("info", "Logout admin.");
       });
