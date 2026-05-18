@@ -711,6 +711,89 @@
       margin-top: 16px;
     }
 
+    .super-admin {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      display: grid;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .super-admin-head h3 {
+      margin: 0;
+      font-size: var(--fs-md);
+    }
+
+    .editor-toggle {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .editor-toggle .btn {
+      min-height: 40px;
+    }
+
+    .editor-toggle .btn.is-active {
+      background: var(--sage);
+      color: #fff;
+    }
+
+    .content-form {
+      display: grid;
+      gap: 14px;
+    }
+
+    .content-section {
+      background: #FAFAFA;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .content-section h4 {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .content-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .content-editor {
+      width: 100%;
+      min-height: 240px;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.5;
+      background: #FAFAFA;
+      color: var(--text-dark);
+    }
+
+    .content-editor:focus {
+      border-color: var(--sage);
+      outline: none;
+      background: #fff;
+    }
+
+    .super-admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
     .modal-hint {
       margin: 6px 0 0;
       color: var(--text-muted);
@@ -807,6 +890,17 @@
       .toast-wrap {
         left: 16px;
         right: 16px;
+      }
+
+      .super-admin-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .content-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -930,17 +1024,17 @@
           <img class="brand-logo--puskesmas" src="puskesmas-logo-png_seeklogo-359624.png" alt="Logo Puskesmas" />
           <img src="Coat_of_Arms_of_City_Makassar.png" alt="Logo Kota Makassar" />
         </span>
-        <span class="brand-title">Puskesmas Jongaya</span>
+        <span id="navBrandTitle" class="brand-title">Puskesmas Jongaya</span>
       </a>
       <button class="hamburger" id="menuBtn" type="button" aria-controls="bottomSheet" aria-expanded="false">
         <span class="hamburger-icon">&#8801;</span>
       </button>
       <nav class="nav-links" aria-label="Navigasi utama">
-        <a href="#beranda">Beranda</a>
-        <a href="#edukasi">Edukasi ANC</a>
-        <a href="#daftar">Daftar Periksa</a>
-        <a href="#lokasi">Lokasi</a>
-        <a class="btn btn-primary nav-cta" href="#daftar">Daftar Sekarang</a>
+        <a href="#beranda" data-nav="beranda">Beranda</a>
+        <a href="#edukasi" data-nav="edukasi">Edukasi ANC</a>
+        <a href="#daftar" data-nav="daftar">Daftar Periksa</a>
+        <a href="#lokasi" data-nav="lokasi">Lokasi</a>
+        <a class="btn btn-primary nav-cta" href="#daftar"><span id="navCtaText">Daftar Sekarang</span></a>
       </nav>
     </div>
   </header>
@@ -958,17 +1052,17 @@
             <circle cx="12" cy="12" r="9"></circle>
             <path d="M12 8v8M8 12h8"></path>
           </svg>
-          <span>Puskesmas Jongaya &#183; Makassar</span>
+          <span id="heroBadgeText">Puskesmas Jongaya &#183; Makassar</span>
         </div>
-        <h1 class="hero-title"><span class="hero-highlight">MACCA</span></h1>
-        <p class="hero-subtitle">Media ANC Cerdas, Cepat dan Akurat</p>
+        <h1 class="hero-title"><span id="heroTitleText" class="hero-highlight">MACCA</span></h1>
+        <p id="heroSubtitle" class="hero-subtitle">Media ANC Cerdas, Cepat dan Akurat</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#daftar">
             <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <rect x="3" y="5" width="18" height="16" rx="2"></rect>
               <path d="M8 3v4M16 3v4M3 9h18"></path>
             </svg>
-            Daftar Periksa
+            <span id="heroPrimaryText">Daftar Periksa</span>
           </a>
           <a class="btn btn-outline" href="#edukasi">
             <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -976,7 +1070,7 @@
               <circle cx="12" cy="7" r="1"></circle>
               <path d="M12 11v6"></path>
             </svg>
-            Info ANC
+            <span id="heroSecondaryText">Info ANC</span>
           </a>
         </div>
       </div>
@@ -985,125 +1079,125 @@
     <section id="edukasi" class="section fade-up">
       <div class="container">
         <div class="section-head">
-          <div class="label">INFO PENTING</div>
-          <h2>Yang Perlu Ibu Tahu Soal ANC</h2>
-          <p>Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
+          <div id="edukasiLabel" class="label">INFO PENTING</div>
+          <h2 id="edukasiTitle">Yang Perlu Ibu Tahu Soal ANC</h2>
+          <p id="edukasiSubtitle">Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
         </div>
 
         <div class="cards">
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=75" alt="Pemeriksaan kehamilan" loading="lazy" />
+          <article class="card" data-edu-card="0">
+            <img data-edu-image src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=75" alt="Pemeriksaan kehamilan" loading="lazy" />
             <div class="card-body">
-              <span class="badge badge-sage">TRIMESTER 1-2-3</span>
-              <h3>Periksa Minimal 8 Kali Selama Hamil</h3>
+              <span class="badge badge-sage" data-edu-badge>TRIMESTER 1-2-3</span>
+              <h3 data-edu-title>Periksa Minimal 8 Kali Selama Hamil</h3>
               <ul class="card-points">
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>1x Trimester 1 - USG skrining awal</span>
+                  <span data-edu-point="0">1x Trimester 1 - USG skrining awal</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>2x Trimester 2 - Pantau detak jantung bayi</span>
+                  <span data-edu-point="1">2x Trimester 2 - Pantau detak jantung bayi</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>5x Trimester 3 - Persiapan menjelang lahiran</span>
+                  <span data-edu-point="2">5x Trimester 3 - Persiapan menjelang lahiran</span>
                 </li>
               </ul>
-              <p class="card-note"><em>Tabe' Ibu, ini aturan baru Kemenkes ya!</em></p>
+              <p class="card-note" data-edu-note><em>Tabe' Ibu, ini aturan baru Kemenkes ya!</em></p>
             </div>
           </article>
 
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=600&q=75" alt="Tablet tambah darah" loading="lazy" />
+          <article class="card" data-edu-card="1">
+            <img data-edu-image src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=600&q=75" alt="Tablet tambah darah" loading="lazy" />
             <div class="card-body">
-              <span class="badge badge-blush">NUTRISI</span>
-              <h3>Jangan Stop Minum Tablet Tambah Darah!</h3>
+              <span class="badge badge-blush" data-edu-badge>NUTRISI</span>
+              <h3 data-edu-title>Jangan Stop Minum Tablet Tambah Darah!</h3>
               <ul class="card-points">
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>90 butir wajib habis selama hamil</span>
+                  <span data-edu-point="0">90 butir wajib habis selama hamil</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Cegah anemia saat persalinan</span>
+                  <span data-edu-point="1">Cegah anemia saat persalinan</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Lindungi bayi dari stunting</span>
+                  <span data-edu-point="2">Lindungi bayi dari stunting</span>
                 </li>
               </ul>
-              <p class="card-note"><em>Minum rutin, jangan bolong-bolong nah!</em></p>
+              <p class="card-note" data-edu-note><em>Minum rutin, jangan bolong-bolong nah!</em></p>
             </div>
           </article>
 
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=75" alt="Pemeriksaan trimester 3" loading="lazy" />
+          <article class="card" data-edu-card="2">
+            <img data-edu-image src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=75" alt="Pemeriksaan trimester 3" loading="lazy" />
             <div class="card-body">
-              <span class="badge badge-dark">TRIMESTER 3</span>
-              <h3>Trimester 3: Masa Paling Kritis!</h3>
+              <span class="badge badge-dark" data-edu-badge>TRIMESTER 3</span>
+              <h3 data-edu-title>Trimester 3: Masa Paling Kritis!</h3>
               <ul class="card-points">
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Posisi bayi - sungsang atau sudah masuk panggul?</span>
+                  <span data-edu-point="0">Posisi bayi - sungsang atau sudah masuk panggul?</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Air ketuban - masih jernih atau keruh?</span>
+                  <span data-edu-point="1">Air ketuban - masih jernih atau keruh?</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Tekanan darah - waspada preeklampsia!</span>
+                  <span data-edu-point="2">Tekanan darah - waspada preeklampsia!</span>
                 </li>
               </ul>
-              <p class="card-note"><em>Jangan malas periksa ya, ini masa yang paling penting!</em></p>
+              <p class="card-note" data-edu-note><em>Jangan malas periksa ya, ini masa yang paling penting!</em></p>
             </div>
           </article>
 
-          <article class="card">
-            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75" alt="Dukungan suami" loading="lazy" />
+          <article class="card" data-edu-card="3">
+            <img data-edu-image src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75" alt="Dukungan suami" loading="lazy" />
             <div class="card-body">
-              <span class="badge badge-warm">UNTUK SUAMI</span>
-              <h3>Suami Siap ANTAR JAGA</h3>
+              <span class="badge badge-warm" data-edu-badge>UNTUK SUAMI</span>
+              <h3 data-edu-title>Suami Siap ANTAR JAGA</h3>
               <ul class="card-points">
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Antar - temani istri setiap kontrol dan USG</span>
+                  <span data-edu-point="0">Antar - temani istri setiap kontrol dan USG</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Jaga - jaga kondisi mental, jangan buat stres</span>
+                  <span data-edu-point="1">Jaga - jaga kondisi mental, jangan buat stres</span>
                 </li>
                 <li>
                   <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                     <circle cx="12" cy="12" r="3"></circle>
                   </svg>
-                  <span>Siap - hafal tanggal HPL istri</span>
+                  <span data-edu-point="2">Siap - hafal tanggal HPL istri</span>
                 </li>
               </ul>
-              <p class="card-note"><em>Janganki' biarkan istri berjuang sendiri, kodong!</em></p>
+              <p class="card-note" data-edu-note><em>Janganki' biarkan istri berjuang sendiri, kodong!</em></p>
             </div>
           </article>
         </div>
@@ -1113,9 +1207,9 @@
     <section id="daftar" class="section section-sage fade-up">
       <div class="container">
         <div class="section-head">
-          <div class="label">DAFTAR ONLINE</div>
-          <h2>Pesan Jadwal Periksa Sekarang</h2>
-          <p>Gratis, mudah, dan tim kami akan hubungi Ibu untuk konfirmasi jadwal</p>
+          <div id="daftarLabel" class="label">DAFTAR ONLINE</div>
+          <h2 id="daftarTitle">Pesan Jadwal Periksa Sekarang</h2>
+          <p id="daftarSubtitle">Gratis, mudah, dan tim kami akan hubungi Ibu untuk konfirmasi jadwal</p>
         </div>
 
         <div class="form-card">
@@ -1185,9 +1279,9 @@
     <section id="lokasi" class="section fade-up">
       <div class="container">
         <div class="section-head">
-          <div class="label">LOKASI</div>
-          <h2>Puskesmas Jongaya</h2>
-          <p>Datang sesuai jadwal agar pelayanan lebih cepat</p>
+          <div id="lokasiLabel" class="label">LOKASI</div>
+          <h2 id="lokasiTitle">Puskesmas Jongaya</h2>
+          <p id="lokasiSubtitle">Datang sesuai jadwal agar pelayanan lebih cepat</p>
         </div>
 
         <div class="location-wrap">
@@ -1208,30 +1302,30 @@
                   <path d="M12 21s6-6.5 6-11a6 6 0 10-12 0c0 4.5 6 11 6 11z"></path>
                   <circle cx="12" cy="10" r="2.5"></circle>
                 </svg>
-                <span>Jl. Andi Tonro No.49, Pa'baeng-Baeng</span>
+                <span id="lokasiAddress1">Jl. Andi Tonro No.49, Pa'baeng-Baeng</span>
               </strong>
-              <br />Kec. Tamalate, Kota Makassar 90223
+              <br /><span id="lokasiAddress2">Kec. Tamalate, Kota Makassar 90223</span>
             </div>
             <div>
               <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="9"></circle>
                 <path d="M12 7v5l3 2"></path>
               </svg>
-              <span>Senin - Jumat: 08.00 - 14.00 WITA</span>
+              <span id="lokasiHours">Senin - Jumat: 08.00 - 14.00 WITA</span>
             </div>
             <div>
               <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <circle cx="12" cy="12" r="9"></circle>
                 <path d="M12 8v8M8 12h8"></path>
               </svg>
-              <span>Layanan ANC tersedia setiap hari kerja</span>
+              <span id="lokasiService">Layanan ANC tersedia setiap hari kerja</span>
             </div>
             <a class="btn btn-primary" href="https://maps.google.com/?q=-5.172023,119.42496" target="_blank" rel="noopener">
               <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                 <path d="M12 21s6-6.5 6-11a6 6 0 10-12 0c0 4.5 6 11 6 11z"></path>
                 <circle cx="12" cy="10" r="2.5"></circle>
               </svg>
-              Buka di Google Maps
+              <span id="lokasiCtaText">Buka di Google Maps</span>
             </a>
           </div>
         </div>
@@ -1242,14 +1336,14 @@
   <footer id="footer" class="footer">
     <div class="container footer-grid">
       <div class="footer-title">
-        <button id="footerMacca" class="footer-macca" type="button">MACCA</button> - Media ANC Cerdas, Cepat dan Akurat
+        <button id="footerMacca" class="footer-macca" type="button">MACCA</button> - <span id="footerTagline">Media ANC Cerdas, Cepat dan Akurat</span>
       </div>
-      <div>Puskesmas Jongaya &#183; Makassar</div>
-      <div class="muted">Mini Project MPPD FK UMI</div>
-      <div class="muted">Stase Puskesmas Jongaya | 22 Des 2025 - 31 Jan 2026</div>
-      <div class="muted">Tim: Moh. Fadel Zamzami &#183; Andi Saswin Pamesangi &#183; Andi Farel Afriawan &#183; Nur Amelia Fitri R. Yusri</div>
-      <div class="muted">Pembimbing: dr. Sophia Qadarsih, M.Biomed &#183; dr. Andi Nurul Fadilah Iskandar</div>
-      <div class="muted">&copy; 2025 Puskesmas Jongaya</div>
+      <div id="footerLocation">Puskesmas Jongaya &#183; Makassar</div>
+      <div id="footerProject" class="muted">Mini Project MPPD FK UMI</div>
+      <div id="footerPeriod" class="muted">Stase Puskesmas Jongaya | 22 Des 2025 - 31 Jan 2026</div>
+      <div id="footerTeam" class="muted">Tim: Moh. Fadel Zamzami &#183; Andi Saswin Pamesangi &#183; Andi Farel Afriawan &#183; Nur Amelia Fitri R. Yusri</div>
+      <div id="footerSupervisors" class="muted">Pembimbing: dr. Sophia Qadarsih, M.Biomed &#183; dr. Andi Nurul Fadilah Iskandar</div>
+      <div id="footerCopyright" class="muted">&copy; 2025 Puskesmas Jongaya</div>
     </div>
   </footer>
 
@@ -1261,10 +1355,10 @@
       <button class="sheet-close" id="sheetClose" type="button">Tutup</button>
     </div>
     <nav class="sheet-links" aria-label="Menu mobile">
-      <a class="sheet-link" href="#beranda">Beranda</a>
-      <a class="sheet-link" href="#edukasi">Edukasi ANC</a>
-      <a class="sheet-link" href="#daftar">Daftar Periksa</a>
-      <a class="sheet-link" href="#lokasi">Lokasi</a>
+      <a class="sheet-link" href="#beranda" data-nav="beranda">Beranda</a>
+      <a class="sheet-link" href="#edukasi" data-nav="edukasi">Edukasi ANC</a>
+      <a class="sheet-link" href="#daftar" data-nav="daftar">Daftar Periksa</a>
+      <a class="sheet-link" href="#lokasi" data-nav="lokasi">Lokasi</a>
     </nav>
   </div>
 
@@ -1313,6 +1407,201 @@
       <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
     </header>
     <div class="admin-body">
+      <div id="superAdminPanel" class="super-admin hidden">
+        <div class="super-admin-head">
+          <h3>Konten Halaman Utama</h3>
+          <p class="muted">Hanya super admin yang bisa mengubah seluruh konten.</p>
+        </div>
+        <div class="editor-toggle">
+          <button id="editorModeForm" class="btn btn-ghost is-active" type="button">Mode Form</button>
+          <button id="editorModeJson" class="btn btn-ghost" type="button">Mode JSON</button>
+        </div>
+        <div id="contentForm" class="content-form">
+          <div class="content-section">
+            <h4>Meta</h4>
+            <div class="content-grid">
+              <div class="field">
+                <label for="formMetaTitle">Judul Tab</label>
+                <input id="formMetaTitle" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Navbar</h4>
+            <div class="content-grid">
+              <div class="field">
+                <label for="formNavBrand">Nama Brand</label>
+                <input id="formNavBrand" type="text" />
+              </div>
+              <div class="field">
+                <label for="formNavBeranda">Menu Beranda</label>
+                <input id="formNavBeranda" type="text" />
+              </div>
+              <div class="field">
+                <label for="formNavEdukasi">Menu Edukasi</label>
+                <input id="formNavEdukasi" type="text" />
+              </div>
+              <div class="field">
+                <label for="formNavDaftar">Menu Daftar</label>
+                <input id="formNavDaftar" type="text" />
+              </div>
+              <div class="field">
+                <label for="formNavLokasi">Menu Lokasi</label>
+                <input id="formNavLokasi" type="text" />
+              </div>
+              <div class="field">
+                <label for="formNavCta">Teks Tombol CTA</label>
+                <input id="formNavCta" type="text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Hero</h4>
+            <div class="content-grid">
+              <div class="field">
+                <label for="formHeroBadge">Badge</label>
+                <input id="formHeroBadge" type="text" />
+              </div>
+              <div class="field">
+                <label for="formHeroTitle">Judul</label>
+                <input id="formHeroTitle" type="text" />
+              </div>
+              <div class="field">
+                <label for="formHeroSubtitle">Subjudul</label>
+                <input id="formHeroSubtitle" type="text" />
+              </div>
+              <div class="field">
+                <label for="formHeroPrimary">Teks CTA Utama</label>
+                <input id="formHeroPrimary" type="text" />
+              </div>
+              <div class="field">
+                <label for="formHeroSecondary">Teks CTA Sekunder</label>
+                <input id="formHeroSecondary" type="text" />
+              </div>
+              <div class="field">
+                <label for="formHeroImages">Gambar Carousel (1 URL per baris)</label>
+                <textarea id="formHeroImages" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Edukasi</h4>
+            <div class="content-grid">
+              <div class="field">
+                <label for="formEduLabel">Label</label>
+                <input id="formEduLabel" type="text" />
+              </div>
+              <div class="field">
+                <label for="formEduTitle">Judul</label>
+                <input id="formEduTitle" type="text" />
+              </div>
+              <div class="field">
+                <label for="formEduSubtitle">Subjudul</label>
+                <input id="formEduSubtitle" type="text" />
+              </div>
+            </div>
+            <div class="content-section">
+              <h4>Kartu Edukasi 1</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formEduImage0">URL Gambar</label><input id="formEduImage0" type="text" /></div>
+                <div class="field"><label for="formEduAlt0">Alt Gambar</label><input id="formEduAlt0" type="text" /></div>
+                <div class="field"><label for="formEduBadge0">Badge</label><input id="formEduBadge0" type="text" /></div>
+                <div class="field"><label for="formEduTitle0">Judul</label><input id="formEduTitle0" type="text" /></div>
+                <div class="field"><label for="formEduPoint0_0">Poin 1</label><input id="formEduPoint0_0" type="text" /></div>
+                <div class="field"><label for="formEduPoint0_1">Poin 2</label><input id="formEduPoint0_1" type="text" /></div>
+                <div class="field"><label for="formEduPoint0_2">Poin 3</label><input id="formEduPoint0_2" type="text" /></div>
+                <div class="field"><label for="formEduNote0">Catatan</label><input id="formEduNote0" type="text" /></div>
+              </div>
+            </div>
+            <div class="content-section">
+              <h4>Kartu Edukasi 2</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formEduImage1">URL Gambar</label><input id="formEduImage1" type="text" /></div>
+                <div class="field"><label for="formEduAlt1">Alt Gambar</label><input id="formEduAlt1" type="text" /></div>
+                <div class="field"><label for="formEduBadge1">Badge</label><input id="formEduBadge1" type="text" /></div>
+                <div class="field"><label for="formEduTitle1">Judul</label><input id="formEduTitle1" type="text" /></div>
+                <div class="field"><label for="formEduPoint1_0">Poin 1</label><input id="formEduPoint1_0" type="text" /></div>
+                <div class="field"><label for="formEduPoint1_1">Poin 2</label><input id="formEduPoint1_1" type="text" /></div>
+                <div class="field"><label for="formEduPoint1_2">Poin 3</label><input id="formEduPoint1_2" type="text" /></div>
+                <div class="field"><label for="formEduNote1">Catatan</label><input id="formEduNote1" type="text" /></div>
+              </div>
+            </div>
+            <div class="content-section">
+              <h4>Kartu Edukasi 3</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formEduImage2">URL Gambar</label><input id="formEduImage2" type="text" /></div>
+                <div class="field"><label for="formEduAlt2">Alt Gambar</label><input id="formEduAlt2" type="text" /></div>
+                <div class="field"><label for="formEduBadge2">Badge</label><input id="formEduBadge2" type="text" /></div>
+                <div class="field"><label for="formEduTitle2">Judul</label><input id="formEduTitle2" type="text" /></div>
+                <div class="field"><label for="formEduPoint2_0">Poin 1</label><input id="formEduPoint2_0" type="text" /></div>
+                <div class="field"><label for="formEduPoint2_1">Poin 2</label><input id="formEduPoint2_1" type="text" /></div>
+                <div class="field"><label for="formEduPoint2_2">Poin 3</label><input id="formEduPoint2_2" type="text" /></div>
+                <div class="field"><label for="formEduNote2">Catatan</label><input id="formEduNote2" type="text" /></div>
+              </div>
+            </div>
+            <div class="content-section">
+              <h4>Kartu Edukasi 4</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formEduImage3">URL Gambar</label><input id="formEduImage3" type="text" /></div>
+                <div class="field"><label for="formEduAlt3">Alt Gambar</label><input id="formEduAlt3" type="text" /></div>
+                <div class="field"><label for="formEduBadge3">Badge</label><input id="formEduBadge3" type="text" /></div>
+                <div class="field"><label for="formEduTitle3">Judul</label><input id="formEduTitle3" type="text" /></div>
+                <div class="field"><label for="formEduPoint3_0">Poin 1</label><input id="formEduPoint3_0" type="text" /></div>
+                <div class="field"><label for="formEduPoint3_1">Poin 2</label><input id="formEduPoint3_1" type="text" /></div>
+                <div class="field"><label for="formEduPoint3_2">Poin 3</label><input id="formEduPoint3_2" type="text" /></div>
+                <div class="field"><label for="formEduNote3">Catatan</label><input id="formEduNote3" type="text" /></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Daftar Online</h4>
+            <div class="content-grid">
+              <div class="field"><label for="formDaftarLabel">Label</label><input id="formDaftarLabel" type="text" /></div>
+              <div class="field"><label for="formDaftarTitle">Judul</label><input id="formDaftarTitle" type="text" /></div>
+              <div class="field"><label for="formDaftarSubtitle">Subjudul</label><input id="formDaftarSubtitle" type="text" /></div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Lokasi</h4>
+            <div class="content-grid">
+              <div class="field"><label for="formLokasiLabel">Label</label><input id="formLokasiLabel" type="text" /></div>
+              <div class="field"><label for="formLokasiTitle">Judul</label><input id="formLokasiTitle" type="text" /></div>
+              <div class="field"><label for="formLokasiSubtitle">Subjudul</label><input id="formLokasiSubtitle" type="text" /></div>
+              <div class="field"><label for="formLokasiAddress1">Alamat Baris 1</label><input id="formLokasiAddress1" type="text" /></div>
+              <div class="field"><label for="formLokasiAddress2">Alamat Baris 2</label><input id="formLokasiAddress2" type="text" /></div>
+              <div class="field"><label for="formLokasiHours">Jam Operasional</label><input id="formLokasiHours" type="text" /></div>
+              <div class="field"><label for="formLokasiService">Catatan Layanan</label><input id="formLokasiService" type="text" /></div>
+              <div class="field"><label for="formLokasiCta">Teks Tombol</label><input id="formLokasiCta" type="text" /></div>
+            </div>
+          </div>
+
+          <div class="content-section">
+            <h4>Footer</h4>
+            <div class="content-grid">
+              <div class="field"><label for="formFooterBrand">Nama Brand</label><input id="formFooterBrand" type="text" /></div>
+              <div class="field"><label for="formFooterTagline">Tagline</label><input id="formFooterTagline" type="text" /></div>
+              <div class="field"><label for="formFooterLocation">Lokasi</label><input id="formFooterLocation" type="text" /></div>
+              <div class="field"><label for="formFooterProject">Project</label><input id="formFooterProject" type="text" /></div>
+              <div class="field"><label for="formFooterPeriod">Periode</label><input id="formFooterPeriod" type="text" /></div>
+              <div class="field"><label for="formFooterTeam">Tim</label><input id="formFooterTeam" type="text" /></div>
+              <div class="field"><label for="formFooterSupervisors">Pembimbing</label><input id="formFooterSupervisors" type="text" /></div>
+              <div class="field"><label for="formFooterCopyright">Copyright</label><input id="formFooterCopyright" type="text" /></div>
+            </div>
+          </div>
+        </div>
+        <textarea id="contentEditor" class="content-editor hidden" rows="18" spellcheck="false"></textarea>
+        <div class="super-admin-actions">
+          <button id="contentReload" class="btn btn-ghost" type="button">Muat dari Supabase</button>
+          <button id="contentReset" class="btn btn-ghost" type="button">Reset ke Default</button>
+          <button id="contentPreview" class="btn btn-ghost" type="button">Preview</button>
+          <button id="contentSave" class="btn btn-primary" type="button">Simpan Konten</button>
+        </div>
+      </div>
       <div class="stats-row">
         <div class="stat-card">
           <div class="stat-label">Total Pendaftar</div>
@@ -1398,6 +1687,120 @@
       Authorization: `Bearer ${SUPABASE_KEY}`
     };
 
+    const DEFAULT_CONTENT = {
+      meta: {
+        title: "MACCA - Puskesmas Jongaya"
+      },
+      navbar: {
+        brandTitle: "Puskesmas Jongaya",
+        menu: {
+          beranda: "Beranda",
+          edukasi: "Edukasi ANC",
+          daftar: "Daftar Periksa",
+          lokasi: "Lokasi",
+          cta: "Daftar Sekarang"
+        }
+      },
+      hero: {
+        badge: "Puskesmas Jongaya \u00b7 Makassar",
+        title: "MACCA",
+        subtitle: "Media ANC Cerdas, Cepat dan Akurat",
+        ctaPrimary: "Daftar Periksa",
+        ctaSecondary: "Info ANC",
+        images: [
+          "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1200&q=75&fit=crop",
+          "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=1200&q=75&fit=crop",
+          "https://images.unsplash.com/photo-1579154203451-0c1f5a8f0e5f?w=1200&q=75&fit=crop",
+          "https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=1200&q=75&fit=crop",
+          "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=1200&q=75&fit=crop"
+        ]
+      },
+      edukasi: {
+        label: "INFO PENTING",
+        title: "Yang Perlu Ibu Tahu Soal ANC",
+        subtitle: "Aturan baru dari Kemenkes buat kehamilan yang lebih sehat",
+        cards: [
+          {
+            image: "https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=75",
+            alt: "Pemeriksaan kehamilan",
+            badge: "TRIMESTER 1-2-3",
+            title: "Periksa Minimal 8 Kali Selama Hamil",
+            points: [
+              "1x Trimester 1 - USG skrining awal",
+              "2x Trimester 2 - Pantau detak jantung bayi",
+              "5x Trimester 3 - Persiapan menjelang lahiran"
+            ],
+            note: "Tabe' Ibu, ini aturan baru Kemenkes ya!"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1550572017-edd951b55104?w=600&q=75",
+            alt: "Tablet tambah darah",
+            badge: "NUTRISI",
+            title: "Jangan Stop Minum Tablet Tambah Darah!",
+            points: [
+              "90 butir wajib habis selama hamil",
+              "Cegah anemia saat persalinan",
+              "Lindungi bayi dari stunting"
+            ],
+            note: "Minum rutin, jangan bolong-bolong nah!"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=75",
+            alt: "Pemeriksaan trimester 3",
+            badge: "TRIMESTER 3",
+            title: "Trimester 3: Masa Paling Kritis!",
+            points: [
+              "Posisi bayi - sungsang atau sudah masuk panggul?",
+              "Air ketuban - masih jernih atau keruh?",
+              "Tekanan darah - waspada preeklampsia!"
+            ],
+            note: "Jangan malas periksa ya, ini masa yang paling penting!"
+          },
+          {
+            image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75",
+            alt: "Dukungan suami",
+            badge: "UNTUK SUAMI",
+            title: "Suami Siap ANTAR JAGA",
+            points: [
+              "Antar - temani istri setiap kontrol dan USG",
+              "Jaga - jaga kondisi mental, jangan buat stres",
+              "Siap - hafal tanggal HPL istri"
+            ],
+            note: "Janganki' biarkan istri berjuang sendiri, kodong!"
+          }
+        ]
+      },
+      daftar: {
+        label: "DAFTAR ONLINE",
+        title: "Pesan Jadwal Periksa Sekarang",
+        subtitle: "Gratis, mudah, dan tim kami akan hubungi Ibu untuk konfirmasi jadwal"
+      },
+      lokasi: {
+        label: "LOKASI",
+        title: "Puskesmas Jongaya",
+        subtitle: "Datang sesuai jadwal agar pelayanan lebih cepat",
+        address1: "Jl. Andi Tonro No.49, Pa'baeng-Baeng",
+        address2: "Kec. Tamalate, Kota Makassar 90223",
+        hours: "Senin - Jumat: 08.00 - 14.00 WITA",
+        service: "Layanan ANC tersedia setiap hari kerja",
+        cta: "Buka di Google Maps"
+      },
+      footer: {
+        brand: "MACCA",
+        tagline: "Media ANC Cerdas, Cepat dan Akurat",
+        location: "Puskesmas Jongaya \u00b7 Makassar",
+        project: "Mini Project MPPD FK UMI",
+        period: "Stase Puskesmas Jongaya | 22 Des 2025 - 31 Jan 2026",
+        team: "Tim: Moh. Fadel Zamzami \u00b7 Andi Saswin Pamesangi \u00b7 Andi Farel Afriawan \u00b7 Nur Amelia Fitri R. Yusri",
+        supervisors: "Pembimbing: dr. Sophia Qadarsih, M.Biomed \u00b7 dr. Andi Nurul Fadilah Iskandar",
+        copyright: "\u00a9 2025 Puskesmas Jongaya"
+      }
+    };
+
+    let siteContent = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+    let heroImages = [...DEFAULT_CONTENT.hero.images];
+    let carouselTimer = null;
+
     const RUN_TESTS = new URLSearchParams(window.location.search).has("test");
     const TEST_STATE = { status: "pending", message: "" };
 
@@ -1474,38 +1877,338 @@
       });
     }
 
-    function initHeroCarousel() {
+    function cloneContent(data) {
+      return JSON.parse(JSON.stringify(data));
+    }
+
+    function setText(el, value) {
+      if (!el || typeof value !== "string") return;
+      el.textContent = value;
+    }
+
+    function setTextAll(nodeList, value) {
+      if (!nodeList || typeof value !== "string") return;
+      nodeList.forEach((el) => setText(el, value));
+    }
+
+    function applyEduCard(cardEl, cardData) {
+      if (!cardEl || !cardData) return;
+      const img = cardEl.querySelector("[data-edu-image]");
+      if (img && typeof cardData.image === "string") {
+        img.src = cardData.image;
+      }
+      if (img && typeof cardData.alt === "string") {
+        img.alt = cardData.alt;
+      }
+      setText(cardEl.querySelector("[data-edu-badge]"), cardData.badge);
+      setText(cardEl.querySelector("[data-edu-title]"), cardData.title);
+      const points = cardEl.querySelectorAll("[data-edu-point]");
+      if (Array.isArray(cardData.points)) {
+        points.forEach((pointEl, idx) => {
+          if (typeof cardData.points[idx] === "string") {
+            setText(pointEl, cardData.points[idx]);
+          }
+        });
+      }
+      const noteEl = cardEl.querySelector("[data-edu-note] em") || cardEl.querySelector("[data-edu-note]");
+      setText(noteEl, cardData.note);
+    }
+
+    function applyContent(content) {
+      if (!content) return;
+      if (content.meta && typeof content.meta.title === "string") {
+        document.title = content.meta.title;
+      }
+
+      const navMenu = content.navbar?.menu || {};
+      setText(document.getElementById("navBrandTitle"), content.navbar?.brandTitle);
+      setTextAll(document.querySelectorAll("[data-nav='beranda']"), navMenu.beranda);
+      setTextAll(document.querySelectorAll("[data-nav='edukasi']"), navMenu.edukasi);
+      setTextAll(document.querySelectorAll("[data-nav='daftar']"), navMenu.daftar);
+      setTextAll(document.querySelectorAll("[data-nav='lokasi']"), navMenu.lokasi);
+      setText(document.getElementById("navCtaText"), navMenu.cta);
+
+      setText(document.getElementById("heroBadgeText"), content.hero?.badge);
+      setText(document.getElementById("heroTitleText"), content.hero?.title);
+      setText(document.getElementById("heroSubtitle"), content.hero?.subtitle);
+      setText(document.getElementById("heroPrimaryText"), content.hero?.ctaPrimary);
+      setText(document.getElementById("heroSecondaryText"), content.hero?.ctaSecondary);
+
+      if (Array.isArray(content.hero?.images) && content.hero.images.length) {
+        heroImages = content.hero.images.slice();
+      }
+
+      const edukasi = content.edukasi || {};
+      setText(document.getElementById("edukasiLabel"), edukasi.label);
+      setText(document.getElementById("edukasiTitle"), edukasi.title);
+      setText(document.getElementById("edukasiSubtitle"), edukasi.subtitle);
+      const cards = document.querySelectorAll("[data-edu-card]");
+      if (Array.isArray(edukasi.cards)) {
+        edukasi.cards.forEach((cardData, index) => applyEduCard(cards[index], cardData));
+      }
+
+      const daftar = content.daftar || {};
+      setText(document.getElementById("daftarLabel"), daftar.label);
+      setText(document.getElementById("daftarTitle"), daftar.title);
+      setText(document.getElementById("daftarSubtitle"), daftar.subtitle);
+
+      const lokasi = content.lokasi || {};
+      setText(document.getElementById("lokasiLabel"), lokasi.label);
+      setText(document.getElementById("lokasiTitle"), lokasi.title);
+      setText(document.getElementById("lokasiSubtitle"), lokasi.subtitle);
+      setText(document.getElementById("lokasiAddress1"), lokasi.address1);
+      setText(document.getElementById("lokasiAddress2"), lokasi.address2);
+      setText(document.getElementById("lokasiHours"), lokasi.hours);
+      setText(document.getElementById("lokasiService"), lokasi.service);
+      setText(document.getElementById("lokasiCtaText"), lokasi.cta);
+
+      const footer = content.footer || {};
+      setText(document.getElementById("footerMacca"), footer.brand);
+      setText(document.getElementById("footerTagline"), footer.tagline);
+      setText(document.getElementById("footerLocation"), footer.location);
+      setText(document.getElementById("footerProject"), footer.project);
+      setText(document.getElementById("footerPeriod"), footer.period);
+      setText(document.getElementById("footerTeam"), footer.team);
+      setText(document.getElementById("footerSupervisors"), footer.supervisors);
+      setText(document.getElementById("footerCopyright"), footer.copyright);
+    }
+
+    function getFormValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+
+    function setFormValue(id, value) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.value = value == null ? "" : value;
+    }
+
+    function readLines(value) {
+      return value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    function buildEduCard(index) {
+      return {
+        image: getFormValue(`formEduImage${index}`),
+        alt: getFormValue(`formEduAlt${index}`),
+        badge: getFormValue(`formEduBadge${index}`),
+        title: getFormValue(`formEduTitle${index}`),
+        points: [
+          getFormValue(`formEduPoint${index}_0`),
+          getFormValue(`formEduPoint${index}_1`),
+          getFormValue(`formEduPoint${index}_2`)
+        ],
+        note: getFormValue(`formEduNote${index}`)
+      };
+    }
+
+    function buildContentFromForm() {
+      const images = readLines(getFormValue("formHeroImages"));
+      const content = {
+        meta: { title: getFormValue("formMetaTitle") },
+        navbar: {
+          brandTitle: getFormValue("formNavBrand"),
+          menu: {
+            beranda: getFormValue("formNavBeranda"),
+            edukasi: getFormValue("formNavEdukasi"),
+            daftar: getFormValue("formNavDaftar"),
+            lokasi: getFormValue("formNavLokasi"),
+            cta: getFormValue("formNavCta")
+          }
+        },
+        hero: {
+          badge: getFormValue("formHeroBadge"),
+          title: getFormValue("formHeroTitle"),
+          subtitle: getFormValue("formHeroSubtitle"),
+          ctaPrimary: getFormValue("formHeroPrimary"),
+          ctaSecondary: getFormValue("formHeroSecondary"),
+          images: images.length ? images : cloneContent(DEFAULT_CONTENT.hero.images)
+        },
+        edukasi: {
+          label: getFormValue("formEduLabel"),
+          title: getFormValue("formEduTitle"),
+          subtitle: getFormValue("formEduSubtitle"),
+          cards: [buildEduCard(0), buildEduCard(1), buildEduCard(2), buildEduCard(3)]
+        },
+        daftar: {
+          label: getFormValue("formDaftarLabel"),
+          title: getFormValue("formDaftarTitle"),
+          subtitle: getFormValue("formDaftarSubtitle")
+        },
+        lokasi: {
+          label: getFormValue("formLokasiLabel"),
+          title: getFormValue("formLokasiTitle"),
+          subtitle: getFormValue("formLokasiSubtitle"),
+          address1: getFormValue("formLokasiAddress1"),
+          address2: getFormValue("formLokasiAddress2"),
+          hours: getFormValue("formLokasiHours"),
+          service: getFormValue("formLokasiService"),
+          cta: getFormValue("formLokasiCta")
+        },
+        footer: {
+          brand: getFormValue("formFooterBrand"),
+          tagline: getFormValue("formFooterTagline"),
+          location: getFormValue("formFooterLocation"),
+          project: getFormValue("formFooterProject"),
+          period: getFormValue("formFooterPeriod"),
+          team: getFormValue("formFooterTeam"),
+          supervisors: getFormValue("formFooterSupervisors"),
+          copyright: getFormValue("formFooterCopyright")
+        }
+      };
+
+      return content;
+    }
+
+    function syncContentForm(content) {
+      const data = content || DEFAULT_CONTENT;
+      const edu = data.edukasi || {};
+      const cards = edu.cards || [];
+      const fallbackCards = DEFAULT_CONTENT.edukasi.cards;
+
+      setFormValue("formMetaTitle", data.meta?.title || "");
+      setFormValue("formNavBrand", data.navbar?.brandTitle || "");
+      setFormValue("formNavBeranda", data.navbar?.menu?.beranda || "");
+      setFormValue("formNavEdukasi", data.navbar?.menu?.edukasi || "");
+      setFormValue("formNavDaftar", data.navbar?.menu?.daftar || "");
+      setFormValue("formNavLokasi", data.navbar?.menu?.lokasi || "");
+      setFormValue("formNavCta", data.navbar?.menu?.cta || "");
+
+      setFormValue("formHeroBadge", data.hero?.badge || "");
+      setFormValue("formHeroTitle", data.hero?.title || "");
+      setFormValue("formHeroSubtitle", data.hero?.subtitle || "");
+      setFormValue("formHeroPrimary", data.hero?.ctaPrimary || "");
+      setFormValue("formHeroSecondary", data.hero?.ctaSecondary || "");
+      const images = Array.isArray(data.hero?.images) ? data.hero.images : DEFAULT_CONTENT.hero.images;
+      setFormValue("formHeroImages", images.join("\n"));
+
+      setFormValue("formEduLabel", edu.label || "");
+      setFormValue("formEduTitle", edu.title || "");
+      setFormValue("formEduSubtitle", edu.subtitle || "");
+
+      [0, 1, 2, 3].forEach((index) => {
+        const card = cards[index] || fallbackCards[index];
+        setFormValue(`formEduImage${index}`, card?.image || "");
+        setFormValue(`formEduAlt${index}`, card?.alt || "");
+        setFormValue(`formEduBadge${index}`, card?.badge || "");
+        setFormValue(`formEduTitle${index}`, card?.title || "");
+        setFormValue(`formEduPoint${index}_0`, card?.points?.[0] || "");
+        setFormValue(`formEduPoint${index}_1`, card?.points?.[1] || "");
+        setFormValue(`formEduPoint${index}_2`, card?.points?.[2] || "");
+        setFormValue(`formEduNote${index}`, card?.note || "");
+      });
+
+      setFormValue("formDaftarLabel", data.daftar?.label || "");
+      setFormValue("formDaftarTitle", data.daftar?.title || "");
+      setFormValue("formDaftarSubtitle", data.daftar?.subtitle || "");
+
+      setFormValue("formLokasiLabel", data.lokasi?.label || "");
+      setFormValue("formLokasiTitle", data.lokasi?.title || "");
+      setFormValue("formLokasiSubtitle", data.lokasi?.subtitle || "");
+      setFormValue("formLokasiAddress1", data.lokasi?.address1 || "");
+      setFormValue("formLokasiAddress2", data.lokasi?.address2 || "");
+      setFormValue("formLokasiHours", data.lokasi?.hours || "");
+      setFormValue("formLokasiService", data.lokasi?.service || "");
+      setFormValue("formLokasiCta", data.lokasi?.cta || "");
+
+      setFormValue("formFooterBrand", data.footer?.brand || "");
+      setFormValue("formFooterTagline", data.footer?.tagline || "");
+      setFormValue("formFooterLocation", data.footer?.location || "");
+      setFormValue("formFooterProject", data.footer?.project || "");
+      setFormValue("formFooterPeriod", data.footer?.period || "");
+      setFormValue("formFooterTeam", data.footer?.team || "");
+      setFormValue("formFooterSupervisors", data.footer?.supervisors || "");
+      setFormValue("formFooterCopyright", data.footer?.copyright || "");
+    }
+
+    function getHeroImages() {
+      if (Array.isArray(heroImages) && heroImages.length) {
+        return heroImages;
+      }
+      return DEFAULT_CONTENT.hero.images;
+    }
+
+    async function loadSiteContent() {
+      siteContent = cloneContent(DEFAULT_CONTENT);
+      try {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/site_content?id=eq.homepage&select=data`, {
+          headers: publicHeaders
+        });
+        if (res.ok) {
+          const rows = await res.json();
+          if (rows[0] && rows[0].data) {
+            siteContent = rows[0].data;
+          }
+        }
+      } catch (err) {
+        // Keep defaults if fetch fails.
+      }
+      applyContent(siteContent);
+      return siteContent;
+    }
+
+    async function saveSiteContent(content) {
+      const adminHeaders = await getAdminHeaders();
+      if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/site_content?on_conflict=id`, {
+        method: "POST",
+        headers: {
+          ...adminHeaders,
+          Prefer: "resolution=merge-duplicates,return=representation"
+        },
+        body: JSON.stringify({
+          id: "homepage",
+          data: content,
+          updated_at: new Date().toISOString()
+        })
+      });
+      if (res.status === 401 || res.status === 403) {
+        throw new Error("Akses admin ditolak.");
+      }
+      if (!res.ok) throw new Error("Gagal menyimpan konten.");
+      return await res.json();
+    }
+
+    function initHeroCarousel(forceReset = false) {
       const media = document.querySelector(".hero-media");
       if (!media) return;
+      if (media.dataset.carouselInit === "true" && !forceReset) return;
+      if (forceReset && carouselTimer) {
+        clearInterval(carouselTimer);
+        carouselTimer = null;
+      }
+      media.dataset.carouselInit = "true";
 
       const slideA = media.querySelector(".slide-a");
       const slideB = media.querySelector(".slide-b");
       if (!slideA || !slideB) return;
 
-      const images = [
-        "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1200&q=75&fit=crop",
-        "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=1200&q=75&fit=crop",
-        "https://images.unsplash.com/photo-1579154203451-0c1f5a8f0e5f?w=1200&q=75&fit=crop",
-        "https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=1200&q=75&fit=crop",
-        "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=1200&q=75&fit=crop"
-      ];
+      const images = getHeroImages();
+      if (!images.length) return;
 
       let activeIndex = 0;
       let isAActive = true;
 
       setSlideBackground(slideA, images[0]);
       slideA.classList.add("is-active");
+      slideB.classList.remove("is-active");
 
       if (shouldReduceMotion()) return;
 
-      setInterval(async () => {
-        const nextIndex = getNextIndex(activeIndex, images.length);
+      carouselTimer = setInterval(async () => {
+        const currentImages = getHeroImages();
+        if (!currentImages.length) return;
+        const nextIndex = getNextIndex(activeIndex, currentImages.length);
         const nextSlide = isAActive ? slideB : slideA;
         const currentSlide = isAActive ? slideA : slideB;
 
         try {
-          await preloadImage(images[nextIndex]);
-          setSlideBackground(nextSlide, images[nextIndex]);
+          await preloadImage(currentImages[nextIndex]);
+          setSlideBackground(nextSlide, currentImages[nextIndex]);
           nextSlide.classList.add("is-active");
           currentSlide.classList.remove("is-active");
           isAActive = !isAActive;
@@ -1517,7 +2220,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      initHeroCarousel();
+      loadSiteContent().then(() => initHeroCarousel(true));
       const menuBtn = document.getElementById("menuBtn");
       const bottomSheet = document.getElementById("bottomSheet");
       const sheetBackdrop = document.getElementById("sheetBackdrop");
@@ -1729,15 +2432,26 @@
       const confirmDelete = document.getElementById("confirmDelete");
       const confirmCancel = document.getElementById("confirmCancel");
       const toastWrap = document.getElementById("toastWrap");
+      const superAdminPanel = document.getElementById("superAdminPanel");
+      const editorModeForm = document.getElementById("editorModeForm");
+      const editorModeJson = document.getElementById("editorModeJson");
+      const contentForm = document.getElementById("contentForm");
+      const contentEditor = document.getElementById("contentEditor");
+      const contentReload = document.getElementById("contentReload");
+      const contentReset = document.getElementById("contentReset");
+      const contentPreview = document.getElementById("contentPreview");
+      const contentSave = document.getElementById("contentSave");
       const ADMIN_SESSION_KEY = "macca_admin_session_v1";
       const ADMIN_REFRESH_BUFFER = 60000;
       let confirmResolve = null;
+      let editorMode = "form";
 
       const state = {
         data: [],
         filtered: [],
         page: 1,
-        pageSize: 10
+        pageSize: 10,
+        isSuperAdmin: false
       };
 
       let footerClicks = 0;
@@ -1754,6 +2468,47 @@
         toastWrap.appendChild(toast);
         setTimeout(() => toast.classList.add("toast--hide"), 2600);
         setTimeout(() => toast.remove(), 3000);
+      }
+
+      function toggleSuperAdminPanel(show) {
+        if (!superAdminPanel) return;
+        superAdminPanel.classList.toggle("hidden", !show);
+      }
+
+      function setEditorMode(mode) {
+        editorMode = mode === "json" ? "json" : "form";
+        if (contentForm) {
+          contentForm.classList.toggle("hidden", editorMode === "json");
+        }
+        if (contentEditor) {
+          contentEditor.classList.toggle("hidden", editorMode === "form");
+        }
+        if (editorModeForm) {
+          editorModeForm.classList.toggle("is-active", editorMode === "form");
+        }
+        if (editorModeJson) {
+          editorModeJson.classList.toggle("is-active", editorMode === "json");
+        }
+      }
+
+      function syncContentEditor(content) {
+        if (!contentEditor) return;
+        contentEditor.value = JSON.stringify(content, null, 2);
+      }
+
+      async function checkSuperAdmin() {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) return false;
+        try {
+          const res = await fetch(`${SUPABASE_URL}/rest/v1/super_admin_users?select=user_id&limit=1`, {
+            headers: adminHeaders
+          });
+          if (!res.ok) return false;
+          const rows = await res.json();
+          return rows.length > 0;
+        } catch (err) {
+          return false;
+        }
       }
 
       function openConfirm(message) {
@@ -2043,6 +2798,13 @@
           closeAdminModal();
           showAdmin();
           await loadAdminData();
+          state.isSuperAdmin = await checkSuperAdmin();
+          toggleSuperAdminPanel(state.isSuperAdmin);
+          if (state.isSuperAdmin) {
+            setEditorMode("form");
+            syncContentForm(siteContent);
+            syncContentEditor(siteContent);
+          }
           showToast("success", "Login admin berhasil.");
         } catch (err) {
           adminError.textContent = err.message || "Email atau password salah.";
@@ -2054,12 +2816,96 @@
 
       adminLogout.addEventListener("click", async () => {
         await signOutAdmin();
+        state.isSuperAdmin = false;
+        toggleSuperAdminPanel(false);
         hideAdmin();
         showToast("info", "Logout admin.");
       });
 
       adminSearch.addEventListener("input", applyFilters);
       adminFilter.addEventListener("change", applyFilters);
+
+      if (editorModeForm) {
+        editorModeForm.addEventListener("click", () => setEditorMode("form"));
+      }
+
+      if (editorModeJson) {
+        editorModeJson.addEventListener("click", () => setEditorMode("json"));
+      }
+
+      if (contentReload) {
+        contentReload.addEventListener("click", async () => {
+          const content = await loadSiteContent();
+          syncContentForm(content);
+          syncContentEditor(content);
+          initHeroCarousel(true);
+          showToast("info", "Konten dimuat.");
+        });
+      }
+
+      if (contentReset) {
+        contentReset.addEventListener("click", () => {
+          const fresh = cloneContent(DEFAULT_CONTENT);
+          applyContent(fresh);
+          syncContentForm(fresh);
+          syncContentEditor(fresh);
+          initHeroCarousel(true);
+          showToast("info", "Konten direset di editor. Klik simpan untuk menerapkan.");
+        });
+      }
+
+      if (contentPreview) {
+        contentPreview.addEventListener("click", () => {
+          if (!state.isSuperAdmin) {
+            showToast("danger", "Hanya super admin yang bisa preview konten.");
+            return;
+          }
+          if (editorMode === "json") {
+            try {
+              const parsed = JSON.parse(contentEditor.value);
+              applyContent(parsed);
+              initHeroCarousel(true);
+              showToast("info", "Preview JSON diterapkan.");
+            } catch (err) {
+              showToast("danger", "Format JSON tidak valid.");
+            }
+            return;
+          }
+          const previewContent = buildContentFromForm();
+          applyContent(previewContent);
+          initHeroCarousel(true);
+          showToast("info", "Preview form diterapkan.");
+        });
+      }
+
+      if (contentSave) {
+        contentSave.addEventListener("click", async () => {
+          if (!state.isSuperAdmin) {
+            showToast("danger", "Hanya super admin yang bisa menyimpan konten.");
+            return;
+          }
+          let parsed = null;
+          if (editorMode === "json") {
+            try {
+              parsed = JSON.parse(contentEditor.value);
+            } catch (err) {
+              showToast("danger", "Format JSON tidak valid.");
+              return;
+            }
+          } else {
+            parsed = buildContentFromForm();
+          }
+          try {
+            await saveSiteContent(parsed);
+            siteContent = parsed;
+            applyContent(siteContent);
+            initHeroCarousel(true);
+            showToast("success", "Konten berhasil disimpan.");
+          } catch (err) {
+            showToast("danger", err.message || "Gagal menyimpan konten.");
+          }
+        });
+      }
 
       exportBtn.addEventListener("click", () => {
         exportCSV(state.filtered.length ? state.filtered : state.data);
