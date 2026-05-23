@@ -10,9 +10,9 @@
   <style>
     :root {
       --cream: #FDF6EE;
-      --sage: #7DA87B;
-      --sage-dark: #4E7A4C;
-      --blush: #F2A7A0;
+      --sage: #E97FA3;
+      --sage-dark: #B84C75;
+      --blush: #F4B7C9;
       --warm-white: #FFFFFF;
       --text-dark: #2D2D2D;
       --text-muted: #6B6B6B;
@@ -343,6 +343,7 @@
       align-items: flex-end;
       color: #fff;
       overflow: hidden;
+      touch-action: pan-y;
     }
 
     .hero-media {
@@ -356,6 +357,7 @@
       inset: 0;
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
       opacity: 0;
       transition: opacity 1.2s ease;
     }
@@ -483,6 +485,47 @@
       gap: 20px;
     }
 
+    .infografis-grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .infografis-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .infografis-card.is-empty {
+      border: 1px dashed var(--border);
+      background: #FAFAFA;
+      justify-items: center;
+      text-align: center;
+      min-height: 220px;
+      align-content: center;
+    }
+
+    .infografis-card.is-empty img {
+      display: none;
+    }
+
+    .infografis-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      background: #F7F1F6;
+    }
+
+    .infografis-caption {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+    }
+
     .card {
       background: #fff;
       border-radius: 16px;
@@ -491,8 +534,8 @@
     }
 
     .card img {
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
+      width: 100%;
+      height: auto;
     }
 
     .card-body {
@@ -557,6 +600,10 @@
 
     @media (min-width: 768px) {
       .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .infografis-grid {
         grid-template-columns: repeat(2, 1fr);
       }
     }
@@ -903,6 +950,53 @@
     }
 
     @media (max-width: 600px) {
+      .hero {
+        min-height: 0;
+        flex-direction: column;
+        align-items: stretch;
+        background: var(--cream);
+      }
+
+      .hero-media {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+      }
+
+      .hero-content {
+        padding: 20px 0 40px;
+        color: var(--text-dark);
+      }
+
+      .hero-badge {
+        background: rgba(233, 127, 163, 0.15);
+        color: var(--sage-dark);
+      }
+
+      .hero-title,
+      .hero-subtitle {
+        color: var(--text-dark);
+      }
+
+      .hero-highlight {
+        color: var(--text-dark);
+      }
+
+      .btn-outline {
+        color: var(--sage-dark);
+        border-color: var(--sage-dark);
+        background: #fff;
+      }
+
+      .hero-overlay {
+        background: none;
+      }
+
+      .hero-slide {
+        background-size: cover;
+        background-color: #2A2224;
+      }
+
       .toast-wrap {
         left: 16px;
         right: 16px;
@@ -1216,6 +1310,27 @@
               <p class="card-note" data-edu-note><em>Janganki' biarkan istri berjuang sendiri, kodong!</em></p>
             </div>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="infografis" class="section fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div id="infografisLabel" class="label">INFO BERGAMBAR</div>
+          <h2 id="infografisTitle">Poster Kesehatan Ibu Hamil</h2>
+          <p id="infografisSubtitle">Ringkasan penting yang mudah dipahami.</p>
+        </div>
+
+        <div class="infografis-grid">
+          <figure id="infografisCard0" class="infografis-card">
+            <img id="infografisImage0" alt="" />
+            <figcaption id="infografisCaption0" class="infografis-caption"></figcaption>
+          </figure>
+          <figure id="infografisCard1" class="infografis-card">
+            <img id="infografisImage1" alt="" />
+            <figcaption id="infografisCaption1" class="infografis-caption"></figcaption>
+          </figure>
         </div>
       </div>
     </section>
@@ -1584,6 +1699,33 @@
           </div>
 
           <div class="content-section">
+            <h4>Poster Infografis</h4>
+            <div class="content-grid">
+              <div class="field"><label for="formInfoLabel">Label</label><input id="formInfoLabel" type="text" /></div>
+              <div class="field"><label for="formInfoTitle">Judul</label><input id="formInfoTitle" type="text" /></div>
+              <div class="field"><label for="formInfoSubtitle">Subjudul</label><input id="formInfoSubtitle" type="text" /></div>
+            </div>
+            <div class="content-section">
+              <h4>Poster 1</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formInfoImage0">URL Gambar</label><input id="formInfoImage0" type="text" /></div>
+                <div class="field"><label for="formInfoFile0">Upload Gambar Lokal</label><input id="formInfoFile0" type="file" accept="image/*" /></div>
+                <div class="field"><label for="formInfoAlt0">Alt Gambar</label><input id="formInfoAlt0" type="text" /></div>
+                <div class="field"><label for="formInfoCaption0">Caption</label><input id="formInfoCaption0" type="text" /></div>
+              </div>
+            </div>
+            <div class="content-section">
+              <h4>Poster 2</h4>
+              <div class="content-grid">
+                <div class="field"><label for="formInfoImage1">URL Gambar</label><input id="formInfoImage1" type="text" /></div>
+                <div class="field"><label for="formInfoFile1">Upload Gambar Lokal</label><input id="formInfoFile1" type="file" accept="image/*" /></div>
+                <div class="field"><label for="formInfoAlt1">Alt Gambar</label><input id="formInfoAlt1" type="text" /></div>
+                <div class="field"><label for="formInfoCaption1">Caption</label><input id="formInfoCaption1" type="text" /></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="content-section">
             <h4>Daftar Online</h4>
             <div class="content-grid">
               <div class="field"><label for="formDaftarLabel">Label</label><input id="formDaftarLabel" type="text" /></div>
@@ -1734,11 +1876,15 @@
         ctaPrimary: "Daftar Periksa",
         ctaSecondary: "Info ANC",
         images: [
-          "https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?w=1200&q=75&fit=crop",
-          "https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=1200&q=75&fit=crop",
-          "https://images.unsplash.com/photo-1579154203451-0c1f5a8f0e5f?w=1200&q=75&fit=crop",
-          "https://images.unsplash.com/photo-1512678080530-7760d81faba6?w=1200&q=75&fit=crop",
-          "https://images.unsplash.com/photo-1526256262350-7da7584cf5eb?w=1200&q=75&fit=crop"
+          "assets/carousel/ayo-rutin-01.jpg",
+          "assets/carousel/ayo-rutin-02.jpg",
+          "assets/carousel/ayo-rutin-03.jpg",
+          "assets/carousel/ayo-rutin-04.jpg",
+          "assets/carousel/ayo-rutin-05.jpg",
+          "assets/carousel/ayo-rutin-06.jpg",
+          "assets/carousel/ayo-rutin-07.jpg",
+          "assets/carousel/ayo-rutin-08.jpg",
+          "assets/carousel/ayo-rutin-09.jpg"
         ]
       },
       edukasi: {
@@ -1796,6 +1942,23 @@
           }
         ]
       },
+      infografis: {
+        label: "INFO BERGAMBAR",
+        title: "Poster Kesehatan Ibu Hamil",
+        subtitle: "Ringkasan penting yang mudah dipahami.",
+        items: [
+          {
+            image: "assets/infografis/WhatsApp%20Image%202026-05-21%20at%2016.10.31%20(1).jpeg",
+            alt: "Tanda bahaya selama kehamilan",
+            caption: "Tanda bahaya selama kehamilan"
+          },
+          {
+            image: "assets/infografis/WhatsApp%20Image%202026-05-21%20at%2016.10.31.jpeg",
+            alt: "Persiapan pra persalinan",
+            caption: "Persiapan pra persalinan"
+          }
+        ]
+      },
       daftar: {
         label: "DAFTAR ONLINE",
         title: "Pesan Jadwal Periksa Sekarang",
@@ -1826,6 +1989,12 @@
     let siteContent = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     let heroImages = [...DEFAULT_CONTENT.hero.images];
     let carouselTimer = null;
+    const carouselState = {
+      slideA: null,
+      slideB: null,
+      activeIndex: 0,
+      isAActive: true
+    };
 
     const RUN_TESTS = new URLSearchParams(window.location.search).has("test");
     const TEST_STATE = { status: "pending", message: "" };
@@ -1907,6 +2076,22 @@
       return JSON.parse(JSON.stringify(data));
     }
 
+    function mergeContent(base, override) {
+      if (Array.isArray(base)) {
+        return Array.isArray(override) ? override : base;
+      }
+      if (base && typeof base === "object") {
+        const result = { ...base };
+        if (override && typeof override === "object") {
+          Object.keys(override).forEach((key) => {
+            result[key] = mergeContent(base[key], override[key]);
+          });
+        }
+        return result;
+      }
+      return override === undefined ? base : override;
+    }
+
     function setText(el, value) {
       if (!el || typeof value !== "string") return;
       el.textContent = value;
@@ -1940,6 +2125,25 @@
       setText(noteEl, cardData.note);
     }
 
+    function applyInfoCard(cardEl, imgEl, captionEl, item) {
+      if (!cardEl || !imgEl) return;
+      const src = typeof item?.image === "string" ? item.image.trim() : "";
+      cardEl.classList.remove("hidden");
+      if (src) {
+        imgEl.src = src;
+        imgEl.alt = item.alt || "";
+        cardEl.classList.remove("is-empty");
+        setText(captionEl, item?.caption || "");
+        return true;
+      } else {
+        imgEl.removeAttribute("src");
+        imgEl.alt = "";
+        cardEl.classList.add("is-empty");
+        setText(captionEl, item?.caption || "Poster belum diisi. Upload lewat panel super admin.");
+        return false;
+      }
+    }
+
     function applyContent(content) {
       if (!content) return;
       if (content.meta && typeof content.meta.title === "string") {
@@ -1971,6 +2175,28 @@
       const cards = document.querySelectorAll("[data-edu-card]");
       if (Array.isArray(edukasi.cards)) {
         edukasi.cards.forEach((cardData, index) => applyEduCard(cards[index], cardData));
+      }
+
+      const infografis = content.infografis || {};
+      setText(document.getElementById("infografisLabel"), infografis.label);
+      setText(document.getElementById("infografisTitle"), infografis.title);
+      setText(document.getElementById("infografisSubtitle"), infografis.subtitle);
+      const infoItems = Array.isArray(infografis.items) ? infografis.items : [];
+      const info0 = applyInfoCard(
+        document.getElementById("infografisCard0"),
+        document.getElementById("infografisImage0"),
+        document.getElementById("infografisCaption0"),
+        infoItems[0] || {}
+      );
+      const info1 = applyInfoCard(
+        document.getElementById("infografisCard1"),
+        document.getElementById("infografisImage1"),
+        document.getElementById("infografisCaption1"),
+        infoItems[1] || {}
+      );
+      const infoSection = document.getElementById("infografis");
+      if (infoSection) {
+        infoSection.classList.remove("hidden");
       }
 
       const daftar = content.daftar || {};
@@ -2041,6 +2267,14 @@
       };
     }
 
+    function buildInfoItem(index) {
+      return {
+        image: getFormValue(`formInfoImage${index}`),
+        alt: getFormValue(`formInfoAlt${index}`),
+        caption: getFormValue(`formInfoCaption${index}`)
+      };
+    }
+
     function buildContentFromForm() {
       const images = readLines(getFormValue("formHeroImages"));
       const content = {
@@ -2068,6 +2302,12 @@
           title: getFormValue("formEduTitle"),
           subtitle: getFormValue("formEduSubtitle"),
           cards: [buildEduCard(0), buildEduCard(1), buildEduCard(2), buildEduCard(3)]
+        },
+        infografis: {
+          label: getFormValue("formInfoLabel"),
+          title: getFormValue("formInfoTitle"),
+          subtitle: getFormValue("formInfoSubtitle"),
+          items: [buildInfoItem(0), buildInfoItem(1)]
         },
         daftar: {
           label: getFormValue("formDaftarLabel"),
@@ -2137,6 +2377,18 @@
         setFormValue(`formEduNote${index}`, card?.note || "");
       });
 
+      const info = data.infografis || {};
+      const infoItems = Array.isArray(info.items) ? info.items : [];
+      setFormValue("formInfoLabel", info.label || "");
+      setFormValue("formInfoTitle", info.title || "");
+      setFormValue("formInfoSubtitle", info.subtitle || "");
+      [0, 1].forEach((index) => {
+        const item = infoItems[index] || DEFAULT_CONTENT.infografis.items[index];
+        setFormValue(`formInfoImage${index}`, item?.image || "");
+        setFormValue(`formInfoAlt${index}`, item?.alt || "");
+        setFormValue(`formInfoCaption${index}`, item?.caption || "");
+      });
+
       setFormValue("formDaftarLabel", data.daftar?.label || "");
       setFormValue("formDaftarTitle", data.daftar?.title || "");
       setFormValue("formDaftarSubtitle", data.daftar?.subtitle || "");
@@ -2176,7 +2428,7 @@
         if (res.ok) {
           const rows = await res.json();
           if (rows[0] && rows[0].data) {
-            siteContent = rows[0].data;
+            siteContent = mergeContent(DEFAULT_CONTENT, rows[0].data);
           }
         }
       } catch (err) {
@@ -2208,6 +2460,29 @@
       return await res.json();
     }
 
+    async function swapToIndex(nextIndex) {
+      const images = getHeroImages();
+      if (!images.length) return;
+      if (!carouselState.slideA || !carouselState.slideB) return;
+      const total = images.length;
+      const targetIndex = ((nextIndex % total) + total) % total;
+      if (targetIndex === carouselState.activeIndex) return;
+
+      const nextSlide = carouselState.isAActive ? carouselState.slideB : carouselState.slideA;
+      const currentSlide = carouselState.isAActive ? carouselState.slideA : carouselState.slideB;
+
+      try {
+        await preloadImage(images[targetIndex]);
+        setSlideBackground(nextSlide, images[targetIndex]);
+        nextSlide.classList.add("is-active");
+        currentSlide.classList.remove("is-active");
+        carouselState.isAActive = !carouselState.isAActive;
+        carouselState.activeIndex = targetIndex;
+      } catch (err) {
+        // Skip swap on load error; keep current slide visible.
+      }
+    }
+
     function initHeroCarousel(forceReset = false) {
       const media = document.querySelector(".hero-media");
       if (!media) return;
@@ -2225,8 +2500,10 @@
       const images = getHeroImages();
       if (!images.length) return;
 
-      let activeIndex = 0;
-      let isAActive = true;
+      carouselState.slideA = slideA;
+      carouselState.slideB = slideB;
+      carouselState.activeIndex = 0;
+      carouselState.isAActive = true;
 
       setSlideBackground(slideA, images[0]);
       slideA.classList.add("is-active");
@@ -2234,23 +2511,8 @@
 
       if (shouldReduceMotion()) return;
 
-      carouselTimer = setInterval(async () => {
-        const currentImages = getHeroImages();
-        if (!currentImages.length) return;
-        const nextIndex = getNextIndex(activeIndex, currentImages.length);
-        const nextSlide = isAActive ? slideB : slideA;
-        const currentSlide = isAActive ? slideA : slideB;
-
-        try {
-          await preloadImage(currentImages[nextIndex]);
-          setSlideBackground(nextSlide, currentImages[nextIndex]);
-          nextSlide.classList.add("is-active");
-          currentSlide.classList.remove("is-active");
-          isAActive = !isAActive;
-          activeIndex = nextIndex;
-        } catch (err) {
-          // Skip swap on load error; keep current slide visible.
-        }
+      carouselTimer = setInterval(() => {
+        swapToIndex(carouselState.activeIndex + 1);
       }, 6000);
     }
 
@@ -2260,6 +2522,67 @@
       const bottomSheet = document.getElementById("bottomSheet");
       const sheetBackdrop = document.getElementById("sheetBackdrop");
       const sheetClose = document.getElementById("sheetClose");
+      const hero = document.querySelector(".hero");
+      let swipeStartX = 0;
+      let swipeStartY = 0;
+      let swipeActive = false;
+
+      function isSwipeTargetIgnored(target) {
+        return !!(target.closest(".hero-actions") || target.closest("a") || target.closest("button"));
+      }
+
+      function startSwipe(x, y) {
+        swipeStartX = x;
+        swipeStartY = y;
+        swipeActive = true;
+      }
+
+      function endSwipe(x, y) {
+        if (!swipeActive) return;
+        const deltaX = x - swipeStartX;
+        const deltaY = y - swipeStartY;
+        swipeActive = false;
+
+        if (Math.abs(deltaX) < 50 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+        if (deltaX < 0) {
+          swapToIndex(carouselState.activeIndex + 1);
+        } else {
+          swapToIndex(carouselState.activeIndex - 1);
+        }
+      }
+
+      if (hero) {
+        hero.addEventListener(
+          "touchstart",
+          (event) => {
+            if (isSwipeTargetIgnored(event.target)) return;
+            if (!event.touches || event.touches.length !== 1) return;
+            const touch = event.touches[0];
+            startSwipe(touch.clientX, touch.clientY);
+          },
+          { passive: true }
+        );
+
+        hero.addEventListener("touchend", (event) => {
+          if (!event.changedTouches || !event.changedTouches.length) return;
+          const touch = event.changedTouches[0];
+          endSwipe(touch.clientX, touch.clientY);
+        });
+
+        hero.addEventListener("mousedown", (event) => {
+          if (event.button !== 0) return;
+          if (isSwipeTargetIgnored(event.target)) return;
+          startSwipe(event.clientX, event.clientY);
+        });
+
+        hero.addEventListener("mouseup", (event) => {
+          endSwipe(event.clientX, event.clientY);
+        });
+
+        hero.addEventListener("mouseleave", () => {
+          swipeActive = false;
+        });
+      }
 
       function openSheet() {
         sheetBackdrop.classList.remove("hidden");
@@ -2480,6 +2803,9 @@
       const heroFiles = document.getElementById("formHeroFiles");
       const eduFileInputs = [0, 1, 2, 3].map((index) =>
         document.getElementById(`formEduFile${index}`)
+      );
+      const infoFileInputs = [0, 1].map((index) =>
+        document.getElementById(`formInfoFile${index}`)
       );
       const ADMIN_SESSION_KEY = "macca_admin_session_v1";
       const ADMIN_REFRESH_BUFFER = 60000;
@@ -3005,6 +3331,24 @@
               showToast("info", `Gambar edukasi ${index + 1} dimuat.`);
             } catch (err) {
               showToast("danger", err.message || "Gagal memuat gambar edukasi.");
+            }
+          });
+        });
+      }
+
+      if (infoFileInputs.length) {
+        infoFileInputs.forEach((input, index) => {
+          if (!input) return;
+          input.addEventListener("change", async (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            try {
+              const url = await readFileAsDataUrl(file);
+              setFormValue(`formInfoImage${index}`, url);
+              syncContentEditor(buildContentFromForm());
+              showToast("info", `Gambar infografis ${index + 1} dimuat.`);
+            } catch (err) {
+              showToast("danger", err.message || "Gagal memuat gambar infografis.");
             }
           });
         });
