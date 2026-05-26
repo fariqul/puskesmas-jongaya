@@ -538,6 +538,7 @@
       height: auto;
     }
 
+
     .card-body {
       padding: 16px;
     }
@@ -608,12 +609,94 @@
       }
     }
 
+
     .form-card {
       background: #fff;
       border-radius: 20px;
       padding: 24px;
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
       color: var(--text-dark);
+    }
+
+    .schedule-card {
+      display: grid;
+      gap: 18px;
+    }
+
+    .schedule-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .schedule-output {
+      background: #FDEBF2;
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px dashed #F4B7C9;
+    }
+
+    .schedule-head {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 12px;
+    }
+
+    .schedule-head h3 {
+      margin: 0;
+      font-size: var(--fs-md);
+    }
+
+    .schedule-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .schedule-item {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #F4B7C9;
+    }
+
+    .schedule-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .schedule-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .schedule-tri {
+      font-weight: 600;
+      color: var(--sage-dark);
+    }
+
+    .schedule-pill {
+      background: #FFE08A;
+      color: #6B4E00;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 999px;
+    }
+
+    .schedule-date {
+      color: var(--sage-dark);
+      font-weight: 600;
+    }
+
+    .schedule-note-inline,
+    .schedule-footnote {
+      font-size: var(--fs-sm);
+      color: var(--text-muted);
     }
 
     .field {
@@ -1335,6 +1418,35 @@
       </div>
     </section>
 
+    <section id="jadwal-anc" class="section fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div class="label">CEK JADWAL ANC</div>
+          <h2>Cek Jadwal ANC (MACCA)</h2>
+          <p>Masukkan tanggal HPHT untuk melihat estimasi jadwal kunjungan.</p>
+        </div>
+
+        <div class="form-card schedule-card">
+          <div class="schedule-form">
+            <div class="field">
+              <label for="hphtSchedule">Masukkan Tanggal HPHT Bunda</label>
+              <input id="hphtSchedule" type="date" />
+            </div>
+            <button id="hphtScheduleBtn" class="btn btn-primary" type="button">Lihat Jadwal Saya</button>
+          </div>
+
+          <div id="scheduleOutput" class="schedule-output hidden">
+            <div class="schedule-head">
+              <h3>Estimasi Jadwal Kunjungan Bunda</h3>
+              <p id="scheduleHpl" class="muted"></p>
+            </div>
+            <ul id="scheduleList" class="schedule-list"></ul>
+            <p class="schedule-footnote">*Jadwal ini adalah estimasi. Ikuti arahan bidan/dokter saat kontrol.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section id="daftar" class="section section-sage fade-up">
       <div class="container">
         <div class="section-head">
@@ -1354,6 +1466,32 @@
               <label for="wa">Nomor WhatsApp</label>
               <input id="wa" name="wa" type="tel" placeholder="08xxxxxxxxxx" required />
               <small class="form-note">Kami akan konfirmasi via WhatsApp</small>
+            </div>
+
+            <div class="field">
+              <label for="usiaIbu">Usia Ibu</label>
+              <input id="usiaIbu" name="usiaIbu" type="number" placeholder="Contoh: 27" required />
+            </div>
+
+            <div class="field">
+              <label for="alamat">Alamat</label>
+              <textarea id="alamat" name="alamat" rows="2" placeholder="Alamat lengkap" required></textarea>
+            </div>
+
+            <div class="field">
+              <label for="gpa">GPa (Kehamilan ke berapa)</label>
+              <input id="gpa" name="gpa" type="number" min="1" placeholder="Contoh: 2" required />
+            </div>
+
+            <div class="field">
+              <label for="hpht">HPHT</label>
+              <input id="hpht" name="hpht" type="date" required />
+              <small id="hphtPreview" class="form-note hidden"></small>
+            </div>
+
+            <div class="field">
+              <label for="kunjunganAnc">Kunjungan ANC Ke-</label>
+              <input id="kunjunganAnc" name="kunjunganAnc" type="number" min="0" placeholder="Contoh: 3" required />
             </div>
 
             <div class="field">
@@ -1818,6 +1956,11 @@
               <th>No</th>
               <th>Nama</th>
               <th>No WA</th>
+              <th>Usia Ibu</th>
+              <th>Alamat</th>
+              <th>GPa</th>
+              <th>HPHT</th>
+              <th>ANC Ke-</th>
               <th>Usia (minggu)</th>
               <th>Trimester</th>
               <th>Tgl Kunjungan</th>
@@ -2629,6 +2772,24 @@
       const trimesterSelect = document.getElementById("trimester");
       const trimesterBadge = document.getElementById("trimesterBadge");
       const tanggalInput = document.getElementById("tanggal");
+      const hphtInput = document.getElementById("hpht");
+      const hphtPreview = document.getElementById("hphtPreview");
+      const hphtScheduleInput = document.getElementById("hphtSchedule");
+      const hphtScheduleBtn = document.getElementById("hphtScheduleBtn");
+      const scheduleOutput = document.getElementById("scheduleOutput");
+      const scheduleList = document.getElementById("scheduleList");
+      const scheduleHpl = document.getElementById("scheduleHpl");
+      const hphtVisitWeeks = [12, 16, 20, 24, 28, 32, 36, 40];
+      const ancSchedule = [
+        { week: 12, trimester: "Trimester 1", label: "Kunjungan 1", note: "Segera setelah tahu positif hamil", badge: "Wajib periksa ke dokter", deadline: true },
+        { week: 16, trimester: "Trimester 2", label: "Kunjungan 2" },
+        { week: 22, trimester: "Trimester 2", label: "Kunjungan 3" },
+        { week: 28, trimester: "Trimester 3", label: "Kunjungan 4" },
+        { week: 32, trimester: "Trimester 3", label: "Kunjungan 5", badge: "Wajib periksa ke dokter" },
+        { week: 34, trimester: "Trimester 3", label: "Kunjungan 6" },
+        { week: 36, trimester: "Trimester 3", label: "Kunjungan 7" },
+        { week: 38, trimester: "Trimester 3", label: "Kunjungan 8" }
+      ];
 
       function detectTrimester(weeks) {
         if (weeks >= 1 && weeks <= 13) return "Trimester 1";
@@ -2641,12 +2802,34 @@
         return date.toISOString().split("T")[0];
       }
 
+      function parseDateFromInput(value) {
+        if (!value) return null;
+        const parts = value.split("-").map((part) => parseInt(part, 10));
+        if (parts.length !== 3 || parts.some((part) => Number.isNaN(part))) return null;
+        const [year, month, day] = parts;
+        return new Date(year, month - 1, day);
+      }
+
+      function formatDateLong(date) {
+        return new Intl.DateTimeFormat("id-ID", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric"
+        }).format(date);
+      }
+
       function setDateRange() {
         const today = new Date();
         const maxDate = new Date();
         maxDate.setDate(today.getDate() + 30);
         tanggalInput.min = formatDateInput(today);
         tanggalInput.max = formatDateInput(maxDate);
+        if (hphtInput) {
+          hphtInput.max = formatDateInput(today);
+        }
+        if (hphtScheduleInput) {
+          hphtScheduleInput.max = formatDateInput(today);
+        }
       }
 
       function updateTrimesterBadge(value) {
@@ -2657,6 +2840,82 @@
         }
         trimesterBadge.textContent = value;
         trimesterBadge.classList.remove("hidden");
+      }
+
+      function updateHphtPreview() {
+        if (!hphtInput || !hphtPreview) return;
+        const hphtDate = parseDateFromInput(hphtInput.value);
+        if (!hphtDate) {
+          hphtPreview.textContent = "";
+          hphtPreview.classList.add("hidden");
+          return;
+        }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const diffDays = Math.floor((today - hphtDate) / 86400000);
+        if (diffDays < 0) {
+          hphtPreview.textContent = "HPHT tidak boleh di masa depan.";
+          hphtPreview.classList.remove("hidden");
+          return;
+        }
+        const weeks = Math.floor(diffDays / 7);
+        if (weeks >= 1 && weeks <= 42) {
+          usiaInput.value = weeks;
+          const tri = detectTrimester(weeks);
+          if (tri) {
+            trimesterSelect.value = tri;
+          }
+          updateTrimesterBadge(tri);
+        }
+
+        const nextWeek = hphtVisitWeeks.find((week) => week > weeks);
+        let nextText = "";
+        if (nextWeek) {
+          const nextDate = new Date(hphtDate.getTime() + nextWeek * 7 * 86400000);
+          nextText = `Estimasi kunjungan berikutnya: ${formatDateLong(nextDate)} (minggu ke-${nextWeek}).`;
+        } else {
+          nextText = "Estimasi kunjungan berikutnya: segera kunjungan ke puskesmas.";
+        }
+
+        const weekText = weeks >= 0 ? `Perkiraan usia kehamilan: ${weeks} minggu.` : "";
+        hphtPreview.textContent = `${weekText} ${nextText}`.trim();
+        hphtPreview.classList.remove("hidden");
+      }
+
+      function renderAncSchedule() {
+        if (!hphtScheduleInput || !scheduleOutput || !scheduleList || !scheduleHpl) return;
+        const hphtDate = parseDateFromInput(hphtScheduleInput.value);
+        if (!hphtDate) {
+          scheduleOutput.classList.add("hidden");
+          scheduleList.innerHTML = "";
+          scheduleHpl.textContent = "";
+          return;
+        }
+
+        const hplDate = new Date(hphtDate.getTime() + 40 * 7 * 86400000);
+        scheduleHpl.textContent = `Hari Perkiraan Lahir (HPL): ${formatDateLong(hplDate)}`;
+        scheduleList.innerHTML = ancSchedule
+          .map((item) => {
+            const targetDate = new Date(hphtDate.getTime() + item.week * 7 * 86400000);
+            const dateText = formatDateLong(targetDate);
+            const dateLine = item.deadline
+              ? `Paling lambat: ${dateText} (maksimal usia ${item.week} minggu)`
+              : `Sekitar ${dateText}`;
+            return `
+              <li class="schedule-item">
+                <div class="schedule-item-head">
+                  <strong>${item.label} <span class="schedule-tri">(${item.trimester})</span></strong>
+                  ${item.badge ? `<span class="schedule-pill">${item.badge}</span>` : ""}
+                </div>
+                ${item.note ? `<div class="schedule-note-inline">${item.note}</div>` : ""}
+                <div>Usia ${item.week} minggu</div>
+                <div class="schedule-date">${dateLine}</div>
+              </li>
+            `;
+          })
+          .join("");
+
+        scheduleOutput.classList.remove("hidden");
       }
 
       function setLoading(isLoading) {
@@ -2703,8 +2962,8 @@
       }
 
       function exportCSV(data) {
-        const cols = ["nama_lengkap", "no_hp", "usia_kehamilan", "trimester", "keluhan", "tanggal_kunjungan", "created_at"];
-        const header = ["Nama", "No WA", "Usia (minggu)", "Trimester", "Keluhan", "Tgl Kunjungan", "Waktu Daftar"];
+        const cols = ["nama_lengkap", "no_hp", "usia_ibu", "alamat", "gpa", "hpht", "kunjungan_anc_ke", "usia_kehamilan", "trimester", "keluhan", "tanggal_kunjungan", "created_at"];
+        const header = ["Nama", "No WA", "Usia Ibu", "Alamat", "GPa", "HPHT", "ANC Ke-", "Usia (minggu)", "Trimester", "Keluhan", "Tgl Kunjungan", "Waktu Daftar"];
         const rows = data.map((row) =>
           cols.map((c) => `"${(row[c] || "").toString().replace(/"/g, '""')}"`).join(",")
         );
@@ -2728,6 +2987,19 @@
         updateTrimesterBadge(trimesterSelect.value);
       });
 
+      if (hphtInput) {
+        hphtInput.addEventListener("change", updateHphtPreview);
+      }
+
+      if (hphtScheduleInput) {
+        hphtScheduleInput.addEventListener("change", renderAncSchedule);
+        hphtScheduleInput.addEventListener("input", renderAncSchedule);
+      }
+
+      if (hphtScheduleBtn) {
+        hphtScheduleBtn.addEventListener("click", renderAncSchedule);
+      }
+
       setDateRange();
 
       form.addEventListener("submit", async (event) => {
@@ -2737,13 +3009,18 @@
         const data = {
           nama_lengkap: form.nama.value.trim(),
           no_hp: form.wa.value.trim(),
+          usia_ibu: parseInt(form.usiaIbu.value, 10),
+          alamat: form.alamat.value.trim(),
+          gpa: parseInt(form.gpa.value, 10),
+          hpht: form.hpht.value,
+          kunjungan_anc_ke: parseInt(form.kunjunganAnc.value, 10),
           usia_kehamilan: parseInt(form.usia.value, 10),
           trimester: form.trimester.value,
           tanggal_kunjungan: form.tanggal.value,
           keluhan: form.keluhan.value.trim()
         };
 
-        if (!data.nama_lengkap || !data.no_hp || !data.usia_kehamilan || !data.trimester || !data.tanggal_kunjungan) {
+        if (!data.nama_lengkap || !data.no_hp || !data.usia_ibu || !data.alamat || !data.gpa || !data.hpht || (Number.isNaN(data.kunjungan_anc_ke)) || !data.usia_kehamilan || !data.trimester || !data.tanggal_kunjungan) {
           formError.textContent = "Mohon lengkapi semua data wajib.";
           formError.classList.remove("hidden");
           return;
@@ -3113,6 +3390,11 @@
                 <td>${start + index + 1}</td>
                 <td>${row.nama_lengkap}</td>
                 <td>${row.no_hp}</td>
+                <td>${row.usia_ibu || "-"}</td>
+                <td>${row.alamat || "-"}</td>
+                <td>${row.gpa || "-"}</td>
+                <td>${row.hpht || "-"}</td>
+                <td>${row.kunjungan_anc_ke ?? "-"}</td>
                 <td>${row.usia_kehamilan}</td>
                 <td>${row.trimester}</td>
                 <td>${row.tanggal_kunjungan}</td>
