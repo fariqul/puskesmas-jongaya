@@ -1341,6 +1341,44 @@
         align-items: center;
       }
     }
+    .user-notification-banner {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(120px);
+      width: min(380px, 92%);
+      background: #FFF9F3;
+      border: 2px solid var(--blush);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 10px 25px rgba(242, 167, 160, 0.25);
+      z-index: 99;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .user-notification-banner.is-visible {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .user-notification-content {
+      flex: 1;
+      font-size: var(--fs-sm);
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    .user-notification-close {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 0;
+      line-height: 1;
+    }
   </style>
 </head>
 <body>
@@ -2856,7 +2894,10 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      loadSiteContent().then(() => initHeroCarousel(true));
+      loadSiteContent().then(() => {
+        initHeroCarousel(true);
+        checkUserNotification();
+      });
       const menuBtn = document.getElementById("menuBtn");
       const bottomSheet = document.getElementById("bottomSheet");
       const sheetBackdrop = document.getElementById("sheetBackdrop");
@@ -3232,6 +3273,20 @@
         try {
           setLoading(true);
           await submitPendaftaran(data);
+          
+          try {
+            localStorage.setItem("macca_last_registration", JSON.stringify({
+              nama_lengkap: data.nama_lengkap,
+              tanggal_kunjungan: data.tanggal_kunjungan
+            }));
+            
+            if ("Notification" in window && Notification.permission === "default") {
+              Notification.requestPermission();
+            }
+          } catch (e) {
+            // ignore localStorage blocks
+          }
+
           form.classList.add("hidden");
           formSuccess.classList.remove("hidden");
         } catch (err) {
@@ -3289,6 +3344,7 @@
       const ADMIN_REFRESH_BUFFER = 60000;
       let confirmResolve = null;
       let editorMode = "form";
+      let adminPollInterval = null;
 
       const state = {
         data: [],
@@ -3533,12 +3589,140 @@
         adminPass.value = "";
       }
 
+      function playNotificationSound() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const osc1 = ctx.createOscillator();
+          const gain1 = ctx.createGain();
+          osc1.type = "sine";
+          osc1.frequency.setValueAtTime(587.33, ctx.currentTime);
+          gain1.gain.setValueAtTime(0.08, ctx.currentTime);
+          gain1.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+          osc1.connect(gain1);
+          gain1.connect(ctx.destination);
+          osc1.start();
+          osc1.stop(ctx.currentTime + 0.15);
+
+          setTimeout(() => {
+            const osc2 = ctx.createOscillator();
+            const gain2 = ctx.createGain();
+            osc2.type = "sine";
+            osc2.frequency.setValueAtTime(880.00, ctx.currentTime);
+            gain2.gain.setValueAtTime(0.08, ctx.currentTime);
+            gain2.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+            osc2.connect(gain2);
+            gain2.connect(ctx.destination);
+            osc2.start();
+            osc2.stop(ctx.currentTime + 0.15);
+          }, 120);
+        } catch (err) {
+          // ignore Web Audio blocks
+        }
+      }
+
+      async function pollNewRegistrations() {
+        try {
+          const freshData = await fetchData();
+          if (Array.isArray(freshData) && state.data.length > 0) {
+            const existingIds = new Set(state.data.map(item => item.id));
+            const newItems = freshData.filter(item => !existingIds.has(item.id));
+            
+            if (newItems.length > 0) {
+              playNotificationSound();
+              newItems.forEach(item => {
+                showToast("success", `🔔 Pendaftar Baru: ${item.nama_lengkap} (${item.trimester})`);
+              });
+              
+              state.data = freshData;
+              renderStats();
+              applyFilters();
+            }
+          } else if (Array.isArray(freshData)) {
+            state.data = freshData;
+          }
+        } catch (err) {
+          // silent fail
+        }
+      }
+
+      function formatIndoDate(dateStr) {
+        if (!dateStr) return "";
+        try {
+          const parts = dateStr.split("-");
+          if (parts.length === 3) {
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const year = parts[0];
+            const month = months[parseInt(parts[1], 10) - 1];
+            const day = parseInt(parts[2], 10);
+            return `${day} ${month} ${year}`;
+          }
+          return dateStr;
+        } catch (e) {
+          return dateStr;
+        }
+      }
+
+      function checkUserNotification() {
+        const raw = localStorage.getItem("macca_last_registration");
+        if (!raw) return;
+        
+        try {
+          const reg = JSON.parse(raw);
+          if (!reg.tanggal_kunjungan) return;
+          
+          const visitDate = new Date(reg.tanggal_kunjungan);
+          const today = new Date();
+          today.setHours(0,0,0,0);
+          visitDate.setHours(0,0,0,0);
+          
+          const diffTime = visitDate - today;
+          const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+          
+          if (diffDays >= 1 && diffDays <= 3) {
+            const banner = document.createElement("div");
+            banner.className = "user-notification-banner";
+            banner.innerHTML = `
+              <div style="font-size: 24px; line-height: 1;">🤰</div>
+              <div class="user-notification-content">
+                <strong>Tabe' Ibu ${reg.nama_lengkap},</strong><br>
+                Jadwal pemeriksaan ANC Ibu tinggal <strong>${diffDays} hari lagi</strong> (${formatIndoDate(reg.tanggal_kunjungan)}). Jangan lupa datang ke Puskesmas Jongaya nah! ❤️
+              </div>
+              <button class="user-notification-close" type="button" aria-label="Tutup">×</button>
+            `;
+            
+            document.body.appendChild(banner);
+            
+            setTimeout(() => {
+              banner.classList.add("is-visible");
+            }, 100);
+            
+            banner.querySelector(".user-notification-close").addEventListener("click", () => {
+              banner.classList.remove("is-visible");
+              setTimeout(() => banner.remove(), 400);
+            });
+            
+            if ("Notification" in window && Notification.permission === "granted") {
+              new Notification("Jadwal ANC Puskesmas Jongaya", {
+                body: `Tabe' Ibu, jadwal kunjungan ANC Ibu ${diffDays} hari lagi (${formatIndoDate(reg.tanggal_kunjungan)}). Janganki' lupa nah!`,
+                icon: "puskesmas-logo-png_seeklogo-359624.png"
+              });
+            }
+          }
+        } catch (err) {
+          // ignore
+        }
+      }
+
       function showAdmin() {
         document.getElementById("navbar").classList.add("hidden");
         main.classList.add("hidden");
         footer.classList.add("hidden");
         adminDashboard.classList.remove("hidden");
         window.scrollTo(0, 0);
+        
+        if (!adminPollInterval) {
+          adminPollInterval = setInterval(pollNewRegistrations, 10000);
+        }
       }
 
       function hideAdmin() {
@@ -3546,6 +3730,11 @@
         main.classList.remove("hidden");
         footer.classList.remove("hidden");
         adminDashboard.classList.add("hidden");
+        
+        if (adminPollInterval) {
+          clearInterval(adminPollInterval);
+          adminPollInterval = null;
+        }
       }
 
       function renderStats() {
