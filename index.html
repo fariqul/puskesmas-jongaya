@@ -2321,64 +2321,24 @@
     function buildInfoSlide(item) {
       const slide = document.createElement("article");
       slide.className = "infografis-card infografis-slide";
+      slide.style.padding = "0";
 
       const media = document.createElement("div");
       media.className = "info-media";
+      media.style.borderRadius = "0";
 
       const img = document.createElement("img");
       const src = typeof item?.image === "string" ? item.image.trim() : "";
       if (src) {
         img.src = src;
-        img.alt = item?.alt || "";
+        img.alt = item?.alt || item?.title || "Poster";
         media.appendChild(img);
       } else {
         slide.classList.add("is-empty");
+        slide.style.padding = "16px";
         media.textContent = "Poster belum diisi.";
       }
       slide.appendChild(media);
-
-      const body = document.createElement("div");
-      body.className = "info-body";
-
-      if (item?.kind === "edukasi") {
-        if (item.badge) {
-          const badge = document.createElement("span");
-          badge.className = `badge ${item.badgeClass || "badge-sage"}`;
-          badge.textContent = item.badge;
-          body.appendChild(badge);
-        }
-        if (item.title) {
-          const title = document.createElement("h3");
-          title.className = "info-title";
-          title.textContent = item.title;
-          body.appendChild(title);
-        }
-        if (Array.isArray(item.points) && item.points.some(Boolean)) {
-          const list = document.createElement("ul");
-          list.className = "card-points";
-          item.points.filter(Boolean).forEach((point) => {
-            const li = document.createElement("li");
-            li.textContent = `• ${point}`;
-            list.appendChild(li);
-          });
-          body.appendChild(list);
-        }
-        if (item.note) {
-          const note = document.createElement("p");
-          note.className = "card-note";
-          note.textContent = item.note;
-          body.appendChild(note);
-        }
-      } else {
-        const caption = document.createElement("p");
-        caption.className = "infografis-caption";
-        caption.textContent = item?.caption || "Poster belum diisi. Upload lewat panel super admin.";
-        body.appendChild(caption);
-      }
-
-      if (body.childElementCount) {
-        slide.appendChild(body);
-      }
       return slide;
     }
 
