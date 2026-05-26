@@ -446,7 +446,8 @@
       }
 
       .hero-actions {
-        grid-template-columns: auto auto;
+        grid-auto-flow: column;
+        grid-auto-columns: max-content;
         width: fit-content;
       }
 
@@ -742,6 +743,18 @@
       justify-content: space-between;
       gap: 10px;
       margin-top: 6px;
+    }
+
+    .gpa-grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    }
+
+    .gpa-sub {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+      font-weight: 600;
     }
 
     .btn-submit {
@@ -1257,6 +1270,13 @@
             </svg>
             <span id="heroPrimaryText">Daftar Periksa</span>
           </a>
+          <a class="btn btn-outline" href="#jadwal-anc">
+            <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M12 7v5l3 2"></path>
+            </svg>
+            <span>Lihat Jadwal ANC</span>
+          </a>
           <a class="btn btn-outline" href="#edukasi">
             <svg class="icon-svg icon-svg--lg" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <circle cx="12" cy="12" r="9"></circle>
@@ -1479,8 +1499,22 @@
             </div>
 
             <div class="field">
-              <label for="gpa">GPa (Kehamilan ke berapa)</label>
-              <input id="gpa" name="gpa" type="number" min="1" placeholder="Contoh: 2" required />
+              <label>GPa (Riwayat Kehamilan)</label>
+              <div class="gpa-grid">
+                <div class="gpa-item">
+                  <label for="gpaG" class="gpa-sub">G (hamil ke-)</label>
+                  <input id="gpaG" name="gpaG" type="number" min="1" placeholder="1" required />
+                </div>
+                <div class="gpa-item">
+                  <label for="gpaP" class="gpa-sub">P (kali melahirkan)</label>
+                  <input id="gpaP" name="gpaP" type="number" min="0" placeholder="0" required />
+                </div>
+                <div class="gpa-item">
+                  <label for="gpaA" class="gpa-sub">A (kali keguguran)</label>
+                  <input id="gpaA" name="gpaA" type="number" min="0" placeholder="0" required />
+                </div>
+              </div>
+              <small class="form-note">Contoh: G1P1A0</small>
             </div>
 
             <div class="field">
@@ -3011,7 +3045,7 @@
           no_hp: form.wa.value.trim(),
           usia_ibu: parseInt(form.usiaIbu.value, 10),
           alamat: form.alamat.value.trim(),
-          gpa: parseInt(form.gpa.value, 10),
+          gpa: "",
           hpht: form.hpht.value,
           kunjungan_anc_ke: parseInt(form.kunjunganAnc.value, 10),
           usia_kehamilan: parseInt(form.usia.value, 10),
@@ -3019,6 +3053,13 @@
           tanggal_kunjungan: form.tanggal.value,
           keluhan: form.keluhan.value.trim()
         };
+
+        const g = parseInt(form.gpaG.value, 10);
+        const p = parseInt(form.gpaP.value, 10);
+        const a = parseInt(form.gpaA.value, 10);
+        if (!Number.isNaN(g) && !Number.isNaN(p) && !Number.isNaN(a)) {
+          data.gpa = `G${g}P${p}A${a}`;
+        }
 
         if (!data.nama_lengkap || !data.no_hp || !data.usia_ibu || !data.alamat || !data.gpa || !data.hpht || (Number.isNaN(data.kunjungan_anc_ke)) || !data.usia_kehamilan || !data.trimester || !data.tanggal_kunjungan) {
           formError.textContent = "Mohon lengkapi semua data wajib.";
