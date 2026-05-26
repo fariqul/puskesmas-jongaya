@@ -486,9 +486,28 @@
       gap: 20px;
     }
 
-    .infografis-grid {
+    .infografis-carousel {
       display: grid;
-      gap: 20px;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(220px, 70%);
+      gap: 16px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 6px;
+      align-items: start;
+    }
+
+    .infografis-carousel::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .infografis-carousel::-webkit-scrollbar-thumb {
+      background: #F4B7C9;
+      border-radius: 999px;
+    }
+
+    .infografis-slide {
+      scroll-snap-align: start;
     }
 
     .infografis-card {
@@ -496,35 +515,57 @@
       border-radius: 16px;
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
       overflow: hidden;
-      display: grid;
+      display: flex;
+      flex-direction: column;
       gap: 12px;
       padding: 16px;
+      height: fit-content;
     }
 
     .infografis-card.is-empty {
       border: 1px dashed var(--border);
       background: #FAFAFA;
-      justify-items: center;
-      text-align: center;
-      min-height: 220px;
-      align-content: center;
     }
 
-    .infografis-card.is-empty img {
-      display: none;
-    }
-
-    .infografis-card img {
-      width: 100%;
-      height: auto;
+    .info-media {
       border-radius: 12px;
       background: #F7F1F6;
+      overflow: hidden;
+      height: auto;
+      display: flex;
     }
+
+    .info-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .infografis-card.is-empty .info-media {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+      min-height: 220px;
+    }
+
 
     .infografis-caption {
       margin: 0;
       color: var(--text-muted);
       font-size: var(--fs-sm);
+    }
+
+    .info-body {
+      display: grid;
+      gap: 8px;
+    }
+
+    .info-title {
+      margin: 0;
+      font-size: var(--fs-md);
+      font-weight: 700;
     }
 
     .card {
@@ -605,8 +646,8 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
-      .infografis-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .infografis-carousel {
+        grid-auto-columns: minmax(240px, 300px);
       }
     }
 
@@ -755,6 +796,88 @@
       font-size: var(--fs-xs);
       color: var(--text-muted);
       font-weight: 600;
+    }
+
+    .info-list-wrap {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-list-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .info-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .info-row {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .info-row-empty {
+      padding: 12px;
+      border: 1px dashed var(--border);
+      border-radius: 12px;
+      color: var(--text-muted);
+      background: #FAFAFA;
+      text-align: center;
+    }
+
+    .info-row-thumb {
+      width: 54px;
+      height: 54px;
+      border-radius: 10px;
+      background: #F7F1F6;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+      text-align: center;
+      padding: 4px;
+    }
+
+    .info-row-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .info-row-meta strong {
+      display: block;
+      font-size: var(--fs-sm);
+      margin-bottom: 2px;
+    }
+
+    .info-row-meta div {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    .info-row-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .info-row-actions .btn {
+      min-height: 32px;
+      padding: 0 10px;
+      font-size: var(--fs-xs);
     }
 
     .btn-submit {
@@ -1297,144 +1420,7 @@
           <p id="edukasiSubtitle">Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
         </div>
 
-        <div class="cards">
-          <article class="card" data-edu-card="0">
-            <img data-edu-image src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?w=600&q=75" alt="Pemeriksaan kehamilan" loading="lazy" />
-            <div class="card-body">
-              <span class="badge badge-sage" data-edu-badge>TRIMESTER 1-2-3</span>
-              <h3 data-edu-title>Periksa Minimal 8 Kali Selama Hamil</h3>
-              <ul class="card-points">
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="0">1x Trimester 1 - USG skrining awal</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="1">2x Trimester 2 - Pantau detak jantung bayi</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="2">5x Trimester 3 - Persiapan menjelang lahiran</span>
-                </li>
-              </ul>
-              <p class="card-note" data-edu-note><em>Tabe' Ibu, ini aturan baru Kemenkes ya!</em></p>
-            </div>
-          </article>
-
-          <article class="card" data-edu-card="1">
-            <img data-edu-image src="https://images.unsplash.com/photo-1550572017-edd951b55104?w=600&q=75" alt="Tablet tambah darah" loading="lazy" />
-            <div class="card-body">
-              <span class="badge badge-blush" data-edu-badge>NUTRISI</span>
-              <h3 data-edu-title>Jangan Stop Minum Tablet Tambah Darah!</h3>
-              <ul class="card-points">
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="0">90 butir wajib habis selama hamil</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="1">Cegah anemia saat persalinan</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="2">Lindungi bayi dari stunting</span>
-                </li>
-              </ul>
-              <p class="card-note" data-edu-note><em>Minum rutin, jangan bolong-bolong nah!</em></p>
-            </div>
-          </article>
-
-          <article class="card" data-edu-card="2">
-            <img data-edu-image src="https://images.unsplash.com/photo-1576671081837-49000212a370?w=600&q=75" alt="Pemeriksaan trimester 3" loading="lazy" />
-            <div class="card-body">
-              <span class="badge badge-dark" data-edu-badge>TRIMESTER 3</span>
-              <h3 data-edu-title>Trimester 3: Masa Paling Kritis!</h3>
-              <ul class="card-points">
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="0">Posisi bayi - sungsang atau sudah masuk panggul?</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="1">Air ketuban - masih jernih atau keruh?</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="2">Tekanan darah - waspada preeklampsia!</span>
-                </li>
-              </ul>
-              <p class="card-note" data-edu-note><em>Jangan malas periksa ya, ini masa yang paling penting!</em></p>
-            </div>
-          </article>
-
-          <article class="card" data-edu-card="3">
-            <img data-edu-image src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=75" alt="Dukungan suami" loading="lazy" />
-            <div class="card-body">
-              <span class="badge badge-warm" data-edu-badge>UNTUK SUAMI</span>
-              <h3 data-edu-title>Suami Siap ANTAR JAGA</h3>
-              <ul class="card-points">
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="0">Antar - temani istri setiap kontrol dan USG</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="1">Jaga - jaga kondisi mental, jangan buat stres</span>
-                </li>
-                <li>
-                  <svg class="icon-svg icon-svg--sm" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <circle cx="12" cy="12" r="3"></circle>
-                  </svg>
-                  <span data-edu-point="2">Siap - hafal tanggal HPL istri</span>
-                </li>
-              </ul>
-              <p class="card-note" data-edu-note><em>Janganki' biarkan istri berjuang sendiri, kodong!</em></p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section id="infografis" class="section fade-up">
-      <div class="container">
-        <div class="section-head">
-          <div id="infografisLabel" class="label">INFO BERGAMBAR</div>
-          <h2 id="infografisTitle">Poster Kesehatan Ibu Hamil</h2>
-          <p id="infografisSubtitle">Ringkasan penting yang mudah dipahami.</p>
-        </div>
-
-        <div class="infografis-grid">
-          <figure id="infografisCard0" class="infografis-card">
-            <img id="infografisImage0" alt="" />
-            <figcaption id="infografisCaption0" class="infografis-caption"></figcaption>
-          </figure>
-          <figure id="infografisCard1" class="infografis-card">
-            <img id="infografisImage1" alt="" />
-            <figcaption id="infografisCaption1" class="infografis-caption"></figcaption>
-          </figure>
-        </div>
+        <div id="infoCarousel" class="infografis-carousel info-carousel" aria-live="polite"></div>
       </div>
     </section>
 
@@ -1696,6 +1682,66 @@
     </div>
   </div>
 
+  <div id="eduCardModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eduModalTitle">
+    <div class="modal-card" style="width: min(560px, 95%); max-height: 90vh; overflow-y: auto;">
+      <h3 id="eduModalTitle">Edit Kartu Edukasi</h3>
+      <p class="modal-hint">Isi informasi kartu edukasi di bawah ini.</p>
+      
+      <input type="hidden" id="eduEditIndex" value="" />
+      
+      <div class="field" style="margin-top: 12px;">
+        <label for="eduEditImage">URL Gambar</label>
+        <input id="eduEditImage" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditFile">Upload Gambar Lokal</label>
+        <input id="eduEditFile" type="file" accept="image/*" />
+        <small class="form-note">File lokal akan dikonversi menjadi Data URL.</small>
+      </div>
+      
+      <div class="field">
+        <label for="eduEditAlt">Alt Gambar</label>
+        <input id="eduEditAlt" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditBadge">Badge (Trimester/Nutrisi/dll)</label>
+        <input id="eduEditBadge" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditTitle">Judul Kartu</label>
+        <input id="eduEditTitle" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditPoint0">Poin 1 (Opsional)</label>
+        <input id="eduEditPoint0" type="text" placeholder="Contoh: 1x Trimester 1 - USG skrining awal" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditPoint1">Poin 2 (Opsional)</label>
+        <input id="eduEditPoint1" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditPoint2">Poin 3 (Opsional)</label>
+        <input id="eduEditPoint2" type="text" />
+      </div>
+      
+      <div class="field">
+        <label for="eduEditNote">Catatan kecil / Footnote</label>
+        <input id="eduEditNote" type="text" placeholder="Contoh: Tabe' Ibu, ini aturan baru..." />
+      </div>
+      
+      <div class="modal-actions">
+        <button id="eduCardSave" class="btn btn-primary" type="button">Simpan</button>
+        <button id="eduCardCancel" class="btn btn-ghost" type="button">Batal</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
   <section id="adminDashboard" class="admin hidden">
@@ -1812,88 +1858,12 @@
                 <input id="formEduSubtitle" type="text" />
               </div>
             </div>
-            <div class="content-section">
-              <h4>Kartu Edukasi 1</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formEduImage0">URL Gambar</label><input id="formEduImage0" type="text" /></div>
-                <div class="field"><label for="formEduFile0">Upload Gambar Lokal</label><input id="formEduFile0" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formEduAlt0">Alt Gambar</label><input id="formEduAlt0" type="text" /></div>
-                <div class="field"><label for="formEduBadge0">Badge</label><input id="formEduBadge0" type="text" /></div>
-                <div class="field"><label for="formEduTitle0">Judul</label><input id="formEduTitle0" type="text" /></div>
-                <div class="field"><label for="formEduPoint0_0">Poin 1</label><input id="formEduPoint0_0" type="text" /></div>
-                <div class="field"><label for="formEduPoint0_1">Poin 2</label><input id="formEduPoint0_1" type="text" /></div>
-                <div class="field"><label for="formEduPoint0_2">Poin 3</label><input id="formEduPoint0_2" type="text" /></div>
-                <div class="field"><label for="formEduNote0">Catatan</label><input id="formEduNote0" type="text" /></div>
+            <div class="info-list-wrap" style="margin-top: 16px;">
+              <div class="info-list-head">
+                <strong>Daftar Kartu Edukasi</strong>
+                <button id="eduAddItem" class="btn btn-ghost" type="button">Tambah Kartu</button>
               </div>
-            </div>
-            <div class="content-section">
-              <h4>Kartu Edukasi 2</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formEduImage1">URL Gambar</label><input id="formEduImage1" type="text" /></div>
-                <div class="field"><label for="formEduFile1">Upload Gambar Lokal</label><input id="formEduFile1" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formEduAlt1">Alt Gambar</label><input id="formEduAlt1" type="text" /></div>
-                <div class="field"><label for="formEduBadge1">Badge</label><input id="formEduBadge1" type="text" /></div>
-                <div class="field"><label for="formEduTitle1">Judul</label><input id="formEduTitle1" type="text" /></div>
-                <div class="field"><label for="formEduPoint1_0">Poin 1</label><input id="formEduPoint1_0" type="text" /></div>
-                <div class="field"><label for="formEduPoint1_1">Poin 2</label><input id="formEduPoint1_1" type="text" /></div>
-                <div class="field"><label for="formEduPoint1_2">Poin 3</label><input id="formEduPoint1_2" type="text" /></div>
-                <div class="field"><label for="formEduNote1">Catatan</label><input id="formEduNote1" type="text" /></div>
-              </div>
-            </div>
-            <div class="content-section">
-              <h4>Kartu Edukasi 3</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formEduImage2">URL Gambar</label><input id="formEduImage2" type="text" /></div>
-                <div class="field"><label for="formEduFile2">Upload Gambar Lokal</label><input id="formEduFile2" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formEduAlt2">Alt Gambar</label><input id="formEduAlt2" type="text" /></div>
-                <div class="field"><label for="formEduBadge2">Badge</label><input id="formEduBadge2" type="text" /></div>
-                <div class="field"><label for="formEduTitle2">Judul</label><input id="formEduTitle2" type="text" /></div>
-                <div class="field"><label for="formEduPoint2_0">Poin 1</label><input id="formEduPoint2_0" type="text" /></div>
-                <div class="field"><label for="formEduPoint2_1">Poin 2</label><input id="formEduPoint2_1" type="text" /></div>
-                <div class="field"><label for="formEduPoint2_2">Poin 3</label><input id="formEduPoint2_2" type="text" /></div>
-                <div class="field"><label for="formEduNote2">Catatan</label><input id="formEduNote2" type="text" /></div>
-              </div>
-            </div>
-            <div class="content-section">
-              <h4>Kartu Edukasi 4</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formEduImage3">URL Gambar</label><input id="formEduImage3" type="text" /></div>
-                <div class="field"><label for="formEduFile3">Upload Gambar Lokal</label><input id="formEduFile3" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formEduAlt3">Alt Gambar</label><input id="formEduAlt3" type="text" /></div>
-                <div class="field"><label for="formEduBadge3">Badge</label><input id="formEduBadge3" type="text" /></div>
-                <div class="field"><label for="formEduTitle3">Judul</label><input id="formEduTitle3" type="text" /></div>
-                <div class="field"><label for="formEduPoint3_0">Poin 1</label><input id="formEduPoint3_0" type="text" /></div>
-                <div class="field"><label for="formEduPoint3_1">Poin 2</label><input id="formEduPoint3_1" type="text" /></div>
-                <div class="field"><label for="formEduPoint3_2">Poin 3</label><input id="formEduPoint3_2" type="text" /></div>
-                <div class="field"><label for="formEduNote3">Catatan</label><input id="formEduNote3" type="text" /></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="content-section">
-            <h4>Poster Infografis</h4>
-            <div class="content-grid">
-              <div class="field"><label for="formInfoLabel">Label</label><input id="formInfoLabel" type="text" /></div>
-              <div class="field"><label for="formInfoTitle">Judul</label><input id="formInfoTitle" type="text" /></div>
-              <div class="field"><label for="formInfoSubtitle">Subjudul</label><input id="formInfoSubtitle" type="text" /></div>
-            </div>
-            <div class="content-section">
-              <h4>Poster 1</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formInfoImage0">URL Gambar</label><input id="formInfoImage0" type="text" /></div>
-                <div class="field"><label for="formInfoFile0">Upload Gambar Lokal</label><input id="formInfoFile0" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formInfoAlt0">Alt Gambar</label><input id="formInfoAlt0" type="text" /></div>
-                <div class="field"><label for="formInfoCaption0">Caption</label><input id="formInfoCaption0" type="text" /></div>
-              </div>
-            </div>
-            <div class="content-section">
-              <h4>Poster 2</h4>
-              <div class="content-grid">
-                <div class="field"><label for="formInfoImage1">URL Gambar</label><input id="formInfoImage1" type="text" /></div>
-                <div class="field"><label for="formInfoFile1">Upload Gambar Lokal</label><input id="formInfoFile1" type="file" accept="image/*" /></div>
-                <div class="field"><label for="formInfoAlt1">Alt Gambar</label><input id="formInfoAlt1" type="text" /></div>
-                <div class="field"><label for="formInfoCaption1">Caption</label><input id="formInfoCaption1" type="text" /></div>
-              </div>
+              <div id="eduListEditor" class="info-list"></div>
             </div>
           </div>
 
@@ -2116,25 +2086,30 @@
               "Siap - hafal tanggal HPL istri"
             ],
             note: "Janganki' biarkan istri berjuang sendiri, kodong!"
-          }
-        ]
-      },
-      infografis: {
-        label: "INFO BERGAMBAR",
-        title: "Poster Kesehatan Ibu Hamil",
-        subtitle: "Ringkasan penting yang mudah dipahami.",
-        items: [
+          },
           {
             image: "assets/infografis/WhatsApp%20Image%202026-05-21%20at%2016.10.31%20(1).jpeg",
             alt: "Tanda bahaya selama kehamilan",
-            caption: "Tanda bahaya selama kehamilan"
+            badge: "TANDA BAHAYA",
+            title: "Tanda Bahaya Selama Kehamilan",
+            points: [],
+            note: "Kenali sejak dini demi keselamatan ibu dan bayi."
           },
           {
             image: "assets/infografis/WhatsApp%20Image%202026-05-21%20at%2016.10.31.jpeg",
             alt: "Persiapan pra persalinan",
-            caption: "Persiapan pra persalinan"
+            badge: "PERSIAPAN",
+            title: "Persiapan Pra Persalinan",
+            points: [],
+            note: "Siapkan kebutuhan persalinan sebelum hari H."
           }
         ]
+      },
+      infografis: {
+        label: "",
+        title: "",
+        subtitle: "",
+        items: []
       },
       daftar: {
         label: "DAFTAR ONLINE",
@@ -2166,12 +2141,15 @@
     let siteContent = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     let heroImages = [...DEFAULT_CONTENT.hero.images];
     let carouselTimer = null;
+    let infoCarouselTimer = null;
     const carouselState = {
       slideA: null,
       slideB: null,
       activeIndex: 0,
       isAActive: true
     };
+    const infoCarouselState = { index: 0 };
+    let stateCards = [];
 
     const RUN_TESTS = new URLSearchParams(window.location.search).has("test");
     const TEST_STATE = { status: "pending", message: "" };
@@ -2302,23 +2280,92 @@
       setText(noteEl, cardData.note);
     }
 
-    function applyInfoCard(cardEl, imgEl, captionEl, item) {
-      if (!cardEl || !imgEl) return;
+    function buildInfoSlide(item) {
+      const slide = document.createElement("article");
+      slide.className = "infografis-card infografis-slide";
+
+      const media = document.createElement("div");
+      media.className = "info-media";
+
+      const img = document.createElement("img");
       const src = typeof item?.image === "string" ? item.image.trim() : "";
-      cardEl.classList.remove("hidden");
       if (src) {
-        imgEl.src = src;
-        imgEl.alt = item.alt || "";
-        cardEl.classList.remove("is-empty");
-        setText(captionEl, item?.caption || "");
-        return true;
+        img.src = src;
+        img.alt = item?.alt || "";
+        media.appendChild(img);
       } else {
-        imgEl.removeAttribute("src");
-        imgEl.alt = "";
-        cardEl.classList.add("is-empty");
-        setText(captionEl, item?.caption || "Poster belum diisi. Upload lewat panel super admin.");
-        return false;
+        slide.classList.add("is-empty");
+        media.textContent = "Poster belum diisi.";
       }
+      slide.appendChild(media);
+
+      const body = document.createElement("div");
+      body.className = "info-body";
+
+      if (item?.kind === "edukasi") {
+        if (item.badge) {
+          const badge = document.createElement("span");
+          badge.className = `badge ${item.badgeClass || "badge-sage"}`;
+          badge.textContent = item.badge;
+          body.appendChild(badge);
+        }
+        if (item.title) {
+          const title = document.createElement("h3");
+          title.className = "info-title";
+          title.textContent = item.title;
+          body.appendChild(title);
+        }
+        if (Array.isArray(item.points) && item.points.some(Boolean)) {
+          const list = document.createElement("ul");
+          list.className = "card-points";
+          item.points.filter(Boolean).forEach((point) => {
+            const li = document.createElement("li");
+            li.textContent = `• ${point}`;
+            list.appendChild(li);
+          });
+          body.appendChild(list);
+        }
+        if (item.note) {
+          const note = document.createElement("p");
+          note.className = "card-note";
+          note.textContent = item.note;
+          body.appendChild(note);
+        }
+      } else {
+        const caption = document.createElement("p");
+        caption.className = "infografis-caption";
+        caption.textContent = item?.caption || "Poster belum diisi. Upload lewat panel super admin.";
+        body.appendChild(caption);
+      }
+
+      if (body.childElementCount) {
+        slide.appendChild(body);
+      }
+      return slide;
+    }
+
+    function renderInfoCarousel(edukasiCards) {
+      const wrap = document.getElementById("infoCarousel");
+      if (!wrap) return;
+      wrap.innerHTML = "";
+
+      const badgeClasses = ["badge-sage", "badge-blush", "badge-dark", "badge-warm"];
+      const list = Array.isArray(edukasiCards)
+        ? edukasiCards
+            .map((card, index) => ({
+              ...card,
+              kind: "edukasi",
+              badgeClass: badgeClasses[index % badgeClasses.length]
+            }))
+            .filter((item) => item && item.image)
+        : [];
+
+      const renderList = list.length
+        ? list
+        : [{ kind: "edukasi", image: "", title: "Belum ada kartu edukasi." }];
+
+      renderList.forEach((item) => wrap.appendChild(buildInfoSlide(item)));
+      initInfoCarousel(true);
     }
 
     function applyContent(content) {
@@ -2349,32 +2396,7 @@
       setText(document.getElementById("edukasiLabel"), edukasi.label);
       setText(document.getElementById("edukasiTitle"), edukasi.title);
       setText(document.getElementById("edukasiSubtitle"), edukasi.subtitle);
-      const cards = document.querySelectorAll("[data-edu-card]");
-      if (Array.isArray(edukasi.cards)) {
-        edukasi.cards.forEach((cardData, index) => applyEduCard(cards[index], cardData));
-      }
-
-      const infografis = content.infografis || {};
-      setText(document.getElementById("infografisLabel"), infografis.label);
-      setText(document.getElementById("infografisTitle"), infografis.title);
-      setText(document.getElementById("infografisSubtitle"), infografis.subtitle);
-      const infoItems = Array.isArray(infografis.items) ? infografis.items : [];
-      const info0 = applyInfoCard(
-        document.getElementById("infografisCard0"),
-        document.getElementById("infografisImage0"),
-        document.getElementById("infografisCaption0"),
-        infoItems[0] || {}
-      );
-      const info1 = applyInfoCard(
-        document.getElementById("infografisCard1"),
-        document.getElementById("infografisImage1"),
-        document.getElementById("infografisCaption1"),
-        infoItems[1] || {}
-      );
-      const infoSection = document.getElementById("infografis");
-      if (infoSection) {
-        infoSection.classList.remove("hidden");
-      }
+      renderInfoCarousel(edukasi.cards || []);
 
       const daftar = content.daftar || {};
       setText(document.getElementById("daftarLabel"), daftar.label);
@@ -2420,6 +2442,10 @@
         .filter(Boolean);
     }
 
+    function readLinesKeepEmpty(value) {
+      return value.split(/\r?\n/).map((line) => line.trim());
+    }
+
     function readFileAsDataUrl(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -2429,27 +2455,155 @@
       });
     }
 
-    function buildEduCard(index) {
-      return {
-        image: getFormValue(`formEduImage${index}`),
-        alt: getFormValue(`formEduAlt${index}`),
-        badge: getFormValue(`formEduBadge${index}`),
-        title: getFormValue(`formEduTitle${index}`),
-        points: [
-          getFormValue(`formEduPoint${index}_0`),
-          getFormValue(`formEduPoint${index}_1`),
-          getFormValue(`formEduPoint${index}_2`)
-        ],
-        note: getFormValue(`formEduNote${index}`)
-      };
+    const eduListEditor = document.getElementById("eduListEditor");
+    function renderEduListEditor() {
+      if (!eduListEditor) return;
+      eduListEditor.innerHTML = "";
+
+      if (!stateCards.length) {
+        const empty = document.createElement("div");
+        empty.className = "info-row-empty";
+        empty.textContent = "Belum ada kartu edukasi.";
+        eduListEditor.appendChild(empty);
+        return;
+      }
+
+      stateCards.forEach((card, index) => {
+        const row = document.createElement("div");
+        row.className = "info-row";
+
+        const thumb = document.createElement("div");
+        thumb.className = "info-row-thumb";
+        if (card.image) {
+          const img = document.createElement("img");
+          img.src = card.image;
+          img.alt = card.alt || card.title || "Kartu Edukasi";
+          thumb.appendChild(img);
+        } else {
+          thumb.textContent = "No image";
+        }
+
+        const meta = document.createElement("div");
+        meta.className = "info-row-meta";
+        const badgeSpan = card.badge ? `<span style="font-size: 10px; background: var(--sage); color: white; padding: 2px 6px; border-radius: 99px; margin-right: 4px;">${card.badge}</span>` : "";
+        const title = document.createElement("strong");
+        title.innerHTML = `${badgeSpan}${card.title || "(Tanpa judul)"}`;
+        const desc = document.createElement("div");
+        desc.textContent = card.note || (card.points && card.points.filter(Boolean).join(" · ")) || "(Tanpa deskripsi)";
+        meta.appendChild(title);
+        meta.appendChild(desc);
+
+        const actions = document.createElement("div");
+        actions.className = "info-row-actions";
+
+        const upBtn = document.createElement("button");
+        upBtn.className = "btn btn-ghost";
+        upBtn.type = "button";
+        upBtn.textContent = "Naik";
+        upBtn.disabled = index === 0;
+        upBtn.addEventListener("click", () => {
+          const temp = stateCards[index - 1];
+          stateCards[index - 1] = stateCards[index];
+          stateCards[index] = temp;
+          renderEduListEditor();
+          syncContentEditor(buildContentFromForm());
+        });
+
+        const downBtn = document.createElement("button");
+        downBtn.className = "btn btn-ghost";
+        downBtn.type = "button";
+        downBtn.textContent = "Turun";
+        downBtn.disabled = index >= stateCards.length - 1;
+        downBtn.addEventListener("click", () => {
+          const temp = stateCards[index + 1];
+          stateCards[index + 1] = stateCards[index];
+          stateCards[index] = temp;
+          renderEduListEditor();
+          syncContentEditor(buildContentFromForm());
+        });
+
+        const editBtn = document.createElement("button");
+        editBtn.className = "btn btn-ghost";
+        editBtn.type = "button";
+        editBtn.textContent = "Edit";
+        editBtn.addEventListener("click", () => {
+          openEduCardModal(index);
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.className = "btn btn-ghost";
+        deleteBtn.type = "button";
+        deleteBtn.textContent = "Hapus";
+        deleteBtn.addEventListener("click", async () => {
+          if (await openConfirm(`Hapus kartu "${card.title || 'ini'}"?`)) {
+            stateCards.splice(index, 1);
+            renderEduListEditor();
+            syncContentEditor(buildContentFromForm());
+          }
+        });
+
+        actions.appendChild(upBtn);
+        actions.appendChild(downBtn);
+        actions.appendChild(editBtn);
+        actions.appendChild(deleteBtn);
+
+        row.appendChild(thumb);
+        row.appendChild(meta);
+        row.appendChild(actions);
+        eduListEditor.appendChild(row);
+      });
     }
 
-    function buildInfoItem(index) {
-      return {
-        image: getFormValue(`formInfoImage${index}`),
-        alt: getFormValue(`formInfoAlt${index}`),
-        caption: getFormValue(`formInfoCaption${index}`)
-      };
+    function openEduCardModal(index = null) {
+      const modal = document.getElementById("eduCardModal");
+      const titleEl = document.getElementById("eduModalTitle");
+      const indexInput = document.getElementById("eduEditIndex");
+      
+      const imgInput = document.getElementById("eduEditImage");
+      const fileInput = document.getElementById("eduEditFile");
+      const altInput = document.getElementById("eduEditAlt");
+      const badgeInput = document.getElementById("eduEditBadge");
+      const titleInput = document.getElementById("eduEditTitle");
+      const pt0 = document.getElementById("eduEditPoint0");
+      const pt1 = document.getElementById("eduEditPoint1");
+      const pt2 = document.getElementById("eduEditPoint2");
+      const noteInput = document.getElementById("eduEditNote");
+
+      fileInput.value = "";
+
+      if (index !== null && index >= 0) {
+        titleEl.textContent = "Edit Kartu Edukasi";
+        indexInput.value = index;
+        const card = stateCards[index];
+        imgInput.value = card.image || "";
+        altInput.value = card.alt || "";
+        badgeInput.value = card.badge || "";
+        titleInput.value = card.title || "";
+        pt0.value = card.points?.[0] || "";
+        pt1.value = card.points?.[1] || "";
+        pt2.value = card.points?.[2] || "";
+        noteInput.value = card.note || "";
+      } else {
+        titleEl.textContent = "Tambah Kartu Edukasi";
+        indexInput.value = "";
+        imgInput.value = "";
+        altInput.value = "";
+        badgeInput.value = "";
+        titleInput.value = "";
+        pt0.value = "";
+        pt1.value = "";
+        pt2.value = "";
+        noteInput.value = "";
+      }
+
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeEduCardModal() {
+      const modal = document.getElementById("eduCardModal");
+      modal.classList.add("hidden");
+      modal.setAttribute("aria-hidden", "true");
     }
 
     function buildContentFromForm() {
@@ -2478,13 +2632,13 @@
           label: getFormValue("formEduLabel"),
           title: getFormValue("formEduTitle"),
           subtitle: getFormValue("formEduSubtitle"),
-          cards: [buildEduCard(0), buildEduCard(1), buildEduCard(2), buildEduCard(3)]
+          cards: stateCards
         },
         infografis: {
-          label: getFormValue("formInfoLabel"),
-          title: getFormValue("formInfoTitle"),
-          subtitle: getFormValue("formInfoSubtitle"),
-          items: [buildInfoItem(0), buildInfoItem(1)]
+          label: "",
+          title: "",
+          subtitle: "",
+          items: []
         },
         daftar: {
           label: getFormValue("formDaftarLabel"),
@@ -2542,29 +2696,8 @@
       setFormValue("formEduTitle", edu.title || "");
       setFormValue("formEduSubtitle", edu.subtitle || "");
 
-      [0, 1, 2, 3].forEach((index) => {
-        const card = cards[index] || fallbackCards[index];
-        setFormValue(`formEduImage${index}`, card?.image || "");
-        setFormValue(`formEduAlt${index}`, card?.alt || "");
-        setFormValue(`formEduBadge${index}`, card?.badge || "");
-        setFormValue(`formEduTitle${index}`, card?.title || "");
-        setFormValue(`formEduPoint${index}_0`, card?.points?.[0] || "");
-        setFormValue(`formEduPoint${index}_1`, card?.points?.[1] || "");
-        setFormValue(`formEduPoint${index}_2`, card?.points?.[2] || "");
-        setFormValue(`formEduNote${index}`, card?.note || "");
-      });
-
-      const info = data.infografis || {};
-      const infoItems = Array.isArray(info.items) ? info.items : [];
-      setFormValue("formInfoLabel", info.label || "");
-      setFormValue("formInfoTitle", info.title || "");
-      setFormValue("formInfoSubtitle", info.subtitle || "");
-      [0, 1].forEach((index) => {
-        const item = infoItems[index] || DEFAULT_CONTENT.infografis.items[index];
-        setFormValue(`formInfoImage${index}`, item?.image || "");
-        setFormValue(`formInfoAlt${index}`, item?.alt || "");
-        setFormValue(`formInfoCaption${index}`, item?.caption || "");
-      });
+      stateCards = Array.isArray(cards) ? cloneContent(cards) : cloneContent(fallbackCards);
+      renderEduListEditor();
 
       setFormValue("formDaftarLabel", data.daftar?.label || "");
       setFormValue("formDaftarTitle", data.daftar?.title || "");
@@ -2691,6 +2824,35 @@
       carouselTimer = setInterval(() => {
         swapToIndex(carouselState.activeIndex + 1);
       }, 6000);
+    }
+
+    function initInfoCarousel(forceReset = false) {
+      const wrap = document.getElementById("infoCarousel");
+      if (!wrap) return;
+      if (wrap.dataset.carouselInit === "true" && !forceReset) return;
+      if (forceReset && infoCarouselTimer) {
+        clearInterval(infoCarouselTimer);
+        infoCarouselTimer = null;
+      }
+      wrap.dataset.carouselInit = "true";
+
+      const slides = Array.from(wrap.children);
+      if (slides.length <= 1) return;
+
+      infoCarouselState.index = 0;
+      wrap.scrollTo({ left: 0, behavior: "auto" });
+
+      if (shouldReduceMotion()) return;
+
+      infoCarouselTimer = setInterval(() => {
+        const currentSlides = Array.from(wrap.children);
+        if (!currentSlides.length) return;
+        infoCarouselState.index = getNextIndex(infoCarouselState.index, currentSlides.length);
+        const target = currentSlides[infoCarouselState.index];
+        if (target) {
+          wrap.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
+        }
+      }, 5000);
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -3119,12 +3281,10 @@
       const contentPreview = document.getElementById("contentPreview");
       const contentSave = document.getElementById("contentSave");
       const heroFiles = document.getElementById("formHeroFiles");
-      const eduFileInputs = [0, 1, 2, 3].map((index) =>
-        document.getElementById(`formEduFile${index}`)
-      );
-      const infoFileInputs = [0, 1].map((index) =>
-        document.getElementById(`formInfoFile${index}`)
-      );
+      const eduListEditor = document.getElementById("eduListEditor");
+      const eduAddItem = document.getElementById("eduAddItem");
+      const eduCardSave = document.getElementById("eduCardSave");
+      const eduCardCancel = document.getElementById("eduCardCancel");
       const ADMIN_SESSION_KEY = "macca_admin_session_v1";
       const ADMIN_REFRESH_BUFFER = 60000;
       let confirmResolve = null;
@@ -3641,39 +3801,67 @@
         });
       }
 
-      if (eduFileInputs.length) {
-        eduFileInputs.forEach((input, index) => {
-          if (!input) return;
-          input.addEventListener("change", async (event) => {
-            const file = event.target.files && event.target.files[0];
-            if (!file) return;
-            try {
-              const url = await readFileAsDataUrl(file);
-              setFormValue(`formEduImage${index}`, url);
-              syncContentEditor(buildContentFromForm());
-              showToast("info", `Gambar edukasi ${index + 1} dimuat.`);
-            } catch (err) {
-              showToast("danger", err.message || "Gagal memuat gambar edukasi.");
-            }
-          });
+      if (eduAddItem) {
+        eduAddItem.addEventListener("click", () => {
+          openEduCardModal(null);
         });
       }
 
-      if (infoFileInputs.length) {
-        infoFileInputs.forEach((input, index) => {
-          if (!input) return;
-          input.addEventListener("change", async (event) => {
-            const file = event.target.files && event.target.files[0];
-            if (!file) return;
+      if (eduCardCancel) {
+        eduCardCancel.addEventListener("click", closeEduCardModal);
+      }
+
+      if (eduCardSave) {
+        eduCardSave.addEventListener("click", async () => {
+          const indexInput = document.getElementById("eduEditIndex");
+          const imgInput = document.getElementById("eduEditImage");
+          const fileInput = document.getElementById("eduEditFile");
+          const altInput = document.getElementById("eduEditAlt");
+          const badgeInput = document.getElementById("eduEditBadge");
+          const titleInput = document.getElementById("eduEditTitle");
+          const pt0 = document.getElementById("eduEditPoint0");
+          const pt1 = document.getElementById("eduEditPoint1");
+          const pt2 = document.getElementById("eduEditPoint2");
+          const noteInput = document.getElementById("eduEditNote");
+
+          let imageUrl = imgInput.value.trim();
+
+          const file = fileInput.files && fileInput.files[0];
+          if (file) {
             try {
-              const url = await readFileAsDataUrl(file);
-              setFormValue(`formInfoImage${index}`, url);
-              syncContentEditor(buildContentFromForm());
-              showToast("info", `Gambar infografis ${index + 1} dimuat.`);
+              imageUrl = await readFileAsDataUrl(file);
             } catch (err) {
-              showToast("danger", err.message || "Gagal memuat gambar infografis.");
+              showToast("danger", "Gagal membaca file gambar lokal.");
+              return;
             }
-          });
+          }
+
+          const cardData = {
+            image: imageUrl,
+            alt: altInput.value.trim(),
+            badge: badgeInput.value.trim(),
+            title: titleInput.value.trim(),
+            points: [
+              pt0.value.trim(),
+              pt1.value.trim(),
+              pt2.value.trim()
+            ].filter(Boolean),
+            note: noteInput.value.trim()
+          };
+
+          const indexValue = indexInput.value;
+          if (indexValue !== "") {
+            const idx = parseInt(indexValue, 10);
+            stateCards[idx] = cardData;
+            showToast("info", "Kartu edukasi diperbarui.");
+          } else {
+            stateCards.push(cardData);
+            showToast("success", "Kartu edukasi baru ditambahkan.");
+          }
+
+          closeEduCardModal();
+          renderEduListEditor();
+          syncContentEditor(buildContentFromForm());
         });
       }
 
