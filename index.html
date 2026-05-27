@@ -4058,6 +4058,41 @@
         }
       });
 
+      // Auto-restore admin session on page load/refresh
+      (async function restoreAdminSession() {
+        const session = getAdminSession();
+        if (!session || !session.access_token) return;
+
+        // Check if token is still valid (not expired)
+        if (Date.now() >= session.expires_at) {
+          // Try to refresh the token
+          const refreshed = await refreshAdminSession(session);
+          if (!refreshed) {
+            clearAdminSession();
+            return;
+          }
+        }
+
+        // Verify the token is actually valid by checking user
+        const user = await getAuthUser();
+        if (!user || !user.id) {
+          clearAdminSession();
+          return;
+        }
+
+        // Session is valid — restore admin dashboard
+        showAdmin();
+        await loadAdminData();
+        state.isSuperAdmin = await checkSuperAdmin();
+        toggleSuperAdminPanel(state.isSuperAdmin);
+        updateAdminRoleBadge(state.isSuperAdmin);
+        if (state.isSuperAdmin) {
+          setEditorMode("form");
+          syncContentForm(siteContent);
+          syncContentEditor(siteContent);
+        }
+      })();
+
       // Additional JS will be appended in later tasks.
     });
   </script>
