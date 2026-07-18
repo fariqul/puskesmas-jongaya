@@ -2500,13 +2500,12 @@
                 <th>Umur</th>
                 <th>Status</th>
                 <th>Terakhir Aktif</th>
-                <th>Tanggal Registrasi</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody id="userTableTbody">
               <tr>
-                <td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">Memuat data pasien...</td>
+                <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">Memuat data pasien...</td>
               </tr>
             </tbody>
           </table>
@@ -5320,7 +5319,7 @@
         const slice = userPageState.filtered.slice(start, end);
 
         if (!slice.length) {
-          tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data pasien.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data pasien.</td></tr>`;
           if (emptyState) emptyState.classList.remove("hidden");
           return;
         }
@@ -5339,9 +5338,6 @@
             : `<span class="badge" style="background:#ECEFF1; color:#37474F;">⚫ Offline</span>`;
             
           const lastSeenText = isReallyOnline ? "Aktif sekarang" : timeAgo(u.last_seen);
-          const tglDaftar = u.created_at 
-            ? new Date(u.created_at).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) 
-            : "-";
 
           return `
             <tr>
@@ -5351,7 +5347,6 @@
               <td>${u.umur} tahun</td>
               <td>${statusHtml}</td>
               <td>${lastSeenText}</td>
-              <td>${tglDaftar}</td>
               <td>
                 <div style="display: flex; gap: 4px;">
                   <button class="btn btn-ghost edit-user-btn" data-id="${u.id}" data-nama="${u.nama}" data-umur="${u.umur}" data-hp="${u.no_hp}" style="min-height: 28px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center;" title="Edit Akun">
@@ -5450,7 +5445,7 @@
             showToast("info", "Tidak ada data akun untuk diexport.");
             return;
           }
-          const header = ["Nama Pasien", "Nomor HP", "Umur (Tahun)", "Status Online", "Terakhir Aktif", "Tanggal Registrasi"];
+          const header = ["Nama Pasien", "Nomor HP", "Umur (Tahun)", "Status Online", "Terakhir Aktif"];
           const rows = dataToExport.map((u) => {
             const lastSeenText = u.is_online ? "Online" : "Offline";
             return [
@@ -5458,8 +5453,7 @@
               `"${u.no_hp}"`,
               `"${u.umur}"`,
               `"${lastSeenText}"`,
-              `"${new Date(u.last_seen).toLocaleString("id-ID")}"`,
-              `"${new Date(u.created_at).toLocaleString("id-ID")}"`
+              `"${new Date(u.last_seen).toLocaleString("id-ID")}"`
             ].join(",");
           });
           const csv = [header.join(","), ...rows].join("\n");
