@@ -1379,6 +1379,318 @@
       padding: 0;
       line-height: 1;
     }
+    /* ======= REGISTRASI PASIEN ======= */
+    .register-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(45, 45, 45, 0.6);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeInOverlay 0.3s ease;
+    }
+
+    @keyframes fadeInOverlay {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .register-card {
+      background: #fff;
+      width: min(440px, 92%);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 60px rgba(184, 76, 117, 0.25);
+      animation: slideUpRegister 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .register-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--sage), var(--blush), var(--sage-dark));
+    }
+
+    @keyframes slideUpRegister {
+      from { opacity: 0; transform: translateY(40px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .register-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, var(--sage), var(--blush));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(233, 127, 163, 0.35);
+    }
+
+    .register-card h2 {
+      text-align: center;
+      font-size: var(--fs-lg);
+      margin: 0 0 4px;
+    }
+
+    .register-card .register-sub {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+      margin: 0 0 20px;
+    }
+
+    .register-card .field {
+      margin-bottom: 14px;
+    }
+
+    .register-btn {
+      background: linear-gradient(135deg, var(--sage), var(--sage-dark));
+      color: #fff;
+      width: 100%;
+      height: 52px;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 16px rgba(184, 76, 117, 0.3);
+      margin-top: 6px;
+    }
+
+    .register-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(184, 76, 117, 0.4);
+    }
+
+    .register-btn:active {
+      transform: scale(0.97);
+    }
+
+    .register-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .register-error {
+      color: #B3261E;
+      background: #FCE8E6;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin: 10px 0;
+      font-size: var(--fs-sm);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .register-footer {
+      text-align: center;
+      margin-top: 14px;
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    /* ======= WELCOME BANNER ======= */
+    .welcome-banner {
+      background: linear-gradient(135deg, #FFF5F8, #FDF6EE);
+      border: 2px solid var(--blush);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      animation: fadeInBanner 0.5s ease;
+    }
+
+    @keyframes fadeInBanner {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .welcome-avatar {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, var(--sage), var(--blush));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #fff;
+      flex-shrink: 0;
+    }
+
+    .welcome-info {
+      flex: 1;
+    }
+
+    .welcome-info strong {
+      display: block;
+      font-size: var(--fs-base);
+      color: var(--text-dark);
+    }
+
+    .welcome-info small {
+      color: var(--text-muted);
+      font-size: var(--fs-xs);
+    }
+
+    .welcome-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .welcome-logout:hover {
+      border-color: var(--sage);
+      color: var(--sage-dark);
+    }
+
+    /* ======= ADMIN: PANEL USER ONLINE ======= */
+    .online-panel {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .online-panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .online-panel-head h3 {
+      margin: 0;
+      font-size: var(--fs-md);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .online-count-badge {
+      background: #E8F5E9;
+      color: #2E7D32;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .online-users-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+
+    .online-user-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #FAFAFA;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .online-user-card:hover {
+      border-color: var(--blush);
+      box-shadow: 0 2px 8px rgba(233, 127, 163, 0.12);
+    }
+
+    .online-user-card.is-online {
+      border-color: #A5D6A7;
+      background: #F1F8E9;
+    }
+
+    .user-status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .user-status-dot.is-online {
+      background: #4CAF50;
+      box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+      animation: pulseDot 2s ease infinite;
+    }
+
+    .user-status-dot.is-offline {
+      background: #BDBDBD;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); }
+      50% { box-shadow: 0 0 0 6px rgba(76, 175, 80, 0.1); }
+    }
+
+    .online-user-meta {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .online-user-meta strong {
+      display: block;
+      font-size: var(--fs-sm);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .online-user-meta div {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    .online-empty {
+      padding: 16px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: var(--fs-sm);
+    }
+
+    .online-user-activity {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .online-user-activity.is-active {
+      color: #2E7D32;
+    }
+
   </style>
 </head>
 <body>
@@ -1450,18 +1762,6 @@
       </div>
     </section>
 
-    <section id="edukasi" class="section fade-up">
-      <div class="container">
-        <div class="section-head">
-          <div id="edukasiLabel" class="label">INFO PENTING</div>
-          <h2 id="edukasiTitle">Yang Perlu Ibu Tahu Soal ANC</h2>
-          <p id="edukasiSubtitle">Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
-        </div>
-
-        <div id="infoCarousel" class="infografis-carousel info-carousel" aria-live="polite"></div>
-      </div>
-    </section>
-
     <section id="jadwal-anc" class="section fade-up">
       <div class="container">
         <div class="section-head">
@@ -1469,6 +1769,8 @@
           <h2>Cek Jadwal ANC (MACCA)</h2>
           <p>Masukkan tanggal HPHT untuk melihat estimasi jadwal kunjungan.</p>
         </div>
+
+        <div id="welcomeBannerSlot"></div>
 
         <div class="form-card schedule-card">
           <div class="schedule-form">
@@ -1488,6 +1790,18 @@
             <p class="schedule-footnote">*Jadwal ini adalah estimasi. Ikuti arahan bidan/dokter saat kontrol.</p>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section id="edukasi" class="section fade-up">
+      <div class="container">
+        <div class="section-head">
+          <div id="edukasiLabel" class="label">INFO PENTING</div>
+          <h2 id="edukasiTitle">Yang Perlu Ibu Tahu Soal ANC</h2>
+          <p id="edukasiSubtitle">Aturan baru dari Kemenkes buat kehamilan yang lebih sehat</p>
+        </div>
+
+        <div id="infoCarousel" class="infografis-carousel info-carousel" aria-live="polite"></div>
       </div>
     </section>
 
@@ -1780,6 +2094,34 @@
     </div>
   </div>
 
+  <!-- REGISTRASI PASIEN MODAL -->
+  <div id="registerOverlay" class="register-overlay hidden">
+    <div class="register-card">
+      <div class="register-icon">🤰</div>
+      <h2>Selamat Datang, Bunda!</h2>
+      <p class="register-sub">Daftar dulu yuk, agar kami bisa membantu Ibu lebih baik</p>
+      <div id="registerError" class="register-error hidden"></div>
+      <div class="field">
+        <label for="regNama">Nama Lengkap</label>
+        <input id="regNama" type="text" placeholder="Contoh: Siti Rahmawati" required />
+      </div>
+      <div class="field">
+        <label for="regUmur">Umur</label>
+        <input id="regUmur" type="number" placeholder="Contoh: 27" min="10" max="60" required />
+      </div>
+      <div class="field">
+        <label for="regHp">Nomor HP / WhatsApp</label>
+        <input id="regHp" type="tel" placeholder="08xxxxxxxxxx" required />
+        <small class="form-note">Nomor HP bersifat unik — satu nomor hanya untuk satu akun</small>
+      </div>
+      <button id="registerBtn" class="register-btn" type="button">
+        <span id="registerSpinner" class="spinner hidden"></span>
+        <span id="registerBtnText">Daftar Sekarang</span>
+      </button>
+      <div class="register-footer">Data Ibu aman dan hanya digunakan untuk keperluan Puskesmas Jongaya</div>
+    </div>
+  </div>
+
   <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
   <section id="adminDashboard" class="admin hidden">
@@ -1795,6 +2137,16 @@
       <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
     </header>
     <div class="admin-body">
+      <!-- PANEL USER ONLINE -->
+      <div id="onlinePanel" class="online-panel">
+        <div class="online-panel-head">
+          <h3>👩 User Terdaftar <span id="onlineCountBadge" class="online-count-badge">0 online</span></h3>
+          <button id="refreshOnlineBtn" class="btn btn-ghost" type="button" style="min-height:36px; padding:0 12px; font-size:13px;">Refresh</button>
+        </div>
+        <div id="onlineUsersGrid" class="online-users-grid">
+          <div class="online-empty">Memuat data user...</div>
+        </div>
+      </div>
       <div id="superAdminPanel" class="super-admin hidden">
         <div class="super-admin-head">
           <h3>Konten Halaman Utama</h3>
@@ -3217,6 +3569,14 @@
           keluhan: form.keluhan.value.trim()
         };
 
+        // Link to registered user if available
+        try {
+          const regUser = JSON.parse(localStorage.getItem("macca_registered_user") || "null");
+          if (regUser && regUser.id) {
+            data.registered_user_id = regUser.id;
+          }
+        } catch (e) { /* ignore */ }
+
         const g = parseInt(form.gpaG.value, 10);
         const p = parseInt(form.gpaP.value, 10);
         const a = parseInt(form.gpaA.value, 10);
@@ -4092,6 +4452,422 @@
           syncContentEditor(siteContent);
         }
       })();
+
+      // ============================================================
+      // REGISTRASI PASIEN IBU HAMIL + TRACKING ONLINE
+      // ============================================================
+      const REG_SESSION_KEY = "macca_registered_user";
+      const HEARTBEAT_INTERVAL = 30000; // 30 seconds
+      let heartbeatTimer = null;
+      let onlinePollTimer = null;
+
+      // --- Helpers ---
+      function getRegisteredUser() {
+        try {
+          const raw = localStorage.getItem(REG_SESSION_KEY);
+          return raw ? JSON.parse(raw) : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function saveRegisteredUser(data) {
+        try {
+          localStorage.setItem(REG_SESSION_KEY, JSON.stringify(data));
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      function clearRegisteredUser() {
+        try {
+          localStorage.removeItem(REG_SESSION_KEY);
+        } catch (e) {
+          // ignore
+        }
+      }
+
+      // --- Registration API ---
+      async function registerUser(nama, umur, noHp) {
+        // Check if no_hp already exists
+        const checkRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/registered_users?no_hp=eq.${encodeURIComponent(noHp)}&select=id,nama,umur,no_hp`,
+          { headers: publicHeaders }
+        );
+        if (checkRes.ok) {
+          const existing = await checkRes.json();
+          if (existing.length > 0) {
+            // Phone number already registered - return existing user
+            return { user: existing[0], isExisting: true };
+          }
+        }
+
+        // Insert new user
+        const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/registered_users`, {
+          method: "POST",
+          headers: { ...publicHeaders, Prefer: "return=representation" },
+          body: JSON.stringify({
+            nama: nama,
+            umur: umur,
+            no_hp: noHp,
+            is_online: true,
+            last_seen: new Date().toISOString()
+          })
+        });
+
+        if (!insertRes.ok) {
+          const errData = await insertRes.json().catch(() => ({}));
+          if (errData.code === "23505" || (errData.message && errData.message.includes("duplicate"))) {
+            throw new Error("DUPLICATE");
+          }
+          throw new Error("Gagal mendaftar. Silakan coba lagi.");
+        }
+
+        const rows = await insertRes.json();
+        return { user: rows[0], isExisting: false };
+      }
+
+      // --- Heartbeat: Update online status ---
+      async function sendHeartbeat(userId) {
+        if (!userId) return;
+        try {
+          await fetch(`${SUPABASE_URL}/rest/v1/registered_users?id=eq.${userId}`, {
+            method: "PATCH",
+            headers: { ...publicHeaders, Prefer: "return=minimal" },
+            body: JSON.stringify({
+              is_online: true,
+              last_seen: new Date().toISOString()
+            })
+          });
+        } catch (e) {
+          // silent fail
+        }
+      }
+
+      async function setOffline(userId) {
+        if (!userId) return;
+        try {
+          // Use sendBeacon for reliability on page close
+          const url = `${SUPABASE_URL}/rest/v1/registered_users?id=eq.${userId}`;
+          const body = JSON.stringify({
+            is_online: false,
+            last_seen: new Date().toISOString()
+          });
+
+          if (navigator.sendBeacon) {
+            const blob = new Blob([body], { type: "application/json" });
+            // sendBeacon can't set custom headers, so use fetch with keepalive
+          }
+          
+          await fetch(url, {
+            method: "PATCH",
+            headers: { ...publicHeaders, Prefer: "return=minimal" },
+            body: body,
+            keepalive: true
+          });
+        } catch (e) {
+          // silent fail
+        }
+      }
+
+      function startHeartbeat(userId) {
+        if (heartbeatTimer) clearInterval(heartbeatTimer);
+        sendHeartbeat(userId); // immediate
+        heartbeatTimer = setInterval(() => sendHeartbeat(userId), HEARTBEAT_INTERVAL);
+      }
+
+      function stopHeartbeat() {
+        if (heartbeatTimer) {
+          clearInterval(heartbeatTimer);
+          heartbeatTimer = null;
+        }
+      }
+
+      // --- Welcome Banner ---
+      function showWelcomeBanner(userData) {
+        const slot = document.getElementById("welcomeBannerSlot");
+        if (!slot || !userData) return;
+        slot.innerHTML = "";
+
+        const banner = document.createElement("div");
+        banner.className = "welcome-banner";
+        banner.innerHTML = `
+          <div class="welcome-avatar">\ud83d\udc69</div>
+          <div class="welcome-info">
+            <strong>Tabe\u2019, Ibu ${userData.nama}!</strong>
+            <small>Umur ${userData.umur} tahun \u00b7 ${userData.no_hp}</small>
+          </div>
+          <button class="welcome-logout" type="button" id="welcomeLogoutBtn">Ganti Akun</button>
+        `;
+        slot.appendChild(banner);
+
+        document.getElementById("welcomeLogoutBtn").addEventListener("click", () => {
+          const regUser = getRegisteredUser();
+          if (regUser && regUser.id) {
+            setOffline(regUser.id);
+          }
+          stopHeartbeat();
+          clearRegisteredUser();
+          slot.innerHTML = "";
+          showRegisterModal();
+        });
+      }
+
+      // --- Auto-fill form pendaftaran ---
+      function autoFillFromRegistration() {
+        const userData = getRegisteredUser();
+        if (!userData) return;
+
+        const namaInput = document.getElementById("nama");
+        const waInput = document.getElementById("wa");
+        const usiaIbuInput = document.getElementById("usiaIbu");
+
+        if (namaInput && !namaInput.value) namaInput.value = userData.nama;
+        if (waInput && !waInput.value) waInput.value = userData.no_hp;
+        if (usiaIbuInput && !usiaIbuInput.value) usiaIbuInput.value = userData.umur;
+      }
+
+      // --- Registration Modal ---
+      function showRegisterModal() {
+        const overlay = document.getElementById("registerOverlay");
+        if (overlay) {
+          overlay.classList.remove("hidden");
+        }
+      }
+
+      function hideRegisterModal() {
+        const overlay = document.getElementById("registerOverlay");
+        if (overlay) {
+          overlay.classList.add("hidden");
+        }
+      }
+
+      // Registration form handler
+      const registerBtn = document.getElementById("registerBtn");
+      const registerSpinner = document.getElementById("registerSpinner");
+      const registerBtnText = document.getElementById("registerBtnText");
+      const registerError = document.getElementById("registerError");
+
+      if (registerBtn) {
+        registerBtn.addEventListener("click", async () => {
+          const nama = document.getElementById("regNama").value.trim();
+          const umur = parseInt(document.getElementById("regUmur").value, 10);
+          const noHp = document.getElementById("regHp").value.trim();
+
+          // Validation
+          if (!nama) {
+            registerError.textContent = "Nama lengkap wajib diisi.";
+            registerError.classList.remove("hidden");
+            return;
+          }
+          if (!umur || umur < 10 || umur > 60) {
+            registerError.textContent = "Umur harus antara 10-60 tahun.";
+            registerError.classList.remove("hidden");
+            return;
+          }
+          if (!noHp || noHp.length < 10) {
+            registerError.textContent = "Nomor HP minimal 10 digit.";
+            registerError.classList.remove("hidden");
+            return;
+          }
+
+          registerError.classList.add("hidden");
+          registerBtn.disabled = true;
+          registerSpinner.classList.remove("hidden");
+          registerBtnText.textContent = "Mendaftar...";
+
+          try {
+            const result = await registerUser(nama, umur, noHp);
+            
+            if (result.isExisting) {
+              // Phone already registered — show error
+              registerError.innerHTML = `\u26a0\ufe0f Nomor HP <strong>${noHp}</strong> sudah terdaftar atas nama <strong>${result.user.nama}</strong>. Silakan gunakan nomor HP yang berbeda atau hubungi petugas.`;
+              registerError.classList.remove("hidden");
+              registerBtn.disabled = false;
+              registerSpinner.classList.add("hidden");
+              registerBtnText.textContent = "Daftar Sekarang";
+              return;
+            }
+
+            // Save to localStorage
+            saveRegisteredUser(result.user);
+            hideRegisterModal();
+            showWelcomeBanner(result.user);
+            autoFillFromRegistration();
+            startHeartbeat(result.user.id);
+            showToast("success", `Selamat datang, Ibu ${result.user.nama}! \u2764\ufe0f`);
+          } catch (err) {
+            if (err.message === "DUPLICATE") {
+              registerError.textContent = "Nomor HP sudah terdaftar. Gunakan nomor lain.";
+            } else {
+              registerError.textContent = err.message || "Gagal mendaftar.";
+            }
+            registerError.classList.remove("hidden");
+          } finally {
+            registerBtn.disabled = false;
+            registerSpinner.classList.add("hidden");
+            registerBtnText.textContent = "Daftar Sekarang";
+          }
+        });
+      }
+
+      // --- Admin: Fetch & Render Online Users ---
+      async function fetchRegisteredUsers() {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) return [];
+        try {
+          const res = await fetch(
+            `${SUPABASE_URL}/rest/v1/registered_users?order=is_online.desc,last_seen.desc`,
+            { headers: adminHeaders }
+          );
+          if (!res.ok) return [];
+          return await res.json();
+        } catch (e) {
+          return [];
+        }
+      }
+
+      function timeAgo(dateStr) {
+        if (!dateStr) return "tidak diketahui";
+        const now = new Date();
+        const then = new Date(dateStr);
+        const diffMs = now - then;
+        const diffSec = Math.floor(diffMs / 1000);
+        if (diffSec < 60) return "baru saja";
+        const diffMin = Math.floor(diffSec / 60);
+        if (diffMin < 60) return `${diffMin} menit lalu`;
+        const diffHour = Math.floor(diffMin / 60);
+        if (diffHour < 24) return `${diffHour} jam lalu`;
+        const diffDay = Math.floor(diffHour / 24);
+        return `${diffDay} hari lalu`;
+      }
+
+      function renderOnlinePanel(users) {
+        const grid = document.getElementById("onlineUsersGrid");
+        const badge = document.getElementById("onlineCountBadge");
+        if (!grid) return;
+
+        // Consider user "online" if last_seen within 60 seconds
+        const now = Date.now();
+        const ONLINE_THRESHOLD = 60000; // 60 seconds
+
+        const processedUsers = users.map(u => {
+          const lastSeen = new Date(u.last_seen).getTime();
+          const isReallyOnline = u.is_online && (now - lastSeen < ONLINE_THRESHOLD);
+          return { ...u, isReallyOnline };
+        });
+
+        const onlineCount = processedUsers.filter(u => u.isReallyOnline).length;
+        if (badge) {
+          badge.textContent = `${onlineCount} online`;
+        }
+
+        if (!processedUsers.length) {
+          grid.innerHTML = '<div class="online-empty">Belum ada user terdaftar.</div>';
+          return;
+        }
+
+        grid.innerHTML = processedUsers.map(u => {
+          const statusClass = u.isReallyOnline ? "is-online" : "is-offline";
+          const statusText = u.isReallyOnline ? "Online sekarang" : `Terakhir aktif: ${timeAgo(u.last_seen)}`;
+          const activityClass = u.isReallyOnline ? "is-active" : "";
+          const createdDate = u.created_at ? new Date(u.created_at).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }) : "";
+
+          return `
+            <div class="online-user-card ${u.isReallyOnline ? 'is-online' : ''}">
+              <span class="user-status-dot ${statusClass}"></span>
+              <div class="online-user-meta">
+                <strong>${u.nama}</strong>
+                <div>${u.umur} thn \u00b7 ${u.no_hp}</div>
+                <div class="online-user-activity ${activityClass}">${statusText}</div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      async function refreshOnlinePanel() {
+        const users = await fetchRegisteredUsers();
+        renderOnlinePanel(users);
+      }
+
+      // Admin: refresh button
+      const refreshOnlineBtn = document.getElementById("refreshOnlineBtn");
+      if (refreshOnlineBtn) {
+        refreshOnlineBtn.addEventListener("click", async () => {
+          refreshOnlineBtn.disabled = true;
+          refreshOnlineBtn.textContent = "Memuat...";
+          await refreshOnlinePanel();
+          refreshOnlineBtn.disabled = false;
+          refreshOnlineBtn.textContent = "Refresh";
+        });
+      }
+
+      // Override showAdmin to also start online panel polling
+      const originalShowAdmin = showAdmin;
+      showAdmin = function() {
+        originalShowAdmin();
+        refreshOnlinePanel();
+        if (!onlinePollTimer) {
+          onlinePollTimer = setInterval(refreshOnlinePanel, 15000);
+        }
+      };
+
+      const originalHideAdmin = hideAdmin;
+      hideAdmin = function() {
+        originalHideAdmin();
+        if (onlinePollTimer) {
+          clearInterval(onlinePollTimer);
+          onlinePollTimer = null;
+        }
+      };
+
+      // --- Page load: Check registration ---
+      const existingUser = getRegisteredUser();
+      if (existingUser && existingUser.id) {
+        // Already registered
+        showWelcomeBanner(existingUser);
+        autoFillFromRegistration();
+        startHeartbeat(existingUser.id);
+      } else {
+        // Not registered — show modal after a brief delay
+        setTimeout(() => {
+          showRegisterModal();
+        }, 800);
+      }
+
+      // --- Page close: Set offline ---
+      window.addEventListener("beforeunload", () => {
+        const regUser = getRegisteredUser();
+        if (regUser && regUser.id) {
+          // Use fetch with keepalive for reliability
+          try {
+            fetch(`${SUPABASE_URL}/rest/v1/registered_users?id=eq.${regUser.id}`, {
+              method: "PATCH",
+              headers: { ...publicHeaders, Prefer: "return=minimal" },
+              body: JSON.stringify({
+                is_online: false,
+                last_seen: new Date().toISOString()
+              }),
+              keepalive: true
+            });
+          } catch (e) {
+            // ignore
+          }
+        }
+      });
+
+      // --- Visibility change: pause/resume heartbeat ---
+      document.addEventListener("visibilitychange", () => {
+        const regUser = getRegisteredUser();
+        if (!regUser || !regUser.id) return;
+
+        if (document.hidden) {
+          stopHeartbeat();
+        } else {
+          startHeartbeat(regUser.id);
+        }
+      });
 
       // Additional JS will be appended in later tasks.
     });
