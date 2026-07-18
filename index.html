@@ -2472,10 +2472,11 @@
         <button id="prevPage" class="btn btn-ghost" type="button">Prev</button>
         <span id="pageInfo">1 / 1</span>
         <button id="nextPage" class="btn btn-ghost" type="button">Next</button>
-      </div> <!-- END viewPendaftaran -->
+      </div> <!-- END pagination -->
+    </div> <!-- END viewPendaftaran -->
 
-      <!-- VIEW DAFTAR AKUN PASIEN -->
-      <div id="viewDaftarUser" class="hidden">
+    <!-- VIEW DAFTAR AKUN PASIEN -->
+    <div id="viewDaftarUser" class="hidden">
         <!-- TOOLBAR DAFTAR PASIEN -->
         <div class="toolbar" style="grid-template-columns: 1fr auto; align-items: center; margin: 16px 0;">
           <input id="userSearch" type="text" placeholder="Cari nama atau nomor HP pasien..." style="width: 100%;" />
@@ -5300,7 +5301,9 @@
       function applyUserFilters() {
         const query = (userSearch ? userSearch.value : "").trim().toLowerCase();
         userPageState.filtered = userPageState.data.filter(u => {
-          return u.nama.toLowerCase().includes(query) || u.no_hp.includes(query);
+          const name = (u.nama || "").toLowerCase();
+          const hp = u.no_hp || "";
+          return name.includes(query) || hp.includes(query);
         });
         userPageState.page = 1;
         renderUserTable();
