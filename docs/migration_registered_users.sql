@@ -31,8 +31,11 @@ CREATE POLICY "Allow public select" ON registered_users
 CREATE POLICY "Allow authenticated full access" ON registered_users
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
--- 5. Tambah kolom registered_user_id di tabel pendaftaran
-ALTER TABLE pendaftaran ADD COLUMN IF NOT EXISTS registered_user_id uuid REFERENCES registered_users(id);
+-- 5. Tambah kolom registered_user_id di tabel pendaftaran (dengan cascade delete)
+ALTER TABLE pendaftaran ADD COLUMN IF NOT EXISTS registered_user_id uuid;
+ALTER TABLE pendaftaran DROP CONSTRAINT IF EXISTS pendaftaran_registered_user_id_fkey;
+ALTER TABLE pendaftaran ADD CONSTRAINT pendaftaran_registered_user_id_fkey
+  FOREIGN KEY (registered_user_id) REFERENCES registered_users(id) ON DELETE CASCADE;
 
 -- 6. Index untuk performa query
 CREATE INDEX IF NOT EXISTS idx_registered_users_no_hp ON registered_users(no_hp);

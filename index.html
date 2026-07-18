@@ -2034,6 +2034,31 @@
     </div>
   </div>
 
+  <div id="editUserModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="editUserTitle">
+    <div class="modal-card">
+      <h3 id="editUserTitle">Edit Akun Pasien</h3>
+      <p class="modal-hint">Ubah data akun pasien di bawah ini.</p>
+      <div id="editUserError" class="form-error hidden"></div>
+      <input type="hidden" id="editUserId" />
+      <div class="field" style="margin-top: 12px;">
+        <label for="editUserNama">Nama Lengkap</label>
+        <input id="editUserNama" type="text" placeholder="Nama Lengkap" required />
+      </div>
+      <div class="field">
+        <label for="editUserUmur">Umur</label>
+        <input id="editUserUmur" type="number" placeholder="Umur" min="10" max="60" required />
+      </div>
+      <div class="field">
+        <label for="editUserHp">Nomor HP / WhatsApp</label>
+        <input id="editUserHp" type="tel" placeholder="08xxxxxxxxxx" required />
+      </div>
+      <div class="modal-actions">
+        <button id="editUserSave" class="btn btn-primary" type="button">Simpan</button>
+        <button id="editUserCancel" class="btn btn-ghost" type="button">Batal</button>
+      </div>
+    </div>
+  </div>
+
   <div id="eduCardModal" class="modal hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="eduModalTitle">
     <div class="modal-card" style="width: min(560px, 95%); max-height: 90vh; overflow-y: auto;">
       <h3 id="eduModalTitle">Edit Kartu Edukasi</h3>
@@ -4845,6 +4870,93 @@
         }
       }
 
+      async function updateRegisteredUser(id, nama, umur, noHp) {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/registered_users?id=eq.${id}`, {
+          method: "PATCH",
+          headers: {
+            ...adminHeaders,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ nama, umur, no_hp: noHp })
+        });
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          if (errData.message && errData.message.includes("duplicate")) {
+            throw new Error("Nomor HP sudah digunakan oleh akun lain.");
+          }
+          throw new Error("Gagal mengupdate akun pasien.");
+        }
+      }
+
+      async function deleteRegisteredUser(id) {
+        const adminHeaders = await getAdminHeaders();
+        if (!adminHeaders) throw new Error("Sesi admin habis. Silakan login ulang.");
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/registered_users?id=eq.${id}`, {
+          method: "DELETE",
+          headers: adminHeaders
+        });
+        if (!res.ok) throw new Error("Gagal menghapus akun pasien.");
+      }
+
+      function openEditUserModal(id, nama, umur, hp) {
+        const modal = document.getElementById("editUserModal");
+        if (!modal) return;
+        document.getElementById("editUserId").value = id;
+        document.getElementById("editUserNama").value = nama;
+        document.getElementById("editUserUmur").value = umur;
+        document.getElementById("editUserHp").value = hp;
+        document.getElementById("editUserError").classList.add("hidden");
+        modal.classList.remove("hidden");
+        modal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeEditUserModal() {
+        const modal = document.getElementById("editUserModal");
+        if (modal) {
+          modal.classList.add("hidden");
+          modal.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      // Edit User Modal Action listeners
+      const editUserSaveBtn = document.getElementById("editUserSave");
+      const editUserCancelBtn = document.getElementById("editUserCancel");
+      
+      if (editUserSaveBtn) {
+        editUserSaveBtn.addEventListener("click", async () => {
+          const id = document.getElementById("editUserId").value;
+          const nama = document.getElementById("editUserNama").value.trim();
+          const umur = parseInt(document.getElementById("editUserUmur").value, 10);
+          const hp = document.getElementById("editUserHp").value.trim();
+          const errEl = document.getElementById("editUserError");
+
+          if (!nama || !umur || !hp) {
+            errEl.textContent = "Mohon lengkapi semua field.";
+            errEl.classList.remove("hidden");
+            return;
+          }
+
+          editUserSaveBtn.disabled = true;
+          try {
+            await updateRegisteredUser(id, nama, umur, hp);
+            closeEditUserModal();
+            await refreshOnlinePanel();
+            showToast("success", "Akun pasien berhasil diperbarui.");
+          } catch (err) {
+            errEl.textContent = err.message || "Gagal mengupdate akun.";
+            errEl.classList.remove("hidden");
+          } finally {
+            editUserSaveBtn.disabled = false;
+          }
+        });
+      }
+
+      if (editUserCancelBtn) {
+        editUserCancelBtn.addEventListener("click", closeEditUserModal);
+      }
+
       function timeAgo(dateStr) {
         if (!dateStr) return "tidak diketahui";
         const now = new Date();
@@ -4892,16 +5004,54 @@
           const createdDate = u.created_at ? new Date(u.created_at).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }) : "";
 
           return `
-            <div class="online-user-card ${u.isReallyOnline ? 'is-online' : ''}">
-              <span class="user-status-dot ${statusClass}"></span>
-              <div class="online-user-meta">
-                <strong>${u.nama}</strong>
-                <div>${u.umur} thn \u00b7 ${u.no_hp}</div>
-                <div class="online-user-activity ${activityClass}">${statusText}</div>
+            <div class="online-user-card ${u.isReallyOnline ? 'is-online' : ''}" style="justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1;">
+                <span class="user-status-dot ${statusClass}"></span>
+                <div class="online-user-meta" style="min-width: 0;">
+                  <strong style="display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${u.nama}</strong>
+                  <div>${u.umur} thn &middot; ${u.no_hp}</div>
+                  <div class="online-user-activity ${activityClass}">${statusText}</div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 4px; margin-left: 8px; flex-shrink: 0;">
+                <button class="btn btn-ghost edit-user-btn" data-id="${u.id}" data-nama="${u.nama}" data-umur="${u.umur}" data-hp="${u.no_hp}" style="min-height: 28px; padding: 0 6px; font-size: 12px;" title="Edit Akun">\u270f\ufe0f</button>
+                <button class="btn btn-ghost delete-user-btn" data-id="${u.id}" data-nama="${u.nama}" style="min-height: 28px; padding: 0 6px; font-size: 12px; color: #B3261E;" title="Hapus Akun">\ud83d\uddd1\ufe0f</button>
               </div>
             </div>
           `;
         }).join("");
+      }
+
+      // Event delegation for Edit and Delete buttons on onlineUsersGrid
+      const onlineUsersGrid = document.getElementById("onlineUsersGrid");
+      if (onlineUsersGrid) {
+        onlineUsersGrid.addEventListener("click", async (e) => {
+          const editBtn = e.target.closest(".edit-user-btn");
+          const deleteBtn = e.target.closest(".delete-user-btn");
+
+          if (editBtn) {
+            const id = editBtn.getAttribute("data-id");
+            const nama = editBtn.getAttribute("data-nama");
+            const umur = editBtn.getAttribute("data-umur");
+            const hp = editBtn.getAttribute("data-hp");
+            openEditUserModal(id, nama, umur, hp);
+          }
+
+          if (deleteBtn) {
+            const id = deleteBtn.getAttribute("data-id");
+            const nama = deleteBtn.getAttribute("data-nama");
+            const confirmed = await openConfirm(`Hapus akun pasien "${nama}"? Semua riwayat pendaftaran ANC atas nama akun ini juga akan terhapus.`);
+            if (!confirmed) return;
+
+            try {
+              await deleteRegisteredUser(id);
+              await refreshOnlinePanel();
+              showToast("success", `Akun "${nama}" berhasil dihapus.`);
+            } catch (err) {
+              showToast("danger", err.message || "Gagal menghapus akun.");
+            }
+          }
+        });
       }
 
       async function refreshOnlinePanel() {
