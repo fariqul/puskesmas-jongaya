@@ -2094,31 +2094,50 @@
     </div>
   </div>
 
-  <!-- REGISTRASI PASIEN MODAL -->
+  <!-- REGISTRASI / LOGIN PASIEN MODAL -->
   <div id="registerOverlay" class="register-overlay hidden">
     <div class="register-card">
       <div class="register-icon">🤰</div>
-      <h2>Selamat Datang, Bunda!</h2>
-      <p class="register-sub">Daftar dulu yuk, agar kami bisa membantu Ibu lebih baik</p>
+      <h2 id="regTitle">Selamat Datang, Bunda!</h2>
+      <p id="regSubtitle" class="register-sub">Daftar dulu yuk, agar kami bisa membantu Ibu lebih baik</p>
       <div id="registerError" class="register-error hidden"></div>
-      <div class="field">
-        <label for="regNama">Nama Lengkap</label>
-        <input id="regNama" type="text" placeholder="Contoh: Siti Rahmawati" required />
+
+      <!-- MODE DAFTAR -->
+      <div id="regFieldsDaftar">
+        <div class="field">
+          <label for="regNama">Nama Lengkap</label>
+          <input id="regNama" type="text" placeholder="Contoh: Siti Rahmawati" required />
+        </div>
+        <div class="field">
+          <label for="regUmur">Umur</label>
+          <input id="regUmur" type="number" placeholder="Contoh: 27" min="10" max="60" required />
+        </div>
+        <div class="field">
+          <label for="regHp">Nomor HP / WhatsApp</label>
+          <input id="regHp" type="tel" placeholder="08xxxxxxxxxx" required />
+          <small class="form-note">Nomor HP bersifat unik — satu nomor hanya untuk satu akun</small>
+        </div>
       </div>
-      <div class="field">
-        <label for="regUmur">Umur</label>
-        <input id="regUmur" type="number" placeholder="Contoh: 27" min="10" max="60" required />
+
+      <!-- MODE LOGIN -->
+      <div id="regFieldsLogin" class="hidden">
+        <div class="field">
+          <label for="loginHp">Nomor HP / WhatsApp</label>
+          <input id="loginHp" type="tel" placeholder="Masukkan nomor HP yang sudah terdaftar" required />
+          <small class="form-note">Gunakan nomor HP yang sama saat mendaftar</small>
+        </div>
       </div>
-      <div class="field">
-        <label for="regHp">Nomor HP / WhatsApp</label>
-        <input id="regHp" type="tel" placeholder="08xxxxxxxxxx" required />
-        <small class="form-note">Nomor HP bersifat unik — satu nomor hanya untuk satu akun</small>
-      </div>
+
       <button id="registerBtn" class="register-btn" type="button">
         <span id="registerSpinner" class="spinner hidden"></span>
         <span id="registerBtnText">Daftar Sekarang</span>
       </button>
-      <div class="register-footer">Data Ibu aman dan hanya digunakan untuk keperluan Puskesmas Jongaya</div>
+
+      <div class="register-footer" style="margin-top: 16px;">
+        <span id="regToggleText">Sudah punya akun?</span>
+        <button id="regToggleBtn" type="button" style="background:none; border:none; color:var(--sage-dark); font-weight:700; cursor:pointer; font-size:var(--fs-sm); text-decoration:underline;">Login di sini</button>
+      </div>
+      <div class="register-footer" style="margin-top: 6px;">Data Ibu aman dan hanya digunakan untuk keperluan Puskesmas Jongaya</div>
     </div>
   </div>
 
@@ -4627,11 +4646,46 @@
         if (usiaIbuInput && !usiaIbuInput.value) usiaIbuInput.value = userData.umur;
       }
 
-      // --- Registration Modal ---
+      // --- Registration Modal (Dual Mode: Daftar / Login) ---
+      let regMode = "daftar"; // "daftar" or "login"
+
+      function setRegMode(mode) {
+        regMode = mode;
+        const title = document.getElementById("regTitle");
+        const subtitle = document.getElementById("regSubtitle");
+        const fieldsDaftar = document.getElementById("regFieldsDaftar");
+        const fieldsLogin = document.getElementById("regFieldsLogin");
+        const btnText = document.getElementById("registerBtnText");
+        const toggleText = document.getElementById("regToggleText");
+        const toggleBtn = document.getElementById("regToggleBtn");
+        const errEl = document.getElementById("registerError");
+
+        if (errEl) errEl.classList.add("hidden");
+
+        if (mode === "login") {
+          if (title) title.textContent = "Login, Bunda!";
+          if (subtitle) subtitle.textContent = "Masukkan nomor HP yang sudah terdaftar";
+          if (fieldsDaftar) fieldsDaftar.classList.add("hidden");
+          if (fieldsLogin) fieldsLogin.classList.remove("hidden");
+          if (btnText) btnText.textContent = "Login";
+          if (toggleText) toggleText.textContent = "Belum punya akun?";
+          if (toggleBtn) toggleBtn.textContent = "Daftar di sini";
+        } else {
+          if (title) title.textContent = "Selamat Datang, Bunda!";
+          if (subtitle) subtitle.textContent = "Daftar dulu yuk, agar kami bisa membantu Ibu lebih baik";
+          if (fieldsDaftar) fieldsDaftar.classList.remove("hidden");
+          if (fieldsLogin) fieldsLogin.classList.add("hidden");
+          if (btnText) btnText.textContent = "Daftar Sekarang";
+          if (toggleText) toggleText.textContent = "Sudah punya akun?";
+          if (toggleBtn) toggleBtn.textContent = "Login di sini";
+        }
+      }
+
       function showRegisterModal() {
         const overlay = document.getElementById("registerOverlay");
         if (overlay) {
           overlay.classList.remove("hidden");
+          setRegMode("login"); // Default to login mode (user likely already registered)
         }
       }
 
@@ -4642,7 +4696,29 @@
         }
       }
 
-      // Registration form handler
+      // Toggle between Daftar and Login
+      const regToggleBtn = document.getElementById("regToggleBtn");
+      if (regToggleBtn) {
+        regToggleBtn.addEventListener("click", () => {
+          setRegMode(regMode === "daftar" ? "login" : "daftar");
+        });
+      }
+
+      // --- Login by phone ---
+      async function loginByPhone(noHp) {
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/registered_users?no_hp=eq.${encodeURIComponent(noHp)}&select=id,nama,umur,no_hp`,
+          { headers: publicHeaders }
+        );
+        if (!res.ok) throw new Error("Gagal menghubungi server.");
+        const rows = await res.json();
+        if (rows.length === 0) {
+          return null; // Not found
+        }
+        return rows[0];
+      }
+
+      // Registration / Login button handler
       const registerBtn = document.getElementById("registerBtn");
       const registerSpinner = document.getElementById("registerSpinner");
       const registerBtnText = document.getElementById("registerBtnText");
@@ -4650,63 +4726,101 @@
 
       if (registerBtn) {
         registerBtn.addEventListener("click", async () => {
-          const nama = document.getElementById("regNama").value.trim();
-          const umur = parseInt(document.getElementById("regUmur").value, 10);
-          const noHp = document.getElementById("regHp").value.trim();
-
-          // Validation
-          if (!nama) {
-            registerError.textContent = "Nama lengkap wajib diisi.";
-            registerError.classList.remove("hidden");
-            return;
-          }
-          if (!umur || umur < 10 || umur > 60) {
-            registerError.textContent = "Umur harus antara 10-60 tahun.";
-            registerError.classList.remove("hidden");
-            return;
-          }
-          if (!noHp || noHp.length < 10) {
-            registerError.textContent = "Nomor HP minimal 10 digit.";
-            registerError.classList.remove("hidden");
-            return;
-          }
-
           registerError.classList.add("hidden");
-          registerBtn.disabled = true;
-          registerSpinner.classList.remove("hidden");
-          registerBtnText.textContent = "Mendaftar...";
 
-          try {
-            const result = await registerUser(nama, umur, noHp);
-            
-            if (result.isExisting) {
-              // Phone already registered — show error
-              registerError.innerHTML = `\u26a0\ufe0f Nomor HP <strong>${noHp}</strong> sudah terdaftar atas nama <strong>${result.user.nama}</strong>. Silakan gunakan nomor HP yang berbeda atau hubungi petugas.`;
+          if (regMode === "login") {
+            // === LOGIN MODE ===
+            const noHp = document.getElementById("loginHp").value.trim();
+            if (!noHp || noHp.length < 10) {
+              registerError.textContent = "Nomor HP minimal 10 digit.";
               registerError.classList.remove("hidden");
-              registerBtn.disabled = false;
-              registerSpinner.classList.add("hidden");
-              registerBtnText.textContent = "Daftar Sekarang";
               return;
             }
 
-            // Save to localStorage
-            saveRegisteredUser(result.user);
-            hideRegisterModal();
-            showWelcomeBanner(result.user);
-            autoFillFromRegistration();
-            startHeartbeat(result.user.id);
-            showToast("success", `Selamat datang, Ibu ${result.user.nama}! \u2764\ufe0f`);
-          } catch (err) {
-            if (err.message === "DUPLICATE") {
-              registerError.textContent = "Nomor HP sudah terdaftar. Gunakan nomor lain.";
-            } else {
-              registerError.textContent = err.message || "Gagal mendaftar.";
+            registerBtn.disabled = true;
+            registerSpinner.classList.remove("hidden");
+            registerBtnText.textContent = "Memproses...";
+
+            try {
+              const user = await loginByPhone(noHp);
+              if (!user) {
+                registerError.innerHTML = `Nomor HP <strong>${noHp}</strong> belum terdaftar. Silakan daftar terlebih dahulu.`;
+                registerError.classList.remove("hidden");
+                return;
+              }
+
+              // Login success!
+              saveRegisteredUser(user);
+              hideRegisterModal();
+              showWelcomeBanner(user);
+              autoFillFromRegistration();
+              startHeartbeat(user.id);
+              showToast("success", `Selamat datang kembali, Ibu ${user.nama}! \u2764\ufe0f`);
+            } catch (err) {
+              registerError.textContent = err.message || "Gagal login.";
+              registerError.classList.remove("hidden");
+            } finally {
+              registerBtn.disabled = false;
+              registerSpinner.classList.add("hidden");
+              registerBtnText.textContent = "Login";
             }
-            registerError.classList.remove("hidden");
-          } finally {
-            registerBtn.disabled = false;
-            registerSpinner.classList.add("hidden");
-            registerBtnText.textContent = "Daftar Sekarang";
+
+          } else {
+            // === DAFTAR MODE ===
+            const nama = document.getElementById("regNama").value.trim();
+            const umur = parseInt(document.getElementById("regUmur").value, 10);
+            const noHp = document.getElementById("regHp").value.trim();
+
+            // Validation
+            if (!nama) {
+              registerError.textContent = "Nama lengkap wajib diisi.";
+              registerError.classList.remove("hidden");
+              return;
+            }
+            if (!umur || umur < 10 || umur > 60) {
+              registerError.textContent = "Umur harus antara 10-60 tahun.";
+              registerError.classList.remove("hidden");
+              return;
+            }
+            if (!noHp || noHp.length < 10) {
+              registerError.textContent = "Nomor HP minimal 10 digit.";
+              registerError.classList.remove("hidden");
+              return;
+            }
+
+            registerBtn.disabled = true;
+            registerSpinner.classList.remove("hidden");
+            registerBtnText.textContent = "Mendaftar...";
+
+            try {
+              const result = await registerUser(nama, umur, noHp);
+              
+              if (result.isExisting) {
+                // Phone already registered — show error
+                registerError.innerHTML = `\u26a0\ufe0f Nomor HP <strong>${noHp}</strong> sudah terdaftar atas nama <strong>${result.user.nama}</strong>. Silakan gunakan nomor HP yang berbeda, atau <button type="button" style="background:none;border:none;color:var(--sage-dark);font-weight:700;cursor:pointer;text-decoration:underline;font-size:inherit;padding:0;" onclick="document.getElementById('regToggleBtn').click()">login di sini</button>.`;
+                registerError.classList.remove("hidden");
+                return;
+              }
+
+              // Save to localStorage
+              saveRegisteredUser(result.user);
+              hideRegisterModal();
+              showWelcomeBanner(result.user);
+              autoFillFromRegistration();
+              startHeartbeat(result.user.id);
+              showToast("success", `Selamat datang, Ibu ${result.user.nama}! \u2764\ufe0f`);
+            } catch (err) {
+              if (err.message === "DUPLICATE") {
+                registerError.textContent = "Nomor HP sudah terdaftar. Gunakan nomor lain atau login.";
+              } else {
+                registerError.textContent = err.message || "Gagal mendaftar.";
+              }
+              registerError.classList.remove("hidden");
+            } finally {
+              registerBtn.disabled = false;
+              registerSpinner.classList.add("hidden");
+              registerBtnText.textContent = "Daftar Sekarang";
+            }
           }
         });
       }
