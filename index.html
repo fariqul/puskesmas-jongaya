@@ -2403,6 +2403,10 @@
       </div>
       <div class="stats-row">
         <div class="stat-card">
+          <div class="stat-label">Total Akun Pasien</div>
+          <div id="statTotalUsers" class="stat-value">0</div>
+        </div>
+        <div class="stat-card">
           <div class="stat-label">Total Pendaftar</div>
           <div id="statTotal" class="stat-value">0</div>
         </div>
@@ -2499,13 +2503,12 @@
                 <th>Nomor HP</th>
                 <th>Umur</th>
                 <th>Status</th>
-                <th>Terakhir Aktif</th>
                 <th>Aksi</th>
               </tr>
             </thead>
             <tbody id="userTableTbody">
               <tr>
-                <td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">Memuat data pasien...</td>
+                <td colspan="6" style="text-align: center; padding: 24px; color: var(--text-muted);">Memuat data pasien...</td>
               </tr>
             </tbody>
           </table>
@@ -5172,6 +5175,10 @@
       async function refreshOnlinePanel() {
         const users = await fetchRegisteredUsers();
         renderOnlinePanel(users);
+        const statTotalUsers = document.getElementById("statTotalUsers");
+        if (statTotalUsers) {
+          statTotalUsers.textContent = users.length;
+        }
       }
 
       // Admin: refresh button
@@ -5319,7 +5326,7 @@
         const slice = userPageState.filtered.slice(start, end);
 
         if (!slice.length) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data pasien.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; padding: 24px; color: var(--text-muted);">Tidak ada data pasien.</td></tr>`;
           if (emptyState) emptyState.classList.remove("hidden");
           return;
         }
@@ -5337,8 +5344,6 @@
             ? `<span class="badge" style="background:#E8F5E9; color:#2E7D32; font-weight:700;">🟢 Online</span>`
             : `<span class="badge" style="background:#ECEFF1; color:#37474F;">⚫ Offline</span>`;
             
-          const lastSeenText = isReallyOnline ? "Aktif sekarang" : timeAgo(u.last_seen);
-
           return `
             <tr>
               <td>${start + index + 1}</td>
@@ -5346,7 +5351,6 @@
               <td>${u.no_hp}</td>
               <td>${u.umur} tahun</td>
               <td>${statusHtml}</td>
-              <td>${lastSeenText}</td>
               <td>
                 <div style="display: flex; gap: 4px;">
                   <button class="btn btn-ghost edit-user-btn" data-id="${u.id}" data-nama="${u.nama}" data-umur="${u.umur}" data-hp="${u.no_hp}" style="min-height: 28px; padding: 0 8px; display: inline-flex; align-items: center; justify-content: center;" title="Edit Akun">
@@ -5445,15 +5449,14 @@
             showToast("info", "Tidak ada data akun untuk diexport.");
             return;
           }
-          const header = ["Nama Pasien", "Nomor HP", "Umur (Tahun)", "Status Online", "Terakhir Aktif"];
+          const header = ["Nama Pasien", "Nomor HP", "Umur (Tahun)", "Status Online"];
           const rows = dataToExport.map((u) => {
             const lastSeenText = u.is_online ? "Online" : "Offline";
             return [
               `"${u.nama.replace(/"/g, '""')}"`,
               `"${u.no_hp}"`,
               `"${u.umur}"`,
-              `"${lastSeenText}"`,
-              `"${new Date(u.last_seen).toLocaleString("id-ID")}"`
+              `"${lastSeenText}"`
             ].join(",");
           });
           const csv = [header.join(","), ...rows].join("\n");
