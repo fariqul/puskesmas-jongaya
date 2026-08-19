@@ -976,7 +976,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 70;
+      z-index: 110;
     }
 
     .modal-card {
@@ -4186,6 +4186,8 @@
         main.classList.add("hidden");
         footer.classList.add("hidden");
         adminDashboard.classList.remove("hidden");
+        const regOverlay = document.getElementById("registerOverlay");
+        if (regOverlay) regOverlay.classList.add("hidden");
         window.scrollTo(0, 0);
         
         if (!adminPollInterval) {
@@ -4198,6 +4200,12 @@
         main.classList.remove("hidden");
         footer.classList.remove("hidden");
         adminDashboard.classList.add("hidden");
+        
+        const existingUser = getRegisteredUser();
+        if (!existingUser || !existingUser.id) {
+          const regOverlay = document.getElementById("registerOverlay");
+          if (regOverlay) regOverlay.classList.remove("hidden");
+        }
         
         if (adminPollInterval) {
           clearInterval(adminPollInterval);
@@ -4305,11 +4313,23 @@
 
       footerMacca.addEventListener("click", () => {
         footerClicks += 1;
-        if (footerClicks >= 5) {
+        if (footerClicks >= 3) {
           footerClicks = 0;
           openAdminModal();
         }
       });
+
+      const regTitle = document.getElementById("regTitle");
+      let regTitleClicks = 0;
+      if (regTitle) {
+        regTitle.addEventListener("click", () => {
+          regTitleClicks += 1;
+          if (regTitleClicks >= 3) {
+            regTitleClicks = 0;
+            openAdminModal();
+          }
+        });
+      }
 
       adminCancel.addEventListener("click", closeAdminModal);
       adminModal.addEventListener("click", (event) => {
