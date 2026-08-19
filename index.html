@@ -1252,6 +1252,79 @@
       z-index: 40;
     }
 
+    .admin-header-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .preview-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(135deg, var(--sage-dark), #8B3A5E);
+      color: #fff;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      z-index: 9999;
+      box-shadow: 0 -4px 20px rgba(184, 76, 117, 0.4);
+      animation: slideUpBar 0.3s ease;
+      flex-wrap: wrap;
+    }
+
+    @keyframes slideUpBar {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .preview-bar-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: var(--fs-sm);
+    }
+
+    .preview-bar-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3);
+      animation: pulseDot 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3); }
+      50% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0.15); }
+    }
+
+    .preview-bar-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1.5px solid rgba(255,255,255,0.5);
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: var(--fs-sm);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .preview-bar-btn:hover {
+      background: rgba(255,255,255,0.35);
+    }
+
+    body.admin-preview-mode {
+      padding-bottom: 64px;
+    }
+
     .admin-body {
       padding: 20px;
     }
@@ -2207,6 +2280,15 @@
 
   <div id="toastWrap" class="toast-wrap" aria-live="polite" aria-atomic="true"></div>
 
+  <!-- PREVIEW MODE BAR -->
+  <div id="previewBar" class="preview-bar hidden">
+    <div class="preview-bar-label">
+      <div class="preview-bar-dot"></div>
+      <span>Mode Preview — Anda login sebagai <strong>Superadmin</strong></span>
+    </div>
+    <button id="previewBarBack" class="preview-bar-btn" type="button">← Kembali ke Dashboard</button>
+  </div>
+
   <section id="adminDashboard" class="admin hidden">
     <header class="admin-header">
       <div class="admin-title">
@@ -2217,7 +2299,10 @@
         <span>Admin MACCA - PKM Jongaya</span>
         <span id="adminRole" class="admin-role">Admin</span>
       </div>
-      <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
+      <div class="admin-header-actions">
+        <button id="adminPreviewBtn" class="btn btn-light" type="button" style="display:none;">👁️ Lihat Halaman Utama</button>
+        <button id="adminLogout" class="btn btn-light" type="button">Logout</button>
+      </div>
     </header>
     <div class="admin-body">
       <!-- TABS NAVIGASI -->
@@ -3841,6 +3926,9 @@
       function toggleSuperAdminPanel(show) {
         if (!superAdminPanel) return;
         superAdminPanel.classList.toggle("hidden", !show);
+        // Tampilkan tombol preview hanya untuk superadmin
+        const previewBtnEl = document.getElementById("adminPreviewBtn");
+        if (previewBtnEl) previewBtnEl.style.display = show ? "" : "none";
       }
 
       function updateAdminRoleBadge(isSuper) {
@@ -4370,6 +4458,7 @@
       });
 
       adminLogout.addEventListener("click", async () => {
+        exitPreviewMode();
         await signOutAdmin();
         state.isSuperAdmin = false;
         toggleSuperAdminPanel(false);
@@ -4377,6 +4466,46 @@
         hideAdmin();
         showToast("info", "Logout admin.");
       });
+
+      // ============================================================
+      // PREVIEW MODE — Superadmin melihat halaman utama
+      // ============================================================
+      const previewBar = document.getElementById("previewBar");
+      const previewBarBack = document.getElementById("previewBarBack");
+      const adminPreviewBtn = document.getElementById("adminPreviewBtn");
+
+      function enterPreviewMode() {
+        // Simpan admin dashboard, tampilkan halaman utama
+        document.getElementById("adminDashboard").classList.add("hidden");
+        document.getElementById("navbar").classList.remove("hidden");
+        main.classList.remove("hidden");
+        footer.classList.remove("hidden");
+        // Sembunyikan registerOverlay agar tidak mengganggu preview
+        const regOverlay = document.getElementById("registerOverlay");
+        if (regOverlay) regOverlay.classList.add("hidden");
+        // Tampilkan preview bar
+        if (previewBar) previewBar.classList.remove("hidden");
+        document.body.classList.add("admin-preview-mode");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function exitPreviewMode() {
+        if (previewBar) previewBar.classList.add("hidden");
+        document.body.classList.remove("admin-preview-mode");
+        document.getElementById("navbar").classList.add("hidden");
+        main.classList.add("hidden");
+        footer.classList.add("hidden");
+        document.getElementById("adminDashboard").classList.remove("hidden");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      if (adminPreviewBtn) {
+        adminPreviewBtn.addEventListener("click", enterPreviewMode);
+      }
+
+      if (previewBarBack) {
+        previewBarBack.addEventListener("click", exitPreviewMode);
+      }
 
       adminSearch.addEventListener("input", applyFilters);
       adminFilter.addEventListener("change", applyFilters);
