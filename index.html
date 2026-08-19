@@ -1764,6 +1764,63 @@
       color: #2E7D32;
     }
 
+    /* ======= PAGINATION ======= */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 4px 4px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .pagination-info {
+      font-size: var(--fs-xs);
+      color: var(--text-muted);
+    }
+
+    .pagination-controls {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .page-btn {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      color: var(--text-dark);
+      font-family: inherit;
+      font-size: var(--fs-xs);
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 8px;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+
+    .page-btn:hover:not(:disabled) {
+      border-color: var(--sage);
+      color: var(--sage-dark);
+      background: #FDF6EE;
+    }
+
+    .page-btn.is-active {
+      background: var(--sage-dark);
+      border-color: var(--sage-dark);
+      color: #fff;
+      cursor: default;
+    }
+
+    .page-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
     /* ======= ADMIN TABS ======= */
     .admin-tabs {
       display: flex;
@@ -2329,6 +2386,11 @@
         </div>
         <div id="onlineUsersGrid" class="online-users-grid">
           <div class="online-empty">Memuat data user...</div>
+        </div>
+        <!-- PAGINATION -->
+        <div id="onlinePagination" class="pagination-bar" style="display:none;">
+          <span id="onlinePagInfo" class="pagination-info"></span>
+          <div id="onlinePagControls" class="pagination-controls"></div>
         </div>
       </div>
       <div id="superAdminPanel" class="super-admin hidden">
@@ -5229,6 +5291,11 @@
         return `${diffDay} hari lalu`;
       }
 
+      // ---- Pagination state for user panel ----
+      let onlineAllUsers = [];
+      let onlineCurrentPage = 1;
+      const ONLINE_PAGE_SIZE = 8;
+
       function renderOnlinePanel(users) {
         const grid = document.getElementById("onlineUsersGrid");
         const badge = document.getElementById("onlineCountBadge");
@@ -5249,16 +5316,38 @@
           badge.textContent = `${onlineCount} online`;
         }
 
-        if (!processedUsers.length) {
+        // Simpan semua users, reset ke halaman 1 hanya jika data berubah ukurannya
+        if (onlineAllUsers.length !== processedUsers.length) {
+          onlineCurrentPage = 1;
+        }
+        onlineAllUsers = processedUsers;
+        renderOnlinePagedUsers();
+      }
+
+      function renderOnlinePagedUsers() {
+        const grid = document.getElementById("onlineUsersGrid");
+        const pagBar = document.getElementById("onlinePagination");
+        const pagInfo = document.getElementById("onlinePagInfo");
+        const pagControls = document.getElementById("onlinePagControls");
+        if (!grid) return;
+
+        if (!onlineAllUsers.length) {
           grid.innerHTML = '<div class="online-empty">Belum ada user terdaftar.</div>';
+          if (pagBar) pagBar.style.display = "none";
           return;
         }
 
-        grid.innerHTML = processedUsers.map(u => {
+        const totalPages = Math.ceil(onlineAllUsers.length / ONLINE_PAGE_SIZE);
+        if (onlineCurrentPage > totalPages) onlineCurrentPage = totalPages;
+        if (onlineCurrentPage < 1) onlineCurrentPage = 1;
+
+        const start = (onlineCurrentPage - 1) * ONLINE_PAGE_SIZE;
+        const pageUsers = onlineAllUsers.slice(start, start + ONLINE_PAGE_SIZE);
+
+        grid.innerHTML = pageUsers.map(u => {
           const statusClass = u.isReallyOnline ? "is-online" : "is-offline";
           const statusText = u.isReallyOnline ? "Online sekarang" : `Terakhir aktif: ${timeAgo(u.last_seen)}`;
           const activityClass = u.isReallyOnline ? "is-active" : "";
-          const createdDate = u.created_at ? new Date(u.created_at).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" }) : "";
 
           return `
             <div class="online-user-card ${u.isReallyOnline ? 'is-online' : ''}" style="justify-content: space-between; align-items: center;">
@@ -5287,6 +5376,38 @@
             </div>
           `;
         }).join("");
+
+        // Render pagination bar
+        if (pagBar) pagBar.style.display = "";
+        if (pagInfo) {
+          const endIdx = Math.min(start + ONLINE_PAGE_SIZE, onlineAllUsers.length);
+          pagInfo.textContent = `${start + 1}–${endIdx} dari ${onlineAllUsers.length} user`;
+        }
+        if (pagControls) {
+          let html = `<button class="page-btn" id="pagPrev" ${onlineCurrentPage <= 1 ? 'disabled' : ''}>&lsaquo;</button>`;
+          // Tampilkan maksimal 5 halaman di sekitar halaman aktif
+          const maxVisible = 5;
+          let startPage = Math.max(1, onlineCurrentPage - Math.floor(maxVisible / 2));
+          let endPage = Math.min(totalPages, startPage + maxVisible - 1);
+          if (endPage - startPage + 1 < maxVisible) startPage = Math.max(1, endPage - maxVisible + 1);
+          if (startPage > 1) html += `<button class="page-btn" data-page="1">1</button>${startPage > 2 ? '<span style="padding:0 2px;color:#bbb;">…</span>' : ''}`;
+          for (let p = startPage; p <= endPage; p++) {
+            html += `<button class="page-btn ${p === onlineCurrentPage ? 'is-active' : ''}" data-page="${p}">${p}</button>`;
+          }
+          if (endPage < totalPages) html += `${endPage < totalPages - 1 ? '<span style="padding:0 2px;color:#bbb;">…</span>' : ''}<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
+          html += `<button class="page-btn" id="pagNext" ${onlineCurrentPage >= totalPages ? 'disabled' : ''}>&rsaquo;</button>`;
+          pagControls.innerHTML = html;
+
+          // Event listeners
+          document.getElementById("pagPrev")?.addEventListener("click", () => { onlineCurrentPage--; renderOnlinePagedUsers(); });
+          document.getElementById("pagNext")?.addEventListener("click", () => { onlineCurrentPage++; renderOnlinePagedUsers(); });
+          pagControls.querySelectorAll(".page-btn[data-page]").forEach(btn => {
+            btn.addEventListener("click", () => {
+              onlineCurrentPage = parseInt(btn.getAttribute("data-page"));
+              renderOnlinePagedUsers();
+            });
+          });
+        }
       }
 
       // Event delegation for Edit and Delete buttons on onlineUsersGrid
